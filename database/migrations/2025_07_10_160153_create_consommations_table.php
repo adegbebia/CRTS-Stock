@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('consommations', function (Blueprint $table) {
             $table->id('consomation_id');
+            $table->integer('produit_id');
             $table->integer('annee_consommation');
             $table->String('mois');
             $table->integer('trimestre');
             $table->integer('semestre');
             $table->integer('totalAnnuel');
             $table->integer('nombreJourRuptureStock');
-            $table->integer('produit_id');
             $table->foreign('produit_id')->references('produit_id')->on('produits')->onDelete('cascade');
 
 

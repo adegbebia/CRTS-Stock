@@ -12,7 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('alertes', function (Blueprint $table) {
-            $table->id();
+            $table->id('alerte_id');
+            $table->integer('produit_id');
+            $table->string('typealerte');
+            $table->timestamp('datedeclenchement')->useCurrent();
+            $table->foreign('produit_id')->references('produit_id')->on('produits')->OnDelete('cascade');
             $table->timestamps();
         });
     }
