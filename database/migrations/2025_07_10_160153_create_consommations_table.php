@@ -12,7 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('consommations', function (Blueprint $table) {
-            $table->id();
+            $table->id('consomation_id');
+            $table->integer('annee_consommation');
+            $table->String('mois');
+            $table->integer('trimestre');
+            $table->integer('semestre');
+            $table->integer('totalAnnuel');
+            $table->integer('nombreJourRuptureStock');
+            $table->integer('produit_id');
+            $table->foreign('produit_id')->references('produit_id')->on('produits')->onDelete('cascade');
+
+
+
+
+
             $table->timestamps();
         });
     }

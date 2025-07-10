@@ -12,9 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mouvements', function (Blueprint $table) {
-            $table->id();
+            $table->id('mouvement_id');
+            $table->integer('produit_id');
+            $table->date('date');
+            $table->string('origine')->nullable(); 
+            $table->integer('quantite_commandee');
+            $table->integer('quantite_entree')->nullable();
+            $table->integer('quantite_sortie')->nullable();
+            $table->integer('stock_debut_mois');
+            $table->integer('avarie')->nullable(); 
+            $table->integer('stock_jour');
+            $table->text('observation')->nullable(); 
+            $table->foreign('produit_id')->references('produit_id')->on('produits')->onDelete('cascade');
             $table->timestamps();
+        
         });
+
     }
 
     /**
