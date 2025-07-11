@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             ProduitSeeder::class,
             AlerteSeeder::class,
             MouvementSeeder::class,
+            ConsommationSeeder::class,
         ]);
         
 
