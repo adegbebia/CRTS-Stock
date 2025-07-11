@@ -5,7 +5,10 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Mouvement;
+use App\Models\Produit;
 
 class User extends Authenticatable
 {
@@ -17,8 +20,13 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+
+    protected $primaryKey ='user_id';
+
     protected $fillable = [
-        'name',
+        'nom',
+        'prenom',
         'email',
         'password',
     ];
@@ -44,5 +52,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function mouvements():HasMany{
+
+        return $this->hasMany(Mouvement::class,'mouvement_id');
+    }
+
+    public function produits():HasMany{
+
+        return $this->hasMany(Produit::class,'produit_id');
     }
 }
