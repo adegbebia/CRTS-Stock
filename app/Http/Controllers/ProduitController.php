@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Produit;
 use App\Models\User;
-
+use Illuminate\Http\Request;
+use App\Http\Requests\ProduitRequest;
 
 class ProduitController extends Controller
 {
@@ -18,25 +18,12 @@ class ProduitController extends Controller
     public function create()
     {
         $users = User::all();
-        //dd($users);
         return view('produits.create', compact('users')); 
     }
 
-
-    public function store(Request $request)
+    public function store(ProduitRequest $request)
     {
-        $validated = $request->validate([
-            'codeproduit'     => 'required|string|max:255',
-            'libelle'         => 'required|string|max:255',
-            'conditionnement' => 'required|string|max:255',
-            'quantitestock'   => 'required|integer',
-            'stockmax'        => 'required|integer',
-            'stockmin'        => 'required|integer',
-            'stocksecurite'   => 'required|integer',
-            'dateperemption'  => 'required|date',
-            'lot'             => 'required|string|max:255',
-            'user_id'         => 'required|integer',
-        ]);
+        $validated = $request->validated();
 
         Produit::create($validated);
 
@@ -50,22 +37,13 @@ class ProduitController extends Controller
 
     public function edit(Produit $produit)
     {
-        return view('produits.edit', compact('produit'));
+        $users = User::all();
+        return view('produits.edit', compact('produit', 'users'));
     }
 
-    public function update(Request $request, Produit $produit)
+    public function update(ProduitRequest $request, Produit $produit)
     {
-        $validated = $request->validate([
-            'codeproduit'     => 'required|string|max:255',
-            'libelle'         => 'required|string|max:255',
-            'conditionnement' => 'required|string|max:255',
-            'quantitestock'   => 'required|integer',
-            'stockmax'        => 'required|integer',
-            'stockmin'        => 'required|integer',
-            'stocksecurite'   => 'required|integer',
-            'dateperemption'  => 'required|date',
-            'lot'             => 'required|string|max:255',
-        ]);
+        $validated = $request->validated();
 
         $produit->update($validated);
 
@@ -73,7 +51,6 @@ class ProduitController extends Controller
     }
 
     public function destroy(Produit $produit)
-
     {
         $produit->alertes()->delete();
         $produit->delete();
