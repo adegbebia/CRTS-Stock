@@ -32,6 +32,7 @@
                 <th>Stock sécurité</th>
                 <th>Date péremption</th>
                 <th>Lot</th>
+                <th>Auteur</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -47,6 +48,7 @@
                 <td>{{ $produit->stocksecurite }}</td>
                 <td>{{ $produit->dateperemption }}</td>
                 <td>{{ $produit->lot }}</td>
+                <td>{{ $produit->user->nom ?? 'Inconnu' }}</td>
                 <td>
                     <!-- Voir -->
                     <a href="{{ route('produits.show', $produit->produit_id) }}">

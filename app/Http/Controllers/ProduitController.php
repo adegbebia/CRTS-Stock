@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Produit;
+use App\Models\User;
+
 
 class ProduitController extends Controller
 {
@@ -15,8 +17,11 @@ class ProduitController extends Controller
 
     public function create()
     {
-        return view('produits.create');
+        $users = User::all();
+        //dd($users);
+        return view('produits.create', compact('users')); 
     }
+
 
     public function store(Request $request)
     {
