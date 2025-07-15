@@ -12,22 +12,27 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('consommations', function (Blueprint $table) {
-            $table->id('consomation_id');
-            $table->integer('produit_id');
-            $table->integer('annee_consommation');
-            $table->String('mois');
-            $table->integer('trimestre');
-            $table->integer('semestre');
-            $table->integer('totalAnnuel');
-            $table->integer('nombreJourRuptureStock');
-            $table->foreign('produit_id')->references('produit_id')->on('produits')->onDelete('cascade');
+                $table->id('consommation_id');
+                $table->integer('produit_id');
+                $table->year('annee'); // année de consommation
 
+                // Colonnes pour chaque mois
+                foreach ([
+                    'janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin',
+                    'juillet', 'aout', 'septembre', 'octobre', 'novembre', 'decembre'
+                ] as $mois) {
+                    $table->integer("consommation_$mois")->default(0);
+                    $table->integer("rupture_$mois")->default(0);
+                }
 
+                $table->timestamps();
 
+                $table->foreign('produit_id')
+                    ->references('produit_id')
+                    ->on('produits')
+                    ->onDelete('cascade');
+            });
 
-
-            $table->timestamps();
-        });
     }
 
     /**

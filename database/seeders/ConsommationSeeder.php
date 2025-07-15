@@ -4,48 +4,48 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Consommation;
-use Carbon\Carbon;
+use App\Models\Produit;
 
 class ConsommationSeeder extends Seeder
 {
     public function run(): void
-    {
-        $now = Carbon::now();
+{
+    $produits = Produit::all();
+    $annees = [2023, 2024, 2025];
 
-        Consommation::create([
-            'produit_id'              => 1,
-            'annee_consommation'      => 2024,
-            'mois'                    => 'Janvier',
-            'trimestre'               => 1,
-            'semestre'                => 1,
-            'totalAnnuel'             => 1200,
-            'nombreJourRuptureStock' => 2,
-            'created_at'              => $now,
-            'updated_at'              => $now,
-        ]);
+    foreach ($produits as $produit) {
+        foreach ($annees as $annee) {
+            Consommation::create([
+                'produit_id'      => $produit->produit_id,
+                'annee'           => $annee,
 
-        Consommation::create([
-            'produit_id'              => 2,
-            'annee_consommation'      => 2024,
-            'mois'                    => 'Février',
-            'trimestre'               => 1,
-            'semestre'                => 1,
-            'totalAnnuel'             => 850,
-            'nombreJourRuptureStock' => 0,
-            'created_at'              => $now,
-            'updated_at'              => $now,
-        ]);
+                'consommation_janvier'   => rand(20, 40),
+                'consommation_fevrier'   => rand(20, 40),
+                'consommation_mars'      => rand(20, 40),
+                'consommation_avril'     => rand(20, 40),
+                'consommation_mai'       => rand(20, 40),
+                'consommation_juin'      => rand(20, 40),
+                'consommation_juillet'   => rand(20, 40),
+                'consommation_aout'      => rand(20, 40),
+                'consommation_septembre' => rand(20, 40),
+                'consommation_octobre'   => rand(20, 40),
+                'consommation_novembre'  => rand(20, 40),
+                'consommation_decembre'  => rand(20, 40),
 
-        Consommation::create([
-            'produit_id'              => 1,
-            'annee_consommation'      => 2024,
-            'mois'                    => 'Mars',
-            'trimestre'               => 1,
-            'semestre'                => 1,
-            'totalAnnuel'             => 1100,
-            'nombreJourRuptureStock' => 1,
-            'created_at'              => $now,
-            'updated_at'              => $now,
-        ]);
+                'rupture_janvier'   => rand(0, 3),
+                'rupture_fevrier'   => rand(0, 3),
+                'rupture_mars'      => rand(0, 3),
+                'rupture_avril'     => rand(0, 3),
+                'rupture_mai'       => rand(0, 3),
+                'rupture_juin'      => rand(0, 3),
+                'rupture_juillet'   => rand(0, 3),
+                'rupture_aout'      => rand(0, 3),
+                'rupture_septembre' => rand(0, 3),
+                'rupture_octobre'   => rand(0, 3),
+                'rupture_novembre'  => rand(0, 3),
+                'rupture_decembre'  => rand(0, 3),
+            ]);
+        }
     }
+}
 }

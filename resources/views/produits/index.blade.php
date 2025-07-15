@@ -107,6 +107,13 @@
                             </svg>
                         </button>
                     </form>
+                    <br>
+                    <a href="{{ route('mouvements.create', ['produit' => $produit->produit_id]) }}">
+                        <button type="button" title="Enregistrer un mouvement">
+                            📦 Mouvement
+                        </button>
+                    </a>
+
                 </td>
 
             </tr>
