@@ -18,9 +18,8 @@ class Alerte extends Model
         
     ];
 
-    public function produit():BelongsTo{
-
-        return $this->belongsTo(Produit::class,'produit_id');
-    } 
-
+    public function produit()
+    {
+        return $this->belongsTo(Produit::class, 'produit_id', 'produit_id');
+    }
 }

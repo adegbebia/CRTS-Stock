@@ -22,13 +22,32 @@ class ProduitController extends Controller
     }
 
     public function store(ProduitRequest $request)
-    {
-        $validated = $request->validated();
+            {
+                $validated = $request->validated();
 
-        Produit::create($validated);
+                // Vérifie si un produit identique existe déjà
+                $produitExistant = Produit::where('codeproduit', $validated['codeproduit'])
+                                    ->where('libelle', $validated['libelle'])
+                                    ->where('lot', $validated['lot'])
+                                    ->first();
 
-        return redirect()->route('produits.index')->with('success', 'Produit ajouté avec succès.');
-    }
+                if ($produitExistant) {
+                    // Mise à jour manuelle de la quantité
+                    $nouvelleQuantite = $produitExistant->quantitestock + $validated['quantitestock'];
+                    $produitExistant->update(['quantitestock' => $nouvelleQuantite]);
+
+                    return redirect()->route('produits.index')
+                        ->with('success', 'Le produit existait déjà. Sa quantité a été augmentée.');
+                } else {
+                    // Création d’un nouveau produit
+                    Produit::create($validated);
+
+                    return redirect()->route('produits.index')
+                        ->with('success', 'Produit ajouté avec succès.');
+                }
+            }
+
+
 
     public function show(Produit $produit)
     {

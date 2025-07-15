@@ -7,6 +7,9 @@ use App\Http\Controllers\MouvementController;
 use App\Http\Controllers\ConsommationController;
 use App\Http\Controllers\AlerteController;
 
+use App\Http\Controllers\DashboardController;
+
+
 
 
 
@@ -15,6 +18,8 @@ use App\Http\Controllers\AlerteController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
 Route::resource('users', UserController::class);
 

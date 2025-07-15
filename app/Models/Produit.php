@@ -7,16 +7,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Mouvement;
 use App\Models\Consommation;
-
-
+use App\Models\Alerte;
+use Carbon\Carbon;
 
 class Produit extends Model
 {
-    //
-    protected $primaryKey ='produit_id';
+    protected $primaryKey = 'produit_id';
 
-    protected $fillable=[
-
+    protected $fillable = [
         'codeproduit',
         'libelle',
         'conditionnement',
@@ -28,23 +26,28 @@ class Produit extends Model
         'lot',
         'user_id',
     ];
-    public function user()
+
+    /* Relations */
+
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id'); 
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function mouvements():HasMany{
-
-        return $this->hasMany(Mouvement::class,'mouvement_id');
+    public function mouvements(): HasMany
+    {
+        return $this->hasMany(Mouvement::class, 'produit_id'); 
     }
 
-    public function consommations():HasMany{
-
-        return $this->hasMany(Consommation::class,'consomation_id');
+    public function consommations(): HasMany
+    {
+        return $this->hasMany(Consommation::class, 'produit_id'); 
     }
 
-    public function alertes():HasMany{
-        return $this->hasMany(Alerte::class,'alerte_id');
+    public function alertes(): HasMany
+    {
+        return $this->hasMany(Alerte::class, 'produit_id'); 
     }
 
+    
 }
