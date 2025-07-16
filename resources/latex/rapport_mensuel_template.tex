@@ -1,0 +1,46 @@
+\documentclass[10pt]{article}
+\usepackage[margin=1.5cm,landscape]{geometry} % Marges plus larges
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{array}
+\usepackage{supertabular}
+\usepackage{makecell}
+\usepackage{graphicx} % Pour ajustements fins
+
+\begin{document}
+
+\begin{center}
+\Large \textbf{RAPPORT DU MAGASIN TECHNIQUE -- {{periode}} {{annee}}}
+\end{center}
+
+\vspace{0.5cm}
+
+\normalsize % Taille de police normale
+\setlength{\tabcolsep}{8pt} % Plus d'espace entre colonnes
+\renewcommand{\arraystretch}{2} % Plus de hauteur dans les lignes
+
+\begin{supertabular}{
+|>{\raggedright\arraybackslash}p{3.5cm}| % Désignation (plus large)
+c|c|c| % Stocks (début, entrée, total)
+>{\raggedright\arraybackslash}p{2.5cm}| % Unité (avec retours à ligne)
+c|c| % Sortie, Stock fin
+>{\raggedright\arraybackslash}p{4cm}|} % Observation (plus large)
+
+\hline
+\multicolumn{1}{|c|}{\textbf{\makecell{Désignation}}} & 
+\multicolumn{1}{c|}{\textbf{\makecell{Stock\\début}}} & 
+\multicolumn{1}{c|}{\textbf{Entrée}} & 
+\multicolumn{1}{c|}{\textbf{\makecell{Stock\\total}}} & 
+\multicolumn{1}{c|}{\textbf{Unité}} & 
+\multicolumn{1}{c|}{\textbf{Sortie}} & 
+\multicolumn{1}{c|}{\textbf{\makecell{Stock\\fin}}} & 
+\multicolumn{1}{c|}{\textbf{Observation}} \\
+\hline
+
+{{rows}}
+
+\end{supertabular}
+
+\end{document}
