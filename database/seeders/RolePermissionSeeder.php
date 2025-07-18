@@ -10,17 +10,17 @@ class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
+        // Liste des rôles
+        $role_names = ['directeur', 'responsable_surveillant', 'responsable technique'];
 
-        $role_names=['directeur','responsable_surveillant','responsable technique'];
+        // Création des rôles
+        $roles = [];
+        foreach ($role_names as $roleName) {
+            $roles[$roleName] = Role::create(['name' => $roleName]);
+        }
 
-        $roles=Role::create([
-            'name'=>'directeur',
-            'name'=>'responsable_surveillant',
-            'name'=>'responsable technique',
-        ]);
-        // Création des permissions
-        $permissions_names =[
-
+        // Liste des permissions
+        $permission_names = [
             'produits-create',
             'produits-edit',
             'produits-delete',
@@ -37,130 +37,19 @@ class RolePermissionSeeder extends Seeder
             'consommations-view',
 
             'alertes-view',
-
             'rapports-view',
             'rapports-generate',
         ];
 
+        // Création des permissions
+        $permissions = [];
+        foreach ($permission_names as $permissionName) {
+            $permissions[] = Permission::create(['name' => $permissionName]);
+        }
 
-        $permission1=Permission::create([
-
-            'name'=>'produits-create'
-
-        ]);
-
-        $permission2=Permission::create([
-
-            'name'=>'produits-edit'
-
-        ]);
-
-        $permission3=Permission::create([
-
-            'name'=>'produits-delete'
-
-        ]);
-
-        $permission4=Permission::create([
-
-            'name'=>'produits-view'
-
-        ]);
-
-
-        $permission5=Permission::create([
-
-            'name'=>'mouvements-create'
-
-        ]);
-
-
-        $permission6=Permission::create([
-
-            'name'=>'mouvements-edit'
-
-        ]);
-
-        $permission7=Permission::create([
-
-            'name'=>'mouvements-delete'
-
-        ]);
-
-
-        $permission8=Permission::create([
-
-            'name'=>'mouvements-view'
-
-        ]);
-
-        $permission9=Permission::create([
-
-            'name'=>'consommations-create'
-
-        ]);
-
-        $permission10=Permission::create([
-
-            'name'=>'consommations-edit'
-
-        ]);
-
-        $permission11=Permission::create([
-
-            'name'=>'consommations-delete'
-
-        ]);
-
-        $permission12=Permission::create([
-
-            'name'=>'consommations-view'
-
-        ]);
-
-        $permission13=Permission::create([
-
-            'name'=>'alertes-view'
-
-        ]);
-
-        $permission14=Permission::create([
-
-            'name'=>'rapports-view'
-
-        ]);
-
-        $permission15=Permission::create([
-
-            'name'=>'rapports-generate'
-
-        ]);
-
-        $roles->givePermissionTo([
-
-            $permission1,
-            $permission2,
-            $permission3,
-            $permission4,
-            $permission5,
-            $permission6,
-            $permission7,
-            $permission8,
-            $permission9,
-            $permission10,
-            $permission11,
-            $permission12,
-            $permission13,
-            $permission14,
-            $permission15,
-
-
-        ]);
-
-
-        
+        // Attribution de toutes les permissions à tous les rôles
+        foreach ($roles as $role) {
+            $role->givePermissionTo($permissions);
+        }
     }
 }
-
-    
-
