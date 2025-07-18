@@ -10,14 +10,13 @@ use Carbon\Carbon;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $now = Carbon::now();
 
-        User::create([
+
+
+        $user1 = User::create([
             'nom'               => 'DEGBEBIA',
             'prenom'            => 'Aïmane',
             'email'             => 'aimane@gmail.com',
@@ -27,8 +26,10 @@ class UserSeeder extends Seeder
             'created_at'        => $now,
             'updated_at'        => $now,
         ]);
+        $user1->assignRole('directeur');
 
-        User::create([
+
+        $user2 = User::create([
             'nom'               => 'BABA',
             'prenom'            => 'Traore-hannatou',
             'email'             => 'hannatou@gmail.com',
@@ -38,8 +39,10 @@ class UserSeeder extends Seeder
             'created_at'        => $now,
             'updated_at'        => $now,
         ]);
+        $user2->assignRole('responsable_surveillant');
 
-        User::create([
+
+        $user3 = User::create([
             'nom'               => 'ADOUN',
             'prenom'            => 'Hyaceinthe',
             'email'             => 'Hyaceinthe@gmail.com',
@@ -49,5 +52,7 @@ class UserSeeder extends Seeder
             'created_at'        => $now,
             'updated_at'        => $now,
         ]);
+        $user3->assignRole('responsable technique');
+
     }
 }

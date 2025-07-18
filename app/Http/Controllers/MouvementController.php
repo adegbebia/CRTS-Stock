@@ -17,34 +17,41 @@ class MouvementController extends Controller
     }
 
     public function create(Request $request)
-{
-    $produits = Produit::all();
+    {
+        // Vérifiez si l'utilisateur a la permission de créer des mouvements
+        if (!auth()->user()->can('mouvements-create')) {
+            abort(403, 'Accès refusé');
+        }
 
-    $produitSelectionne = $request->query('produit'); // ex: produit=123
+        $produits = Produit::all();
+        $produitSelectionne = $request->query('produit'); // ex: produit=123
 
-    if ($produitSelectionne) {
-        // On filtre les mouvements pour ce produit uniquement
-        $mouvements = Mouvement::where('produit_id', $produitSelectionne)->latest()->get();
-    } else {
-        // Tous les mouvements
-        $mouvements = Mouvement::latest()->get();
+        if ($produitSelectionne) {
+            // On filtre les mouvements pour ce produit uniquement
+            $mouvements = Mouvement::where('produit_id', $produitSelectionne)->latest()->get();
+        } else {
+            // Tous les mouvements
+            $mouvements = Mouvement::latest()->get();
+        }
+
+        return view('mouvements.create', compact('produits', 'produitSelectionne', 'mouvements'));
     }
-
-    return view('mouvements.create', compact('produits', 'produitSelectionne', 'mouvements'));
-}
-
 
     /* Enregistrer un mouvement */
     public function store(MouvementRequest $request)
     {
-        //dd($request->all());
-        $data    = $request->validated();
+        // Vérifiez si l'utilisateur a la permission de créer des mouvements
+        if (!auth()->user()->can('mouvements-create')) {
+            abort(403, 'Accès refusé');
+        }
+
+        $data = $request->validated();
         $produit = Produit::findOrFail($data['produit_id']);
 
         /* ---- Gestion du stock ---- */
-        $entree  = $data['quantite_entree']  ?? 0;
-        $sortie  = $data['quantite_sortie'] ?? 0;
-        $avarie  = $data['avarie']          ?? 0;
+        $entree = $data['quantite_entree'] ?? 0;
+        $sortie = $data['quantite_sortie'] ?? 0;
+        $avarie = $data['avarie'] ?? 0;
 
         $produit->quantitestock += $entree - $sortie;
         $produit->save();
@@ -52,16 +59,16 @@ class MouvementController extends Controller
         $stockJour = $produit->quantitestock - $avarie;
 
         Mouvement::create([
-            'produit_id'         => $produit->produit_id,
-            'date'               => Carbon::now()->toDateString(),
-            'origine'            => $data['origine'] ?? null,
+            'produit_id' => $produit->produit_id,
+            'date' => Carbon::now()->toDateString(),
+            'origine' => $data['origine'] ?? null,
             'quantite_commandee' => $data['quantite_commandee'],
-            'quantite_entree'    => $entree ?: null,
-            'quantite_sortie'    => $sortie ?: null,
-            'stock_debut_mois'   => $data['stock_debut_mois'],
-            'avarie'             => $avarie ?: null,
-            'stock_jour'         => $stockJour,
-            'observation'        => $data['observation'] ?? null,
+            'quantite_entree' => $entree ?: null,
+            'quantite_sortie' => $sortie ?: null,
+            'stock_debut_mois' => $data['stock_debut_mois'],
+            'avarie' => $avarie ?: null,
+            'stock_jour' => $stockJour,
+            'observation' => $data['observation'] ?? null,
         ]);
 
         /* Retour sur create avec le produit présélectionné */
@@ -71,6 +78,11 @@ class MouvementController extends Controller
     /* Formulaire d’édition */
     public function edit(Mouvement $mouvement)
     {
+        // Vérifiez si l'utilisateur a la permission de modifier des mouvements
+        if (!auth()->user()->can('mouvements-edit')) {
+            abort(403, 'Accès refusé');
+        }
+
         $produits = Produit::all();
         return view('mouvements.edit', compact('mouvement', 'produits'));
     }
@@ -78,7 +90,12 @@ class MouvementController extends Controller
     /* Mettre à jour */
     public function update(MouvementRequest $request, Mouvement $mouvement)
     {
-        $data    = $request->validated();
+        // Vérifiez si l'utilisateur a la permission de modifier des mouvements
+        if (!auth()->user()->can('mouvements-edit')) {
+            abort(403, 'Accès refusé');
+        }
+
+        $data = $request->validated();
         $produit = $mouvement->produit;
 
         /* Retirer l’ancien impact du stock */
@@ -86,25 +103,24 @@ class MouvementController extends Controller
         $produit->quantitestock -= $ancienImpact;
 
         /* Calcul du nouvel impact */
-        $newEntree  = $data['quantite_entree']  ?? 0;
-        $newSortie  = $data['quantite_sortie'] ?? 0;
-        $newImpact  = $newEntree - $newSortie;
+        $newEntree = $data['quantite_entree'] ?? 0;
+        $newSortie = $data['quantite_sortie'] ?? 0;
+        $newImpact = $newEntree - $newSortie;
         $produit->quantitestock += $newImpact;
         $produit->save();
-
-        $avarie    = $data['avarie'] ?? 0;
+        $avarie = $data['avarie'] ?? 0;
         $stockJour = $produit->quantitestock - $avarie;
 
         $mouvement->update([
-            'date'               => Carbon::now()->toDateString(),
-            'origine'            => $data['origine'] ?? null,
+            'date' => Carbon::now()->toDateString(),
+            'origine' => $data['origine'] ?? null,
             'quantite_commandee' => $data['quantite_commandee'],
-            'quantite_entree'    => $newEntree ?: null,
-            'quantite_sortie'    => $newSortie ?: null,
-            'stock_debut_mois'   => $data['stock_debut_mois'],
-            'avarie'             => $avarie ?: null,
-            'stock_jour'         => $stockJour,
-            'observation'        => $data['observation'] ?? null,
+            'quantite_entree' => $newEntree ?: null,
+            'quantite_sortie' => $newSortie ?: null,
+            'stock_debut_mois' => $data['stock_debut_mois'],
+            'avarie' => $avarie ?: null,
+            'stock_jour' => $stockJour,
+            'observation' => $data['observation'] ?? null,
         ]);
 
         return redirect()->route('mouvements.create', ['produit' => $produit->produit_id]);
@@ -113,8 +129,13 @@ class MouvementController extends Controller
     /* Supprimer */
     public function destroy(Mouvement $mouvement)
     {
+        // Vérifiez si l'utilisateur a la permission de supprimer des mouvements
+        if (!auth()->user()->can('mouvements-delete')) {
+            abort(403, 'Accès refusé');
+        }
+
         $produit = $mouvement->produit;
-        $impact  = ($mouvement->quantite_entree ?? 0) - ($mouvement->quantite_sortie ?? 0);
+        $impact = ($mouvement->quantite_entree ?? 0) - ($mouvement->quantite_sortie ?? 0);
         $produit->quantitestock -= $impact;
         $produit->save();
 
@@ -128,3 +149,6 @@ class MouvementController extends Controller
         return redirect()->route('mouvements.create', ['produit' => $produit_id]);
     }
 }
+
+
+        

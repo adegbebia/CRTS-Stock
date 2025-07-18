@@ -17,37 +17,45 @@ class ProduitController extends Controller
 
     public function create()
     {
-        $users = User::all();
-        return view('produits.create', compact('users')); 
+        // Vérifiez si l'utilisateur a la permission de créer un produit
+        if (auth()->user()->can('produits-create')) {
+            $users = User::all();
+            return view('produits.create', compact('users')); 
+        }
+
+        return redirect()->route('produits.index')->with('error', 'Vous n\'avez pas la permission d\'ajouter un produit.');
     }
 
     public function store(ProduitRequest $request)
-            {
-                $validated = $request->validated();
+    {
+        // Vérifiez si l'utilisateur a la permission de créer un produit
+        if (!auth()->user()->can('produits-create')) {
+            return redirect()->route('produits.index')->with('error', 'Vous n\'avez pas la permission d\'ajouter un produit.');
+        }
 
-                // Vérifie si un produit identique existe déjà
-                $produitExistant = Produit::where('codeproduit', $validated['codeproduit'])
-                                    ->where('libelle', $validated['libelle'])
-                                    ->where('lot', $validated['lot'])
-                                    ->first();
+        $validated = $request->validated();
 
-                if ($produitExistant) {
-                    // Mise à jour manuelle de la quantité
-                    $nouvelleQuantite = $produitExistant->quantitestock + $validated['quantitestock'];
-                    $produitExistant->update(['quantitestock' => $nouvelleQuantite]);
+        // Vérifie si un produit identique existe déjà
+        $produitExistant = Produit::where('codeproduit', $validated['codeproduit'])
+                                  ->where('libelle', $validated['libelle'])
+                                  ->where('lot', $validated['lot'])
+                                  ->first();
 
-                    return redirect()->route('produits.index')
-                        ->with('success', 'Le produit existait déjà. Sa quantité a été augmentée.');
-                } else {
-                    // Création d’un nouveau produit
-                    Produit::create($validated);
+        if ($produitExistant) {
+            // Mise à jour manuelle de la quantité
+            $nouvelleQuantite = $produitExistant->quantitestock + $validated['quantitestock'];
+            $produitExistant->update(['quantitestock' => $nouvelleQuantite]);
 
-                    return redirect()->route('produits.index')
-                        ->with('success', 'Produit ajouté avec succès.');
-                }
-            }
+            return redirect()->route('produits.index')
+                ->with('success', 'Le produit existait déjà. Sa quantité a été augmentée.');
+        } else {
+            // Création d’un nouveau produit
+            Produit::create($validated);
 
-
+            return redirect()->route('produits.index')
+                ->with('success', 'Produit ajouté avec succès.');
+        }
+    }
 
     public function show(Produit $produit)
     {
@@ -56,14 +64,23 @@ class ProduitController extends Controller
 
     public function edit(Produit $produit)
     {
-        $users = User::all();
-        return view('produits.edit', compact('produit', 'users'));
+        // Vérifiez si l'utilisateur a la permission de modifier un produit
+        if (auth()->user()->can('produits-edit')) {
+            $users = User::all();
+            return view('produits.edit', compact('produit', 'users'));
+        }
+
+        return redirect()->route('produits.index')->with('error', 'Vous n\'avez pas la permission de modifier ce produit.');
     }
 
     public function update(ProduitRequest $request, Produit $produit)
     {
-        $validated = $request->validated();
+        // Vérifiez si l'utilisateur a la permission de modifier un produit
+        if (!auth()->user()->can('produits-edit')) {
+            return redirect()->route('produits.index')->with('error', 'Vous n\'avez pas la permission de modifier ce produit.');
+        }
 
+        $validated = $request->validated();
         $produit->update($validated);
 
         return redirect()->route('produits.index')->with('success', 'Produit mis à jour avec succès.');
@@ -71,6 +88,11 @@ class ProduitController extends Controller
 
     public function destroy(Produit $produit)
     {
+        // Vérifiez si l'utilisateur a la permission de supprimer un produit
+        if (!auth()->user()->can('produits-delete')) {
+            return redirect()->route('produits.index')->with('error', 'Vous n\'avez pas la permission de supprimer ce produit.');
+        }
+
         $produit->alertes()->delete();
         $produit->delete();
 
