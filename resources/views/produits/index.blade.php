@@ -51,7 +51,7 @@
                 <td>{{ $produit->user->nom ?? 'Inconnu' }}</td>
                 <td>
                     <!-- Voir -->
-                    <a href="{{ route('produits.show', $produit->produit_id) }}">
+                    <a href="{{ route('produits.show', $produit->produit_id) }}" title="Voir">
                         <button type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -66,7 +66,7 @@
                     </a>
 
                     <!-- Modifier -->
-                    <a href="{{ route('produits.edit', $produit->produit_id) }}">
+                    <a href="{{ route('produits.edit', $produit->produit_id) }}" title="Modifier">
                         <button type="button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                 viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -86,7 +86,7 @@
 
                     <!-- Supprimer -->
                     <form action="{{ route('produits.destroy', $produit->produit_id) }}"
-                        method="POST" onsubmit="return confirm('Supprimer ce produit ?')" style="display:inline;">
+                        method="POST" onsubmit="return confirm('Supprimer ce produit ?')" title="Supprimer" style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button type="submit">
