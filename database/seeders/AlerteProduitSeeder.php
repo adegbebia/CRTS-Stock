@@ -4,10 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Alerte;
+use App\Models\AlerteProduit;
 
 
-class AlerteSeeder extends Seeder
+class AlerteProduitSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,17 +15,17 @@ class AlerteSeeder extends Seeder
     public function run(): void
     {
         //  
-    Alerte::create([
+    AlerteProduit::create([
         'produit_id'        => 1, 
         'typealerte'        => 'rouge',
     ]);
 
-    Alerte::create([
+    AlerteProduit::create([
         'produit_id'        => 2,
         'typealerte'        => 'orange',
     ]);
 
-    Alerte::create([
+    AlerteProduit::create([
         'produit_id'        => 3,
         'typealerte'        => 'perime',
     ]);

@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 use Carbon\Carbon;
 use App\Models\Produit;
-use App\Models\Mouvement;
+use App\Models\MouvementProduit;
 use Illuminate\Http\Request;
 
-class RapportController extends Controller
+class RapportProduitController extends Controller
 {
    public function genererRapportLatex($periodeType, $periode, $annee)
 {

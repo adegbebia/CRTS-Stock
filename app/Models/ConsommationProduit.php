@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Mouvement;
+use App\Models\MouvementProduit;
 
-class Consommation extends Model
+class ConsommationProduit extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'consommation_id';
+    protected $primaryKey = 'consommationProd_id';
 
     protected $fillable = [
         'produit_id',

@@ -3,14 +3,14 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Mouvement;
+use App\Models\MouvementProduit;
 use Carbon\Carbon;
 
-class MouvementSeeder extends Seeder
+class MouvementProduitSeeder extends Seeder
 {
     public function run(): void
     {
-        Mouvement::create([
+        MouvementProduit::create([
             'produit_id'         => 1,
             'date'               => '2025-07-10',
             'origine'            => 'Commande Fournisseur',
@@ -23,7 +23,7 @@ class MouvementSeeder extends Seeder
             'observation'        => 'Réception complète',
         ]);
 
-        Mouvement::create([
+        MouvementProduit::create([
             'produit_id'         => 1,
             'date'               => '2025-07-12',
             'origine'            => 'Service de chirurgie',
@@ -36,7 +36,7 @@ class MouvementSeeder extends Seeder
             'observation'        => 'Sortie normale',
         ]);
 
-        Mouvement::create([
+        MouvementProduit::create([
             'produit_id'         => 2,
             'date'               => '2025-07-14',
             'origine'            => 'Contrôle qualité',

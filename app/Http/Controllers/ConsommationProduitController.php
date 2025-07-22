@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Consommation;
+use App\Models\ConsommationProduit;
 use App\Models\Produit;
-use App\Models\Mouvement;
+use App\Models\MouvementProduit;
 use Illuminate\Http\Request;
 use App\Http\Requests\ConsommationRequest;
 
-class ConsommationController extends Controller
+class ConsommationProduitController extends Controller
 {
     /* /consommations → redirige vers create */
     public function index()

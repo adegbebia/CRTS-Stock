@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 
-class Alerte extends Model
+class AlerteArticle extends Model
 {
     //
-    protected $primaryKey='alerte_id';
+    protected $primaryKey='alerteProd_id';
 
     protected $fillable=[
         'produit_id',
@@ -18,8 +18,8 @@ class Alerte extends Model
         
     ];
 
-    public function produit()
+    public function article()
     {
-        return $this->belongsTo(Produit::class, 'produit_id', 'produit_id');
+        return $this->belongsTo(Produit::class, 'article_id', 'article_id');
     }
 }

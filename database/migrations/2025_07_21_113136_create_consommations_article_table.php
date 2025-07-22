@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('consommations', function (Blueprint $table) {
-                $table->id('consommation_id');
-                $table->integer('produit_id');
+        Schema::create('consommation_articles', function (Blueprint $table) {
+                $table->id('consommationArt_id');
+                $table->integer('article_id');
                 $table->year('annee'); // année de consommation
 
                 // Colonnes pour chaque mois
@@ -27,12 +27,11 @@ return new class extends Migration
 
                 $table->timestamps();
 
-                $table->foreign('produit_id')
-                    ->references('produit_id')
-                    ->on('produits')
+                $table->foreign('article_id')
+                    ->references('article_id')
+                    ->on('article')
                     ->onDelete('cascade');
             });
-
     }
 
     /**
@@ -40,6 +39,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('consommations');
+        Schema::dropIfExists('consommation_articles');
     }
 };

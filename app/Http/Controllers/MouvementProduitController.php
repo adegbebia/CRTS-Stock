@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mouvement;
+use App\Models\ConsommationProduit;
 use App\Models\Produit;
 use App\Http\Requests\MouvementRequest;
+
+use App\Models\MouvementProduit;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class MouvementController extends Controller
+class MouvementProduitController extends Controller
 {
     /* /mouvements  → redirige vers create (page principale) */
     public function index()
     {
-        return redirect()->route('mouvements.create');
+        return redirect()->route('mouvements-produits.create');
     }
 
     public function create(Request $request)
@@ -24,13 +26,13 @@ class MouvementController extends Controller
 
     if ($produitSelectionne) {
         // On filtre les mouvements pour ce produit uniquement
-        $mouvements = Mouvement::where('produit_id', $produitSelectionne)->latest()->get();
+        $mouvements = MouvementProduit::where('produit_id', $produitSelectionne)->latest()->get();
     } else {
         // Tous les mouvements
-        $mouvements = Mouvement::latest()->get();
+        $mouvements = MouvementProduit::latest()->get();
     }
 
-    return view('mouvements.create', compact('produits', 'produitSelectionne', 'mouvements'));
+    return view('mouvements-produits.create', compact('produits', 'produitSelectionne', 'mouvements'));
 }
 
 
@@ -51,7 +53,7 @@ class MouvementController extends Controller
 
         $stockJour = $produit->quantitestock - $avarie;
 
-        Mouvement::create([
+        MouvementProduit::create([
             'produit_id'         => $produit->produit_id,
             'date'               => Carbon::now()->toDateString(),
             'origine'            => $data['origine'] ?? null,
@@ -65,18 +67,23 @@ class MouvementController extends Controller
         ]);
 
         /* Retour sur create avec le produit présélectionné */
-        return redirect()->route('mouvements.create', ['produit' => $produit->produit_id]);
+        return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id]);
     }
 
     /* Formulaire d’édition */
-    public function edit(Mouvement $mouvement)
-    {
-        $produits = Produit::all();
-        return view('mouvements.edit', compact('mouvement', 'produits'));
-    }
+   public function edit(MouvementProduit $mouvements_produit)
+{
+    $produits = Produit::all();
+    return view('mouvements-produits.edit', [
+        'mouvement' => $mouvements_produit,
+        'produits' => $produits,
+    ]);
+}
+
+
 
     /* Mettre à jour */
-    public function update(MouvementRequest $request, Mouvement $mouvement)
+    public function update(MouvementRequest $request, MouvementProd $mouvement)
     {
         $data    = $request->validated();
         $produit = $mouvement->produit;
@@ -107,11 +114,11 @@ class MouvementController extends Controller
             'observation'        => $data['observation'] ?? null,
         ]);
 
-        return redirect()->route('mouvements.create', ['produit' => $produit->produit_id]);
+        return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id]);
     }
 
     /* Supprimer */
-    public function destroy(Mouvement $mouvement)
+    public function destroy(MouvementProduit $mouvement)
     {
         $produit = $mouvement->produit;
         $impact  = ($mouvement->quantite_entree ?? 0) - ($mouvement->quantite_sortie ?? 0);
@@ -119,12 +126,12 @@ class MouvementController extends Controller
         $produit->save();
 
         $mouvement->delete();
-        return redirect()->route('mouvements.create', ['produit' => $produit->produit_id]);
+        return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id]);
     }
 
     /* Filtrer les mouvements par produit (si besoin d’URL dédiée) */
     public function filterByProduit($produit_id)
     {
-        return redirect()->route('mouvements.create', ['produit' => $produit_id]);
+        return redirect()->route('mouvements-produits.create', ['produit' => $produit_id]);
     }
 }

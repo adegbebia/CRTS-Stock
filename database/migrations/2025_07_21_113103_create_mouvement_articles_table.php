@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mouvements', function (Blueprint $table) {
-            $table->id('mouvement_id');
-            $table->integer('produit_id');
+        Schema::create('mouvement_articles', function (Blueprint $table) {
+            $table->id('mouvementArt_id');
+            $table->integer('article_id');
             $table->date('date');
             $table->string('origine')->nullable(); 
             $table->integer('quantite_commandee');
@@ -23,11 +23,10 @@ return new class extends Migration
             $table->integer('avarie')->nullable(); 
             $table->integer('stock_jour');
             $table->text('observation')->nullable(); 
-            $table->foreign('produit_id')->references('produit_id')->on('produits')->onDelete('cascade');
+            $table->foreign('article_id')->references('article_id')->on('articles')->onDelete('cascade');
             $table->timestamps();
         
         });
-
     }
 
     /**
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mouvements');
+        Schema::dropIfExists('mouvement_articles');
     }
 };

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Mouvement extends Model
+class MouvementArticle extends Model
 {
     //
 
-    protected $primaryKey ='mouvement_id';
+    protected $primaryKey ='mouvementArt_id';
 
     protected $fillable = [
 
@@ -30,8 +30,8 @@ class Mouvement extends Model
         return $this->belongsTo(User::class,'user_id');
      }
 
-    public function produit():BelongsTo{
+    public function article():BelongsTo{
 
-        return $this->belongsTo(Produit::class,'produit_id');
+        return $this->belongsTo(Article::class,'article_id');
     } 
 }

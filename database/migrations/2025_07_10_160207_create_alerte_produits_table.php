@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('alertes', function (Blueprint $table) {
-            $table->id('alerte_id');
+        Schema::create('alerte_produits', function (Blueprint $table) {
+            $table->id('alerteProd_id');
             $table->integer('produit_id');
             $table->string('typealerte');
             $table->timestamp('datedeclenchement')->useCurrent();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('alertes');
+        Schema::dropIfExists('alerte_produits');
     }
 };

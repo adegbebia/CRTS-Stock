@@ -2,8 +2,7 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
     <title>Ajout de mouvement</title>
 </head>
 
@@ -22,29 +21,29 @@
         </div>
     @endif
 
-    <form action="{{ route('mouvements.store') }}" method="POST">
+    <form action="{{ route('mouvements-articles.store') }}" method="POST">
         @csrf
 
-        @if ($produitSelectionne)
+        @if ($articleSelectionne)
             @php
-                $produit = $produits->find($produitSelectionne);
+                $article = $articles->find($articleSelectionne);
             @endphp
-            <p>Produit sélectionné : <strong>{{ $produit->libelle ?? 'N/A' }}</strong></p>
-            <input type="hidden" name="produit_id" value="{{ $produitSelectionne }}">
+            <p>Article sélectionné : <strong>{{ $article->libelle ?? 'N/A' }}</strong></p>
+            <input type="hidden" name="article_id" value="{{ $articleSelectionne }}">
         @else
-            <label for="produit_id">Produit</label>
-            <select name="produit_id" id="produit_id" required>
-                <option value="">-- Sélectionner un produit --</option>
-                @foreach ($produits as $produit)
-                    <option value="{{ $produit->produit_id }}" @if (old('produit_id') == $produit->produit_id) selected @endif>
-                        {{ $produit->libelle }}
+            <label for="article_id">Article</label>
+            <select name="article_id" id="article_id" required>
+                <option value="">-- Sélectionner un article --</option>
+                @foreach ($articles as $article)
+                    <option value="{{ $article->article_id }}" @if (old('article_id') == $article->article_id) selected @endif>
+                        {{ $article->libelle }}
                     </option>
                 @endforeach
             </select>
         @endif
 
-        <a href="{{ route('produits.create') }}" target="_blank">Ajouter un produit</a>
-        <p><em>Si le produit n’apparaît pas, créez-le puis actualisez cette page.</em></p>
+        <a href="{{ route('articles.create') }}" target="_blank">Ajouter un article</a>
+        <p><em>Si l'article n’apparaît pas, créez-le puis actualisez cette page.</em></p>
 
         <label for="origine">Origine</label>
         <input type="text" name="origine" id="origine" value="{{ old('origine') }}" />
@@ -78,7 +77,7 @@
         <table border="1" cellpadding="5" cellspacing="0">
             <thead>
                 <tr>
-                    <th>Produit</th>
+                    <th>Article</th>
                     <th>Date</th>
                     <th>Origine</th>
                     <th>Quantité commandée</th>
@@ -93,7 +92,7 @@
             <tbody>
                 @foreach ($mouvements as $mouvement)
                     <tr>
-                        <td>{{ $mouvement->produit->libelle ?? 'N/A' }}</td>
+                        <td>{{ $mouvement->article->libelle ?? 'N/A' }}</td>
                         <td>{{ $mouvement->date }}</td>
                         <td>{{ $mouvement->origine }}</td>
                         <td>{{ $mouvement->quantite_commandee }}</td>
@@ -103,7 +102,7 @@
                         <td>{{ $mouvement->stock_jour }}</td>
                         <td>{{ $mouvement->observation }}</td>
                         <td>
-                            <a href="{{ route('mouvements.edit', $mouvement->mouvement_id) }}">Modifier</a>
+                            <a href="{{ route('mouvements-articles.edit', $mouvement->mouvementProd_id) }}">Modifier</a>
                         </td>
                     </tr>
                 @endforeach

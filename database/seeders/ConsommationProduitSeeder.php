@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Consommation;
+use App\Models\ConsommationProduit;
 use App\Models\Produit;
 
-class ConsommationSeeder extends Seeder
+class ConsommationProduitSeeder extends Seeder
 {
     public function run(): void
 {
@@ -15,7 +15,7 @@ class ConsommationSeeder extends Seeder
 
     foreach ($produits as $produit) {
         foreach ($annees as $annee) {
-            Consommation::create([
+            ConsommationProduit::create([
                 'produit_id'      => $produit->produit_id,
                 'annee'           => $annee,
 
