@@ -26,6 +26,8 @@ class User extends Authenticatable
     protected $fillable = [
         'nom',
         'prenom',
+        'adresse',
+        'telephone',
         'email',
         'password',
     ];
@@ -55,11 +57,11 @@ class User extends Authenticatable
 
     public function mouvements():HasMany{
 
-        return $this->hasMany(Mouvement::class,'mouvement_id');
+        return $this->hasMany(Mouvement::class,'user_id');
     }
 
     public function produits():HasMany{
 
-        return $this->hasMany(Produit::class,'produit_id');
+        return $this->hasMany(Produit::class,'user_id');
     }
 }
