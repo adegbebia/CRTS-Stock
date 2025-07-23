@@ -8,7 +8,18 @@
 
     <h2>Modifier le mouvement</h2>
 
-<form action="{{ route('mouvements-produits.update', ['mouvements_produit' => $mouvement->mouvementProd_id]) }}" method="POST">        @csrf
+    {{-- Affichage des erreurs de validation --}}
+    @if ($errors->any())
+        <div style="color: red;">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('mouvements-produits.update', ['mouvements_produit' => $mouvement->mouvementProd_id]) }}" method="POST">        @csrf
         @method('PUT')
 
         <!-- Sélection de l'article -->

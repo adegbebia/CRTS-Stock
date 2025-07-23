@@ -10,101 +10,109 @@ use App\Http\Requests\ConsommationRequest;
 
 class ConsommationProduitController extends Controller
 {
-    /* /consommations → redirige vers create */
     public function index()
     {
-        return redirect()->route('consommations.create');
+        return redirect()->route('consommations-produits.create');
     }
 
-    /* Formulaire + tableau */
     public function create(Request $request)
     {
         $produits = Produit::all();
-
         $produit_id = $request->query('produit_id');
-       
         $annee = $request->query('annee') ?? date('Y');
-         //dd($annee);
 
-
-        // Tableau mensuel initialisé à 0 (keys 1‑12)
-        $consommations_mensuelles = array_fill(1, 12, 0);
-       
+        $consommations_mensuelles = [];
+        $afficher_formulaire = false;
 
         if ($produit_id) {
-            // Sorties mensuelles → SQLite : strftime('%m', date)
-            $mensuelles = Mouvement::selectRaw("
-                    CAST(strftime('%m', date) AS INTEGER)  AS mois,
-                    COALESCE(SUM(quantite_sortie),0)      AS total")
-                ->where('produit_id', $produit_id)
-                ->whereYear('date', $annee)           
-                ->where('quantite_sortie', '>', 0)
-                ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
-                ->pluck('total', 'mois');             
+            // Vérifie si une conso existe déjà pour ce produit/année
+            $deja_enregistre = ConsommationProduit::where('produit_id', $produit_id)
+                                ->where('annee', $annee)
+                                ->exists();
 
-            foreach ($mensuelles as $mois => $total) {
-                $consommations_mensuelles[$mois] = $total;
+            if (!$deja_enregistre) {
+                $afficher_formulaire = true;
+
+                // Pré-calculer la conso mensuelle à afficher dans le formulaire
+                $mensuelles = MouvementProduit::selectRaw("
+                        CAST(strftime('%m', date) AS INTEGER) AS mois,
+                        COALESCE(SUM(quantite_sortie), 0) AS total")
+                    ->where('produit_id', $produit_id)
+                    ->whereYear('date', $annee)
+                    ->where('quantite_sortie', '>', 0)
+                    ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
+                    ->pluck('total', 'mois');
+
+                $consommations_mensuelles = array_fill(1, 12, 0);
+
+                foreach ($mensuelles as $mois => $total) {
+                    $consommations_mensuelles[$mois] = $total;
+                }
             }
         }
 
-        // Toutes les consommations enregistrées (pour le tableau du bas)
-        $consommations = Consommation::with('produit')
-                          ->orderBy('annee', 'desc')
-                          ->get();
+        $consommations = ConsommationProduit::with('produit')
+            ->orderBy('annee', 'desc')
+            ->get();
 
-        return view('consommations.create', compact(
+        return view('consommations-produits.create', compact(
             'produits',
             'consommations',
             'produit_id',
             'annee',
-            'consommations_mensuelles'
+            'consommations_mensuelles',
+            'afficher_formulaire'
         ));
     }
 
-    /* Enregistrer */
     public function store(ConsommationRequest $request)
     {
         $data = $request->validated();
-        Consommation::create($data);
+        ConsommationProduit::create($data);
 
-        // Recalcule immédiatement depuis les mouvements (cohérence)
-        Consommation::recalcForProductYear($data['produit_id'], $data['annee']);
+        ConsommationProduit::recalcForProductYear($data['produit_id'], $data['annee']);
 
-        return redirect()->route('consommations.create',
-            ['produit_id' => $data['produit_id'], 'annee' => $data['annee']]);
+        return redirect()->route('consommations-produits.create', [
+            'produit_id' => $data['produit_id'],
+            'annee' => $data['annee']
+        ]);
     }
 
-    /* Formulaire d’édition */
-    public function edit(Consommation $consommation)
+    public function edit(ConsommationProduit $consommations_produit)
     {
         $produits = Produit::all();
-        return view('consommations.edit', compact('consommation', 'produits'));
+
+        return view('consommations-produits.edit', [
+            'consommation' => $consommations_produit,
+            'produits' => $produits
+        ]);
     }
 
-    /* Mettre à jour */
-    public function update(ConsommationRequest $request, Consommation $consommation)
+    public function update(ConsommationRequest $request, ConsommationProduit $consommations_produit)
     {
         $data = $request->validated();
-        $consommation->update($data);
+        $consommations_produit->update($data);
 
-        Consommation::recalcForProductYear($data['produit_id'], $data['annee']);
+        ConsommationProduit::recalcForProductYear($data['produit_id'], $data['annee']);
 
-        return redirect()->route('consommations.create',
-            ['produit_id' => $data['produit_id'], 'annee' => $data['annee']]);
+        return redirect()->route('consommations-produits.create', [
+            'produit_id' => $data['produit_id'],
+            'annee' => $data['annee']
+        ]);
     }
 
-    /* Supprimer */
-    public function destroy(Consommation $consommation)
+    public function destroy(ConsommationProduit $consommations_produit)
     {
-        $produit_id = $consommation->produit_id;
-        $annee      = $consommation->annee;
+        $produit_id = $consommations_produit->produit_id;
+        $annee = $consommations_produit->annee;
 
-        $consommation->delete();
+        $consommations_produit->delete();
 
-        // Recalcul après suppression
-        Consommation::recalcForProductYear($produit_id, $annee);
+        //ConsommationProduit::recalcForProductYear($produit_id, $annee);
 
-        return redirect()->route('consommations.create',
-            ['produit_id' => $produit_id, 'annee' => $annee]);
+        return redirect()->route('consommations-produits.create', [
+            'produit_id' => $produit_id,
+            'annee' => $annee
+        ]);
     }
 }

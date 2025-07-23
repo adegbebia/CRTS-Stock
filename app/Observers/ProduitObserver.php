@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Produit;
-use App\Models\Alerte;
+use App\Models\AlerteProduit;
 use Carbon\Carbon;
 
 class ProduitObserver
@@ -31,11 +31,11 @@ class ProduitObserver
             $now = Carbon::now();
 
             // Supprimer les alertes existantes de ce produit
-            Alerte::where('produit_id', $produit->produit_id)->delete();
+            AlerteProduit::where('produit_id', $produit->produit_id)->delete();
 
             // Alerte produit périmé (date de péremption avant aujourd'hui)
             if ($datePeremption->lt($now)) {
-                Alerte::create([
+                AlerteProduit::create([
                     'produit_id' => $produit->produit_id,
                     'typealerte' => 'Produit périmé',
                 ]);
@@ -43,22 +43,22 @@ class ProduitObserver
 
             // Alertes selon le stock (en respectant l'ordre et logique)
             if ($stock <= 0) {
-                Alerte::create([
+                AlerteProduit::create([
                     'produit_id' => $produit->produit_id,
                     'typealerte' => 'Rupture de stock',
                 ]);
             } elseif ($stock <= $stockSecu) {
-                Alerte::create([
+                AlerteProduit::create([
                     'produit_id' => $produit->produit_id,
                     'typealerte' => 'Alerte rouge',
                 ]);
             } elseif ($stock <= $stockMin) {
-                Alerte::create([
+               AlerteProduit::create([
                     'produit_id' => $produit->produit_id,
                     'typealerte' => 'Alerte orange',
                 ]);
             } elseif ($stock > $stockMin && $stock <= $stockMax) {
-                Alerte::create([
+                AlerteProduit::create([
                     'produit_id' => $produit->produit_id,
                     'typealerte' => 'Alerte verte',
                 ]);
@@ -74,7 +74,7 @@ class ProduitObserver
     public function deleted(Produit $produit): void
     {
         // Supprimer les alertes liées au produit supprimé
-        Alerte::where('produit_id', $produit->produit_id)->delete();
+       AlerteProduit::where('produit_id', $produit->produit_id)->delete();
     }
 
     /**

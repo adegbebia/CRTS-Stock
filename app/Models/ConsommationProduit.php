@@ -12,6 +12,11 @@ class ConsommationProduit extends Model
 
     protected $primaryKey = 'consommationProd_id';
 
+    public function getRouteKeyName()
+    {
+        return 'consommationProd_id';
+    }
+
     protected $fillable = [
         'produit_id',
         'annee',
@@ -79,34 +84,53 @@ class ConsommationProduit extends Model
     }
 
     public static function recalcForProductYear(int $produit_id, int $annee): void
-    {
-        // SQLite-compatible date extraction
-        $mensuelles = Mouvement::selectRaw("CAST(strftime('%m', date) AS INTEGER) as mois, SUM(quantite_sortie) as total")
-            ->where('produit_id', $produit_id)
-            ->whereYear('date', $annee)
-            ->whereNotNull('quantite_sortie')
-            ->where('quantite_sortie', '>', 0)
-            ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
-            ->pluck('total', 'mois'); // [1 => 120, 4 => 55, etc.]
+{
+    $mensuelles = MouvementProduit::selectRaw("CAST(strftime('%m', date) AS INTEGER) as mois, SUM(quantite_sortie) as total")
+        ->where('produit_id', $produit_id)
+        ->whereYear('date', $annee)
+        ->whereNotNull('quantite_sortie')
+        ->where('quantite_sortie', '>', 0)
+        ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
+        ->pluck('total', 'mois'); // [1 => 120, 4 => 55]
 
-        $moisNoms = [
-            1 => 'janvier',   2 => 'fevrier',  3 => 'mars',
-            4 => 'avril',     5 => 'mai',      6 => 'juin',
-            7 => 'juillet',   8 => 'aout',     9 => 'septembre',
-            10 => 'octobre', 11 => 'novembre', 12 => 'decembre',
-        ];
+    $moisNoms = [
+        1 => 'janvier', 2 => 'fevrier', 3 => 'mars',
+        4 => 'avril', 5 => 'mai', 6 => 'juin',
+        7 => 'juillet', 8 => 'aout', 9 => 'septembre',
+        10 => 'octobre', 11 => 'novembre', 12 => 'decembre',
+    ];
 
-        $data = [];
-        foreach ($moisNoms as $mois => $nom) {
-            $data["consommation_$nom"] = $mensuelles[$mois] ?? 0;
-           
-        }
+    $data = [];
+    $total = 0;
 
-        $cons = static::firstOrNew([
-            'produit_id' => $produit_id,
-            'annee'      => $annee,
-        ]);
-
-        $cons->fill($data)->save();
+    foreach ($moisNoms as $mois => $nom) {
+        $val = $mensuelles[$mois] ?? 0;
+        $data["consommation_$nom"] = $val;
+        $total += $val;
     }
+
+    // Cherche la ligne existante
+    $cons = static::where('produit_id', $produit_id)
+                  ->where('annee', $annee)
+                  ->first();
+
+    if ($total === 0) {
+        // S'il n'y a plus aucune consommation, supprimer la ligne si elle existe
+        if ($cons) {
+            $cons->delete();
+        }
+        return;
+    }
+
+    // Sinon, créer ou mettre à jour
+    if (!$cons) {
+        $cons = new static([
+            'produit_id' => $produit_id,
+            'annee' => $annee,
+        ]);
+    }
+
+    $cons->fill($data)->save();
+}
+
 }

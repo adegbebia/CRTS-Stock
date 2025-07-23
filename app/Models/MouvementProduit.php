@@ -30,8 +30,11 @@ class MouvementProduit extends Model
         return $this->belongsTo(User::class,'user_id');
      }
 
-    public function produit():BelongsTo{
+  
 
-        return $this->belongsTo(Produit::class,'produit_id');
-    } 
+    public function produit()
+        {
+            return $this->belongsTo(Produit::class, 'produit_id');
+        }
+
 }

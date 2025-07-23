@@ -11,7 +11,7 @@
 
     <h2>Nouvelle fiche de consommation</h2>
 
-    <form action="{{ route('consommations.store') }}" method="POST">
+    <form action="{{ route('consommations-produits.store') }}" method="POST">
         @csrf
 
         <label for="produit_id">Produit :</label>
@@ -119,9 +119,8 @@
                         <td>{{ $c->semestre1 }}</td>
                         <td>{{ $c->semestre2 }}</td>
                         <td>
-                            <a href="{{ route('consommations.edit', $c->consommation_id) }}">Modifier</a> |
-                            <form action="{{ route('consommations.destroy', $c->consommation_id) }}" method="POST"
-                                style="display:inline">
+                            <a href="{{ route('consommations-produits.edit', $c->consommationProd_id) }}">Modifier</a> |
+                           <form action="{{ route('consommations-produits.destroy', ['consommations_produit' => $c->consommationProd_id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" onclick="return confirm('Supprimer ?')">Supprimer</button>

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('mouvement_produits', function (Blueprint $table) {
             $table->id('mouvementProd_id');
-            $table->integer('produit_id');
+            $table->unsignedBigInteger('produit_id');
             $table->date('date');
             $table->string('origine')->nullable(); 
             $table->integer('quantite_commandee');

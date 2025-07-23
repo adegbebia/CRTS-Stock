@@ -8,7 +8,7 @@
 
 <h2>Modifier la consommation ({{ $consommation->annee }})</h2>
 
-<form action="{{ route('consommations.update', $consommation->consommation_id) }}" method="POST">
+<form action="{{ route('consommations-produits.update', $consommation) }}" method="POST">
     @csrf
     @method('PUT')
 
@@ -52,8 +52,7 @@
                 <td>Jours de rupture</td>
                 @foreach($mois as $m)
                     <td>
-                        <input type="number" name="rupture_{{ $m }}" min="0"
-                               value="{{ $consommation['rupture_'.$m] }}" required>
+                        <input type="number" name="rupture_{{ $m }}" min="0" value="{{ $consommation['rupture_'.$m] }}" required>
                     </td>
                 @endforeach
             </tr>
@@ -63,7 +62,7 @@
     <button type="submit">Mettre à jour</button>
 </form>
 
-<p><a href="{{ route('consommations.create') }}">← Retour à la liste</a></p>
+<p><a href="{{ route('consommations-produits.create') }}">← Retour à la liste</a></p>
 
 </body>
 </html>

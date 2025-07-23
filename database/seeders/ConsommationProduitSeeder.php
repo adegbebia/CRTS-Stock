@@ -10,6 +10,8 @@ class ConsommationProduitSeeder extends Seeder
 {
     public function run(): void
 {
+    ConsommationProduit::truncate();
+
     $produits = Produit::all();
     $annees = [2023, 2024, 2025];
 
