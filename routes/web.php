@@ -31,7 +31,9 @@ Route::resource('users', UserController::class);
 // PRODUITS
 Route::resource('produits', ProduitController::class);
 Route::resource('mouvements-produits', MouvementProduitController::class);
-Route::resource('consommations-produits', ConsommationProduitController::class);
+Route::resource('consommations-produits', ConsommationProduitController::class)
+    ->parameters(['consommations-produits' => 'consommations_produit']);
+
 
 // ARTICLES (collations)
 Route::resource('articles', ArticleController::class);

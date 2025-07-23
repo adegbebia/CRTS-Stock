@@ -36,18 +36,19 @@ class Produit extends Model
 
     public function mouvements(): HasMany
     {
-        return $this->hasMany(Mouvement::class, 'produit_id'); 
+        return $this->hasMany(MouvementProduit::class, 'produit_id', 'produit_id');
     }
 
     public function consommations(): HasMany
     {
-        return $this->hasMany(Consommation::class, 'produit_id'); 
+        return $this->hasMany(ConsommationProduit::class, 'produit_id', 'produit_id');
     }
 
     public function alertes(): HasMany
     {
-        return $this->hasMany(Alerte::class, 'produit_id'); 
+        return $this->hasMany(AlerteProduit::class, 'produit_id', 'produit_id');
     }
+
 
     
 }
