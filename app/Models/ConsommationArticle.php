@@ -13,7 +13,7 @@ class ConsommationArticle extends Model
     protected $primaryKey = 'consommationArt_id';
 
     protected $fillable = [
-        'produit_id',
+        'article_id',
         'annee',
 
         'consommation_janvier', 'rupture_janvier',
@@ -78,10 +78,10 @@ class ConsommationArticle extends Model
         return $this->trimestre3 + $this->trimestre4;
     }
 
-    public static function recalcForProductYear(int $article_id, int $annee): void
+    public static function recalcForArticleYear(int $article_id, int $annee): void
     {
         // SQLite-compatible date extraction
-        $mensuelles = Mouvement::selectRaw("CAST(strftime('%m', date) AS INTEGER) as mois, SUM(quantite_sortie) as total")
+        $mensuelles = MouvementArticle::selectRaw("CAST(strftime('%m', date) AS INTEGER) as mois, SUM(quantite_sortie) as total")
             ->where('article_id', $article_id)
             ->whereYear('date', $annee)
             ->whereNotNull('quantite_sortie')

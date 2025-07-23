@@ -28,6 +28,7 @@ class User extends Authenticatable
         'prenom',
         'adresse',
         'telephone',
+        'magasin_affecte',
         'email',
         'password',
     ];
@@ -57,11 +58,21 @@ class User extends Authenticatable
 
     public function mouvements():HasMany{
 
-        return $this->hasMany(Mouvement::class,'user_id');
+        return $this->hasMany(MouvementProduit::class,'user_id');
     }
 
     public function produits():HasMany{
 
         return $this->hasMany(Produit::class,'user_id');
+    }
+
+    public function mouvementsarticles():HasMany{
+
+        return $this->hasMany(MouvementArticle::class,'user_id');
+    }
+
+    public function articles():HasMany{
+
+        return $this->hasMany(Article::class,'user_id');
     }
 }

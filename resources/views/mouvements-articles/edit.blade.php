@@ -8,7 +8,7 @@
 
     <h2>Modifier le mouvement</h2>
 
-    <form action="{{ route('mouvements-articles.update', $mouvement->mouvement_id) }}" method="POST">
+    <form action="{{ route('mouvements-articles.update', $mouvement->mouvementArt_id) }}" method="POST">
         @csrf
         @method('PUT')
 

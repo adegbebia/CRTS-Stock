@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ConsommationArticle;
 use App\Models\Article;
 use App\Models\MouvementArticle;
-use App\Http\Requests\MouvementRequest;
+use App\Http\Requests\MouvementArticleRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class MouvementArticleController extends Controller
 {
     public function index()
     {
-        return redirect()->route('mouvements_articles.create');
+        return redirect()->route('mouvements-articles.create');
     }
 
     public function create(Request $request)
@@ -26,10 +27,10 @@ class MouvementArticleController extends Controller
             $mouvements = MouvementArticle::latest()->get();
         }
 
-        return view('mouvements_articles.create', compact('articles', 'articleSelectionne', 'mouvements'));
+        return view('mouvements-articles.create', compact('articles', 'articleSelectionne', 'mouvements'));
     }
 
-    public function store(MouvementRequest $request)
+    public function store(MouvementArticleRequest $request)
     {
         $data = $request->validated();
         $article = Article::findOrFail($data['article_id']);
@@ -44,7 +45,7 @@ class MouvementArticleController extends Controller
         $stockJour = $article->quantitestock - $avarie;
 
         MouvementArticle::create([
-            'article_id'         => $article->id,
+            'article_id'         => $article->article_id,
             'date'               => Carbon::now()->toDateString(),
             'origine'            => $data['origine'] ?? null,
             'quantite_commandee' => $data['quantite_commandee'],
@@ -56,19 +57,24 @@ class MouvementArticleController extends Controller
             'observation'        => $data['observation'] ?? null,
         ]);
 
-        return redirect()->route('mouvements_articles.create', ['article' => $article->id]);
-    }
+    return redirect()
+        ->route('mouvements-articles.create', ['article' => $article->article_id])
+        ->with('success', 'Mouvement créé avec succès.');
+        }
 
-    public function edit(MouvementArticle $mouvement)
+    public function edit(MouvementArticle $mouvements_article)
     {
         $articles = Article::all();
-        return view('mouvements_articles.edit', compact('mouvement', 'articles'));
+        return view('mouvements-articles.edit', [
+            'mouvement' => $mouvements_article,
+            'articles' => $articles
+        ]);
     }
 
-    public function update(MouvementRequest $request, MouvementArticle $mouvement)
+    public function update(MouvementArticleRequest $request, MouvementArticle $mouvements_article)
     {
         $data = $request->validated();
-        $article = $mouvement->article;
+        $article = $mouvements_article->article;
 
         $ancienImpact = ($mouvement->quantite_entree ?? 0) - ($mouvement->quantite_sortie ?? 0);
         $article->quantitestock -= $ancienImpact;
@@ -82,7 +88,7 @@ class MouvementArticleController extends Controller
         $avarie = $data['avarie'] ?? 0;
         $stockJour = $article->quantitestock - $avarie;
 
-        $mouvement->update([
+        $mouvements_article->update([
             'date'               => Carbon::now()->toDateString(),
             'origine'            => $data['origine'] ?? null,
             'quantite_commandee' => $data['quantite_commandee'],
@@ -94,22 +100,24 @@ class MouvementArticleController extends Controller
             'observation'        => $data['observation'] ?? null,
         ]);
 
-        return redirect()->route('mouvements_articles.create', ['article' => $article->id]);
+        return redirect()->route('mouvements-articles.create', ['article' => $article->article_id])
+                 ->with('success', 'Mouvement mis à jour avec succès.');
+
     }
 
-    public function destroy(MouvementArticle $mouvement)
+    public function destroy(MouvementArticle $mouvements_article)
     {
-        $article = $mouvement->article;
-        $impact  = ($mouvement->quantite_entree ?? 0) - ($mouvement->quantite_sortie ?? 0);
+        $article = $mouvements_article->article;
+        $impact  = ($mouvements_article->quantite_entree ?? 0) - ($mouvements_article->quantite_sortie ?? 0);
         $article->quantitestock -= $impact;
         $article->save();
 
-        $mouvement->delete();
-        return redirect()->route('mouvements_articles.create', ['article' => $article->id]);
+        $mouvements_article->delete();
+        return redirect()->route('mouvements-articles.create', ['article' => $article->article_id]);
     }
 
     public function filterByArticle($article_id)
     {
-        return redirect()->route('mouvements_articles.create', ['article' => $article_id]);
+        return redirect()->route('mouvements-articles.create', ['article' => $article_id]);
     }
 }

@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Mouvement;
-use App\Models\Consommation;
-use App\Models\Alerte;
+use App\Models\MouvementArticle;
+use App\Models\ConsommationArticle;
+use App\Models\AlerteArticle;
 use Carbon\Carbon;
 
 class Article extends Model
@@ -15,7 +15,7 @@ class Article extends Model
     protected $primaryKey = 'article_id';
 
     protected $fillable = [
-        'codeproduit',
+        'codearticle',
         'libelle',
         'conditionnement',
         'quantitestock',
@@ -36,17 +36,17 @@ class Article extends Model
 
     public function mouvements(): HasMany
     {
-        return $this->hasMany(Mouvement::class, 'produit_id'); 
+        return $this->hasMany(MouvementArticle::class, 'article_id'); 
     }
 
     public function consommations(): HasMany
     {
-        return $this->hasMany(Consommation::class, 'produit_id'); 
+        return $this->hasMany(ConsommationArticle::class, 'article_id'); 
     }
 
     public function alertes(): HasMany
     {
-        return $this->hasMany(Alerte::class, 'produit_id'); 
+        return $this->hasMany(AlerteArticle::class, 'article_id'); 
     }
 
     

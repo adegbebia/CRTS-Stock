@@ -36,6 +36,13 @@
         value="{{ old('telephone', isset($user) ? $user->telephone : '') }}"
         title="Numéro togolais valide : commence par 70 à 79 ou 90 à 99, et contient exactement 8 chiffres."><br><br>
 
+        <label for="magasin_affecte">Magasin affecté :</label><br>
+        <select name="magasin_affecte" id="magasin_affecte" required>
+            <option value="">-- Choisir un magasin --</option>
+            <option value="collation" {{ old('magasin_affecte') == 'collation' ? 'selected' : '' }}>Collation</option>
+            <option value="technique" {{ old('magasin_affecte') == 'technique' ? 'selected' : '' }}>Technique</option>
+        </select><br><br>
+
         <label for="email">Email :</label><br>
         <input type="email" name="email" id="email" value="{{ old('email') }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"><br><br>
 

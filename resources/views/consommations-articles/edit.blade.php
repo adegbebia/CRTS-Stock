@@ -8,7 +8,7 @@
 
 <h2>Modifier la consommation ({{ $consommation->annee }})</h2>
 
-<form action="{{ route('consommations-articles.update', $consommation->consommation_id) }}" method="POST">
+<form action="{{ route('consommations-articles.update', ['consommation_article' => $consommation->consommationArt_id]) }}" method="POST">
     @csrf
     @method('PUT')
 
@@ -64,6 +64,35 @@
 </form>
 
 <p><a href="{{ route('consommations-articles.index') }}">← Retour à la liste</a></p>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: {!! json_encode(session('success')) !!},
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: {!! json_encode(session('error')) !!},
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>
+@endif
 
 </body>
 </html>

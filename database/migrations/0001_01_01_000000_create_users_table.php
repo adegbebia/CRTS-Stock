@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('prenom');
             $table->string('adresse');
             $table->integer('telephone');
+            $table->enum('magasin_affecte', ['collation', 'technique']);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
