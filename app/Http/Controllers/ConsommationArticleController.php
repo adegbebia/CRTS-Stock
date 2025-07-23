@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ConsommationArticle;
 use App\Models\Article;
 use App\Models\MouvementArticle;
 use Illuminate\Http\Request;
-use App\Http\Requests\ConsommationRequest;
+use App\Http\Requests\ConsommationArticleRequest;
+use App\Models\ConsommationArticle;
+
 
 class ConsommationArticleController extends Controller
 {
     public function index()
     {
-        return redirect()->route('consommations_articles.create');
+        return redirect()->route('consommations-articles.create');
     }
 
     public function create(Request $request)
@@ -42,7 +43,7 @@ class ConsommationArticleController extends Controller
                           ->orderBy('annee', 'desc')
                           ->get();
 
-        return view('consommations_articles.create', compact(
+        return view('consommations-articles.create', compact(
             'articles',
             'consommations',
             'article_id',
@@ -51,50 +52,67 @@ class ConsommationArticleController extends Controller
         ));
     }
 
-    public function store(ConsommationRequest $request)
+    public function store(ConsommationArticleRequest $request)
     {
         $data = $request->validated();
         ConsommationArticle::create($data);
 
         ConsommationArticle::recalcForArticleYear($data['article_id'], $data['annee']);
 
-        return redirect()->route('consommations_articles.create', [
+        return redirect()->route('consommations-articles.create', [
             'article_id' => $data['article_id'],
             'annee' => $data['annee']
-        ]);
+
+            ])->with('success', 'Consommation créée avec succès.');
+
+                
+       
+
+        
     }
 
-    public function edit(ConsommationArticle $consommation)
+    public function edit(ConsommationArticle $consommation_article)
     {
         $articles = Article::all();
-        return view('consommations_articles.edit', compact('consommation', 'articles'));
+        return view('consommations-articles.edit', [
+            'consommation' => $consommation_article,
+            'articles' => $articles
+        ]);
+            
     }
 
-    public function update(ConsommationRequest $request, ConsommationArticle $consommation)
+    public function update(ConsommationArticleRequest $request, ConsommationArticle $consommation_article)
     {
         $data = $request->validated();
-        $consommation->update($data);
+        $consommation_article->update($data);
 
         ConsommationArticle::recalcForArticleYear($data['article_id'], $data['annee']);
 
-        return redirect()->route('consommations_articles.create', [
+        return redirect()->route('consommations-articles.create', [
             'article_id' => $data['article_id'],
             'annee' => $data['annee']
-        ]);
+
+            ])->with('success', 'Consommation mise à jour avec succès.');
+
     }
 
-    public function destroy(ConsommationArticle $consommation)
+    public function destroy(ConsommationArticle $consommation_article)
     {
-        $article_id = $consommation->article_id;
-        $annee = $consommation->annee;
+        $article_id = $consommation_article->article_id;
+        $annee = $consommation_article->annee;
 
-        $consommation->delete();
-
+        // recalculer d'abord si la suppression ne change pas les données nécessaires
         ConsommationArticle::recalcForArticleYear($article_id, $annee);
 
-        return redirect()->route('consommations_articles.create', [
+        $consommation_article->delete();
+
+        return redirect()->route('consommations-articles.create', [
             'article_id' => $article_id,
             'annee' => $annee
-        ]);
+            
+            ])->with('success', 'Consommation supprimée avec succès.');
+
+        
     }
+
 }

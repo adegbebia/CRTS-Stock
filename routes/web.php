@@ -12,7 +12,9 @@ use App\Http\Controllers\MouvementArticleController;
 use App\Http\Controllers\ConsommationProduitController;
 use App\Http\Controllers\ConsommationArticleController;
 
-use App\Http\Controllers\AlerteController;
+use App\Http\Controllers\AlerteProduitController;
+use App\Http\Controllers\AlerteArticleController;
+
 
 use App\Http\Controllers\RapportProduitController;
 use App\Http\Controllers\RapportArticleController;
@@ -36,10 +38,14 @@ Route::resource('consommations-produits', ConsommationProduitController::class);
 // ARTICLES (collations)
 Route::resource('articles', ArticleController::class);
 Route::resource('mouvements-articles', MouvementArticleController::class);
-Route::resource('consommations-articles', ConsommationArticleController::class);
+Route::resource('consommations-articles', ConsommationArticleController::class)->parameters([
+    'consommations-articles' => 'consommation_article'
+]);
 
 // Alertes (valables pour les produits et articles si tu gères tout au même endroit)
-Route::resource('alertes', AlerteController::class);
+Route::resource('alertes-produits', AlerteProduitController::class);
+Route::resource('alertes-articles', AlerteArticleController::class);
+
 
 // RAPPORTS PRODUITS
 Route::get('/rapports-produits', [RapportProduitController::class, 'index'])->name('rapports-produits.index');

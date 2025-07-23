@@ -21,6 +21,7 @@
                 <th>Prénom</th>
                 <th>Adresse</th>
                 <th>Téléphone</th>
+                <th>Magasin Affecté</th>
                 <th>Email</th>
                 <!-- <th>Mot de passe</th> -->
                 <th>Actions</th>
@@ -34,6 +35,7 @@
                 <td>{{ $user->prenom }}</td>
                 <td>{{ $user->adresse }}</td>
                 <td>{{ $user->telephone }}</td>
+                <td>{{ $user->magasin_affecte}}</td>
                 <td>{{ $user->email }}</td>
                 <!-- <td>{{ $user->password}}</td> -->
 

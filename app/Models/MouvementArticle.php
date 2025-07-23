@@ -13,7 +13,7 @@ class MouvementArticle extends Model
 
     protected $fillable = [
 
-        'produit_id',
+        'article_id',
         'date',
         'origine',
         'quantite_commandee',

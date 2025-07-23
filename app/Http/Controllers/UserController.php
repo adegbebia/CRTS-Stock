@@ -40,6 +40,7 @@ class UserController extends Controller
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
             'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/'],
+            'magasin_affecte' => 'required|in:collation,technique',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -56,6 +57,9 @@ class UserController extends Controller
 
             // Téléphone inchangé
             $user->telephone = $request->input('telephone');
+
+            $user->magasin_affecte = $request->input('magasin_affecte');
+
 
             // Email en minuscules
             $user->email = mb_strtolower($request->input('email'));
@@ -102,6 +106,7 @@ class UserController extends Controller
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
             'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/'],
+            'magasin_affecte' => 'required|in:collation,technique',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->user_id . ',user_id',
             'password' => 'nullable|string|min:6|confirmed',
         ]);
@@ -111,6 +116,7 @@ class UserController extends Controller
             $user->prenom = $request->input('prenom');
             $user->adresse = $request->input('adresse');
             $user->telephone = $request->input('telephone');
+            $user->magasin_affecte = $request->input('magasin_affecte');
             $user->email = $request->input('email');
 
             if ($request->filled('password')) {
