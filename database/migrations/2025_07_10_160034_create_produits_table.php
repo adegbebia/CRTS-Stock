@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('produits', function (Blueprint $table) {
             $table->id('produit_id');
             $table->string('codeproduit');
-            $table->string('libelle')->unique();
+            $table->string('libelle');
             $table->string('conditionnement');
             $table->integer('quantitestock');
             $table->integer('stockmax');
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('stocksecurite');
             $table->date('dateperemption');
             $table->string('lot');
+            $table->date('date');
             $table->integer('user_id');
             $table->foreign('user_id')->references('user_id')->on('users')->OnDelete('cascade');
             $table->timestamps();

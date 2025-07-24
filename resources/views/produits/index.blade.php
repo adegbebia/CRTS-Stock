@@ -41,12 +41,13 @@
                     <th>Code</th>
                     <th>Libellé</th>
                     <th>Conditionnement</th>
-                    <th>Qté</th>
+                    <th>QtéStock</th>
                     <th>Stock max</th>
                     <th>Stock min</th>
                     <th>Stock sécurité</th>
                     <th>Date péremption</th>
                     <th>Lot</th>
+                    <th>Date de création</th>
                     <th>Auteur</th>
                     <th>Actions</th>
                 </tr>
@@ -63,6 +64,10 @@
                         <td>{{ $produit->stocksecurite }}</td>
                         <td>{{ $produit->dateperemption }}</td>
                         <td>{{ $produit->lot }}</td>
+                        <td>
+                            {{ \Carbon\Carbon::parse($produit->date)->translatedFormat('d F Y') }}
+                        </td>
+                        
                         <td>{{ $produit->user->nom ?? 'Inconnu' }}</td>
                         <td>
                             <!-- Voir -->

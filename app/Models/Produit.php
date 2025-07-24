@@ -24,6 +24,7 @@ class Produit extends Model
         'stocksecurite',
         'dateperemption',
         'lot',
+        'date',
         'user_id',
     ];
 
