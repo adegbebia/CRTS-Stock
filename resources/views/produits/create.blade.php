@@ -70,7 +70,7 @@
 
     <br>
     <a href="{{ route('produits.index') }}">← Retour à la liste des produits</a><br>
-    <a href="{{ route('mouvements.create', ['produit_id' => $produit->produit_id]) }}">→ Enregistrer un mouvement</a>
+    <a href="{{ route('mouvements-produits.create')}}">→ Enregistrer un mouvement</a>
 
 
 </body>

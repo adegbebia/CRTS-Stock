@@ -56,7 +56,9 @@ class MouvementProduitController extends Controller
             'observation'        => $data['observation'] ?? null,
         ]);
 
-        return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id]);
+        return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id])
+        ->with('success', 'Mouvement créé avec succès.');
+    
     }
 
     public function edit(MouvementProduit $mouvements_produit)
@@ -98,7 +100,8 @@ class MouvementProduitController extends Controller
             'observation'        => $data['observation'] ?? null,
         ]);
 
-        return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id]);
+        return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id])
+        ->with('success', 'Mouvement mis à jour avec succès.');
     }
 
     public function destroy(MouvementProduit $mouvements_produit)

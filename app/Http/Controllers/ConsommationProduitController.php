@@ -75,7 +75,7 @@ class ConsommationProduitController extends Controller
         return redirect()->route('consommations-produits.create', [
             'produit_id' => $data['produit_id'],
             'annee' => $data['annee']
-        ]);
+        ])->with('success', 'Consommation créée avec succès.');
     }
 
     public function edit(ConsommationProduit $consommations_produit)
@@ -98,7 +98,7 @@ class ConsommationProduitController extends Controller
         return redirect()->route('consommations-produits.create', [
             'produit_id' => $data['produit_id'],
             'annee' => $data['annee']
-        ]);
+        ])->with('success', 'Consommation mise à jour avec succès.');
     }
 
     public function destroy(ConsommationProduit $consommations_produit)
@@ -113,6 +113,6 @@ class ConsommationProduitController extends Controller
         return redirect()->route('consommations-produits.create', [
             'produit_id' => $produit_id,
             'annee' => $annee
-        ]);
+        ])->with('success', 'Consommation supprimée avec succès.');
     }
 }

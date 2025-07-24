@@ -23,6 +23,13 @@
             });
         </script>
     @endif
+    @if (session('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                swal("Erreur", "{{ session('error') }}", "error");
+            });
+        </script>
+    @endif
 
     @if ($articles->isEmpty())
         <p>Aucun article enregistré pour le moment.</p>

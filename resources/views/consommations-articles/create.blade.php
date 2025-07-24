@@ -5,6 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Consommations – Création</title>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -20,7 +23,7 @@
             <option value="">-- Choisir un article --</option>
             @foreach ($articles as $article)
                 <option value="{{ $article->article_id }}"
-                    {{ isset($article_id) && $article_id == $article->article_id ? 'selected' : (old('article_id') == $article->article_id ? 'selected' : '') }}>
+                    {{ (isset($article_id) && $article_id == $article->article_id) || old('article_id') == $article->article_id ? 'selected' : '' }}>
                     {{ $article->libelle }}
                 </option>
             @endforeach
@@ -118,8 +121,7 @@
                         <td>{{ $c->semestre2 }}</td>
                         <td>
                             <a href="{{ route('consommations-articles.edit', ['consommation_article' => $c->consommationArt_id]) }}" title="Modifier">
-                                <button type="button">
-                                    <!-- SVG original conservé -->
+                                <button type="button" aria-label="Modifier">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -136,11 +138,12 @@
                                 </button>
                             </a>
 
-                            <form action="{{ route('consommations-articles.destroy', $c->consommationArt_id) }}" method="POST"
-                                style="display:inline">
+                            <form id="delete-form-{{ $c->consommationArt_id }}" 
+                                action="{{ route('consommations-articles.destroy', ['consommation_article' => $c->consommationArt_id]) }}" 
+                                method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" onclick="return confirm('Supprimer ?')" title="Supprimer">
+                                <button type="button" onclick="confirmDelete('{{ $c->consommationArt_id }}')" title="Supprimer" aria-label="Supprimer">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -167,8 +170,24 @@
         <p>Aucune consommation enregistrée.</p>
     @endif
 
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: "Supprimer ?",
+                text: "Cette action est irréversible !",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Oui, supprimer",
+                cancelButtonText: "Annuler"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
 
     @if (session('success'))
         <script>
