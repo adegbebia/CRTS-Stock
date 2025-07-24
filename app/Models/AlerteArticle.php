@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AlerteArticle extends Model
 {
     //
-    protected $primaryKey='alerteProd_id';
+    protected $primaryKey='alerteArt_id';
 
     protected $fillable=[
-        'produit_id',
+        'article_id',
         'typealerte',
         'datedeclenchement',
         
@@ -20,6 +20,6 @@ class AlerteArticle extends Model
 
     public function article()
     {
-        return $this->belongsTo(Produit::class, 'article_id', 'article_id');
+        return $this->belongsTo(Article::class, 'article_id', 'article_id');
     }
 }

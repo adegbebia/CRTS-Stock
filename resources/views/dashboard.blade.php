@@ -8,9 +8,10 @@
 
 <h1>Liste des alertes</h1>
 
-@if($alertes->count())
+<h2>Alertes Produits</h2>
+@if($alertesProduits->count())
     <ul>
-        @foreach($alertes as $alerte)
+        @foreach($alertesProduits as $alerte)
             <li>
                 [{{ $alerte->datedeclenchement }}] 
                 Produit : {{ $alerte->produit->libelle ?? 'Produit supprimé' }} - 
@@ -19,7 +20,24 @@
         @endforeach
     </ul>
 @else
-    <p>Aucune alerte pour le moment.</p>
+    <p>Aucune alerte produit pour le moment.</p>
+@endif
+
+<hr>
+
+<h2>Alertes Articles</h2>
+@if($alertesArticles->count())
+    <ul>
+        @foreach($alertesArticles as $alerte)
+            <li>
+                [{{ $alerte->datedeclenchement }}] 
+                Article : {{ $alerte->article->libelle ?? 'Article supprimé' }} - 
+                Type d'alerte : {{ $alerte->typealerte }}
+            </li>
+        @endforeach
+    </ul>
+@else
+    <p>Aucune alerte article pour le moment.</p>
 @endif
 
 </body>
