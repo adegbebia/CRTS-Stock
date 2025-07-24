@@ -17,8 +17,9 @@ class ProduitController extends Controller
 
     public function create()
     {
+        $produits = Produit::all();
         $users = User::all();
-        return view('produits.create', compact('users')); 
+        return view('produits.create', compact('users','produits')); 
     }
 
     public function store(ProduitRequest $request)

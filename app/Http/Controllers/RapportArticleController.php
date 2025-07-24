@@ -9,7 +9,7 @@ use App\Models\Produit;
 use App\Models\MouvementProduit;
 use Illuminate\Http\Request;
 
-class RapportProduitController extends Controller
+class RapportArticleController extends Controller
 {
    public function genererRapportLatex($periodeType, $periode, $annee)
 {
@@ -53,6 +53,12 @@ class RapportProduitController extends Controller
         ->whereYear('date', $annee)
         ->whereRaw("CAST(strftime('%m', date) AS INTEGER) BETWEEN ? AND ?", [$moisDebut, $moisFin])
         ->get();
+
+    foreach ($articles as $article) {
+            $mouvements = MouvementProduit::where('article_id', $article->articleid)
+                ->whereYear('date', $annee)
+                ->whereRaw("CAST(strftime('%m', date) AS INTEGER) BETWEEN ? AND ?", [$moisDebut, $moisFin])
+                ->get();
 
         if ($mouvements->isEmpty()) {
             continue;
@@ -130,6 +136,7 @@ class RapportProduitController extends Controller
     }
 
     return response()->file($pdfPath);
+}
 }
 
     /**

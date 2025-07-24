@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('stockmin');
             $table->integer('stocksecurite');
             $table->date('dateperemption');
-            $table->string('lot')->unique();
+            $table->string('lot');
             $table->integer('user_id');
             $table->foreign('user_id')->references('user_id')->on('users')->OnDelete('cascade');
             $table->timestamps();
