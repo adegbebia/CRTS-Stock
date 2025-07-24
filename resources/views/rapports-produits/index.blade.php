@@ -7,7 +7,7 @@
 <body>
     <h2>Génération de rapport</h2>
 
-    <form method="POST" action="{{ route('rapports.generer') }}">
+    <form method="POST" action="{{ route('rapports-produits.generer') }}">
          @csrf
         <label>Type de rapport :</label><br>
         <input type="radio" name="type" value="mois" required> Mensuel<br>

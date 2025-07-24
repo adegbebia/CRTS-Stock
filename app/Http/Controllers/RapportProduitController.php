@@ -5,12 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 use Carbon\Carbon;
-use App\Models\Article;
-use App\Models\MouvementArticle;
+use App\Models\Produit;
+use App\Models\MouvementProduit;
 use Illuminate\Http\Request;
 
-class RapportArticleController extends Controller
+class RapportProduitController extends Controller
 {
+    
+    
+    public function index()
+    {
+        return view('rapports-produits.index');
+    }
+
+
+
     public function genererRapportLatex($periodeType, $periode, $annee)
     {
         if ($periodeType === 'mois') {
@@ -41,14 +50,15 @@ class RapportArticleController extends Controller
             return response("❌ Le template LaTeX est introuvable ou illisible", 500);
         }
 
-        $articles = Article::all();
+        $produits =Produit::all();
         $rows = '';
 
-        foreach ($articles as $article) {
-            $mouvements = MouvementArticle::where('article_id', $article->id)
-                ->whereYear('date', $annee)
-                ->whereRaw("CAST(strftime('%m', date) AS INTEGER) BETWEEN ? AND ?", [$moisDebut, $moisFin])
-                ->get();
+        
+        foreach ($produits as $produit) {
+            $mouvements = MouvementProduit::where('produit_id', $produit->produit_id)
+            ->whereYear('date', $annee)
+            ->whereRaw("CAST(strftime('%m', date) AS INTEGER) BETWEEN ? AND ?", [$moisDebut, $moisFin])
+            ->get();
 
             if ($mouvements->isEmpty()) {
                 continue;
@@ -64,7 +74,7 @@ class RapportArticleController extends Controller
 
             $rows .= sprintf(
                 "%-30s & %5d & %5d & %5d & %-25s & %5d & %5d & %-30s \\\\ \\hline\n",
-                $this->escapeLatex($article->libelle),
+                $this->escapeLatex($produit->libelle),
                 $stockDebut,
                 $entree,
                 $stockTotal,
