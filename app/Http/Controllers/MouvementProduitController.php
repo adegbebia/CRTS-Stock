@@ -18,7 +18,7 @@ class MouvementProduitController extends Controller
     public function create(Request $request)
     {
         $produits = Produit::all();
-        $produitSelectionne = $request->query('produit'); // ex: ?produit=3
+        $produitSelectionne = $request->query('produit');
 
         if ($produitSelectionne) {
             $mouvements = MouvementProduit::where('produit_id', $produitSelectionne)->latest()->get();
@@ -37,6 +37,13 @@ class MouvementProduitController extends Controller
         $entree = $data['quantite_entree'] ?? 0;
         $sortie = $data['quantite_sortie'] ?? 0;
         $avarie = $data['avarie'] ?? 0;
+
+        // // ❗ Vérification : pas d'entrée et de sortie en même temps
+        // if ($entree > 0 && $sortie > 0) {
+        //     return back()
+        //         ->withErrors(['quantite_entree' => 'Vous ne pouvez pas saisir une entrée et une sortie en même temps.'])
+        //         ->withInput();
+        // }
 
         $produit->quantitestock += $entree - $sortie;
         $produit->save();
@@ -57,8 +64,7 @@ class MouvementProduitController extends Controller
         ]);
 
         return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id])
-        ->with('success', 'Mouvement créé avec succès.');
-    
+            ->with('success', 'Mouvement créé avec succès.');
     }
 
     public function edit(MouvementProduit $mouvements_produit)
@@ -76,11 +82,21 @@ class MouvementProduitController extends Controller
         $data = $request->validated();
         $produit = $mouvements_produit->produit;
 
+        // Retirer l'ancien impact
         $ancienImpact = ($mouvements_produit->quantite_entree ?? 0) - ($mouvements_produit->quantite_sortie ?? 0);
         $produit->quantitestock -= $ancienImpact;
 
         $newEntree = $data['quantite_entree'] ?? 0;
         $newSortie = $data['quantite_sortie'] ?? 0;
+
+        // // ❗ Vérification : pas d'entrée et de sortie en même temps
+        // if ($newEntree > 0 && $newSortie > 0) {
+        //     return back()
+        //         ->withErrors(['quantite_entree' => 'Vous ne pouvez pas saisir une entrée et une sortie en même temps.'])
+        //         ->withInput();
+        // }
+
+        // Appliquer le nouveau stock
         $newImpact = $newEntree - $newSortie;
         $produit->quantitestock += $newImpact;
         $produit->save();
@@ -101,7 +117,7 @@ class MouvementProduitController extends Controller
         ]);
 
         return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id])
-        ->with('success', 'Mouvement mis à jour avec succès.');
+            ->with('success', 'Mouvement mis à jour avec succès.');
     }
 
     public function destroy(MouvementProduit $mouvements_produit)

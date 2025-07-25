@@ -8,60 +8,107 @@
 
     <h2>Modifier le mouvement</h2>
 
-    {{-- Affichage des erreurs de validation --}}
-    @if ($errors->any())
+    {{-- @if ($errors->any())
         <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+            <strong>Veuillez corriger les erreurs ci-dessous :</strong>
         </div>
-    @endif
+    @endif --}}
 
-    <form action="{{ route('mouvements-produits.update', ['mouvements_produit' => $mouvement->mouvementProd_id]) }}" method="POST">        @csrf
+    <form action="{{ route('mouvements-produits.update', ['mouvements_produit' => $mouvement->mouvementProd_id]) }}" method="POST">
+        @csrf
         @method('PUT')
 
-        <!-- Sélection de l'article -->
-        <label for="produit_id">Article</label>
-        <select name="produit_id" id="produit_id" required>
-            @foreach ($produits as $produit)
-                <option value="{{ $produit->produit_id }}" {{ $mouvement->produit_id == $produit->produit_id ? 'selected' : '' }}>
-                    {{ $produit->libelle }}
-                </option>
-            @endforeach
-        </select>
+        <!-- Produit -->
+        <div>
+            <label for="produit_id">Article</label>
+            <select name="produit_id" id="produit_id" required>
+                @foreach ($produits as $produit)
+                    <option value="{{ $produit->produit_id }}"
+                        {{ old('produit_id', $mouvement->produit_id) == $produit->produit_id ? 'selected' : '' }}>
+                        {{ $produit->libelle }}
+                    </option>
+                @endforeach
+            </select>
+            @error('produit_id')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
 
         <!-- Origine -->
-        <label for="origine">Origine</label>
-        <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine', $mouvement->origine) }}">
+        <div>
+            <label for="origine">Origine</label>
+            <input type="text" name="origine" id="origine" required pattern="[^,;:]+" 
+                value="{{ old('origine', $mouvement->origine) }}"
+                title="Ne doit pas contenir les caractères , ; :">
+            @error('origine')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
 
         <!-- Quantité commandée -->
-        <label for="quantite_commandee">Quantité commandée</label>
-        <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}" required>
+        <div>
+            <label for="quantite_commandee">Quantité commandée</label>
+            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required
+                value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}">
+            @error('quantite_commandee')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
 
         <!-- Quantité entrée -->
-        <label for="quantite_entree">Quantité entrée</label>
-        <input type="number" name="quantite_entree" id="quantite_entree" min="0" value="{{ old('quantite_entree', $mouvement->quantite_entree) }}">
+        <div>
+            <label for="quantite_entree">Quantité entrée</label>
+            <input type="number" name="quantite_entree" id="quantite_entree" min="0"
+                value="{{ old('quantite_entree', $mouvement->quantite_entree) }}">
+            @error('quantite_entree')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
 
         <!-- Quantité sortie -->
-        <label for="quantite_sortie">Quantité sortie</label>
-        <input type="number" name="quantite_sortie" id="quantite_sortie" min="0" value="{{ old('quantite_sortie', $mouvement->quantite_sortie) }}">
+        <div>
+            <label for="quantite_sortie">Quantité sortie</label>
+            <input type="number" name="quantite_sortie" id="quantite_sortie" min="0"
+                value="{{ old('quantite_sortie', $mouvement->quantite_sortie) }}">
+            @error('quantite_sortie')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
 
         <!-- Stock début du mois -->
-        <label for="stock_debut_mois">Stock début du mois</label>
-        <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="0" value="{{ old('stock_debut_mois', $mouvement->stock_debut_mois) }}" required>
+        <div>
+            <label for="stock_debut_mois">Stock début du mois</label>
+            <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="0" required
+                value="{{ old('stock_debut_mois', $mouvement->stock_debut_mois) }}">
+            @error('stock_debut_mois')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
 
         <!-- Avarie -->
-        <label for="avarie">Avarie</label>
-        <input type="number" name="avarie" id="avarie" min="0" value="{{ old('avarie', $mouvement->avarie) }}">
+        <div>
+            <label for="avarie">Avarie</label>
+            <input type="number" name="avarie" id="avarie" min="0"
+                value="{{ old('avarie', $mouvement->avarie) }}">
+            @error('avarie')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
 
         <!-- Observation -->
-        <label for="observation">Observation</label>
-        <textarea name="observation" id="observation">{{ old('observation', $mouvement->observation) }}</textarea>
+        <div>
+            <label for="observation">Observation</label>
+            <textarea name="observation" id="observation">{{ old('observation', $mouvement->observation) }}</textarea>
+            @error('observation')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
 
         <!-- Bouton de soumission -->
-        <button type="submit">Mettre à jour</button>
+        <div>
+            <button type="submit">Mettre à jour</button>
+        </div>
+
     </form>
 
 </body>

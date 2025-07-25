@@ -1,76 +1,102 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8" />
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1" /> -->
     <title>Ajout de mouvement</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body>
 
     <h2>Ajouter un mouvement</h2>
 
-    {{-- Affichage des erreurs --}}
-    @if ($errors->any())
-        <div style="color:red;">
+    {{-- Affichage des erreurs globales --}}
+    {{-- @if ($errors->any())
+        <div>
+            <p>Veuillez corriger les erreurs ci-dessous :</p>
             <ul>
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    <li>- {{ $error }}</li>
                 @endforeach
             </ul>
         </div>
-    @endif
+    @endif --}}
 
     <form action="{{ route('mouvements-produits.store') }}" method="POST">
         @csrf
 
-        @if ($produitSelectionne)
-            @php
-                $produit = $produits->find($produitSelectionne);
-            @endphp
-            <p>Produit sélectionné : <strong>{{ $produit->libelle ?? 'N/A' }}</strong></p>
-            <input type="hidden" name="produit_id" value="{{ $produitSelectionne }}">
-        @else
-            <label for="produit_id">Produit</label>
-            <select name="produit_id" id="produit_id" required>
-                <option value="">-- Sélectionner un produit --</option>
-                @foreach ($produits as $produit)
-                    <option value="{{ $produit->produit_id }}" @if (old('produit_id') == $produit->produit_id) selected @endif>
-                        {{ $produit->libelle }}
-                    </option>
-                @endforeach
-            </select>
-        @endif
+        {{-- Sélection ou affichage du produit --}}
+        <div>
+            @if ($produitSelectionne)
+                @php $produit = $produits->find($produitSelectionne); @endphp
+                <p>Produit sélectionné : <strong>{{ $produit->libelle ?? 'N/A' }}</strong></p>
+                <input type="hidden" name="produit_id" value="{{ $produitSelectionne }}">
+            @else
+                <label for="produit_id">Produit</label><br>
+                <select name="produit_id" id="produit_id" required>
+                    <option value="">-- Sélectionner un produit --</option>
+                    @foreach ($produits as $produit)
+                        <option value="{{ $produit->produit_id }}" @if (old('produit_id') == $produit->produit_id) selected @endif>
+                            {{ $produit->libelle }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('produit_id') <div>{{ $message }}</div> @enderror
+            @endif
+        </div>
 
-        <a href="{{ route('produits.create') }}" target="_blank">Ajouter un produit</a>
-        <p><em>Si le produit n’apparaît pas, créez-le puis actualisez cette page.</em></p>
+        <div>
+            <a href="{{ route('produits.create') }}" target="_blank">Ajouter un produit</a>
+            <p><em>Si le produit n’apparaît pas, créez-le puis actualisez cette page.</em></p>
+        </div>
 
-        <label for="origine">Origine</label>
-        <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine') }}"  />
+        <div>
+            <label for="origine">Origine</label><br>
+            <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine') }}">
+            @error('origine') <div>{{ $message }}</div> @enderror
+        </div>
 
-        <label for="quantite_commandee">Quantité commandée</label>
-        <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required value="{{ old('quantite_commandee') }}" />
+        <div>
+            <label for="quantite_commandee">Quantité commandée</label><br>
+            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required value="{{ old('quantite_commandee') }}">
+            @error('quantite_commandee') <div>{{ $message }}</div> @enderror
+        </div>
 
-        <label for="quantite_entree">Quantité entrée</label>
-        <input type="number" name="quantite_entree" id="quantite_entree" min="1" value="{{ old('quantite_entree') }}" />
+        <div>
+            <label for="quantite_entree">Quantité entrée</label><br>
+            <input type="number" name="quantite_entree" id="quantite_entree" min="1" value="{{ old('quantite_entree') }}">
+            @error('quantite_entree') <div>{{ $message }}</div> @enderror
+        </div>
 
-        <label for="quantite_sortie">Quantité sortie</label>
-        <input type="number" name="quantite_sortie" id="quantite_sortie" min="1" value="{{ old('quantite_sortie') }}" />
+        <div>
+            <label for="quantite_sortie">Quantité sortie</label><br>
+            <input type="number" name="quantite_sortie" id="quantite_sortie" min="1" value="{{ old('quantite_sortie') }}">
+            @error('quantite_sortie') <div>{{ $message }}</div> @enderror
+        </div>
 
-        <label for="stock_debut_mois">Stock début du mois</label>
-        <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required value="{{ old('stock_debut_mois') }}" />
+        <div>
+            <label for="stock_debut_mois">Stock début du mois</label><br>
+            <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required value="{{ old('stock_debut_mois') }}">
+            @error('stock_debut_mois') <div>{{ $message }}</div> @enderror
+        </div>
 
-        <label for="avarie">Avarie</label>
-        <input type="number" name="avarie" id="avarie" min="1" value="{{ old('avarie') }}" />
+        <div>
+            <label for="avarie">Avarie</label><br>
+            <input type="number" name="avarie" id="avarie" min="1" value="{{ old('avarie') }}">
+            @error('avarie') <div>{{ $message }}</div> @enderror
+        </div>
 
-        <label for="observation">Observation</label>
-        <textarea name="observation" id="observation" >{{ old('observation') }}</textarea>
+        <div>
+            <label for="observation">Observation</label><br>
+            <textarea name="observation" id="observation">{{ old('observation') }}</textarea>
+            @error('observation') <div>{{ $message }}</div> @enderror
+        </div>
 
-        <button type="submit">Créer</button>
+        <div>
+            <button type="submit">Créer</button>
+        </div>
     </form>
 
-    <hr />
+    <hr>
 
     <h3>Liste des mouvements déjà créés</h3>
 
@@ -130,11 +156,7 @@
         <p>Aucun mouvement enregistré pour le moment.</p>
     @endif
 
-</body>
-<!-- SweetAlert2 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    {{-- Notification de succès --}}
+    {{-- Notification SweetAlert2 --}}
     @if (session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -148,7 +170,6 @@
         </script>
     @endif
 
-    {{-- Notification d’échec --}}
     @if (session('error'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -162,5 +183,5 @@
         </script>
     @endif
 
-
+</body>
 </html>

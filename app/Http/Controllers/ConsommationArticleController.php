@@ -102,7 +102,7 @@ class ConsommationArticleController extends Controller
         $annee = $consommation_article->annee;
 
         // recalculer d'abord si la suppression ne change pas les données nécessaires
-        ConsommationArticle::recalcForArticleYear($article_id, $annee);
+        //ConsommationArticle::recalcForArticleYear($article_id, $annee);
 
         $consommation_article->delete();
 

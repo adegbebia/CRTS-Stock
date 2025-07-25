@@ -11,7 +11,7 @@
     <h2>Ajouter un mouvement</h2>
 
     {{-- Affichage des erreurs --}}
-    @if ($errors->any())
+    {{-- @if ($errors->any())
         <div style="color:red;">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -19,7 +19,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+    @endif --}}
 
     <form action="{{ route('mouvements-articles.store') }}" method="POST">
         @csrf
@@ -28,46 +28,98 @@
             @php
                 $article = $articles->find($articleSelectionne);
             @endphp
-            <p>Article sélectionné : <strong>{{ $article->libelle ?? 'N/A' }}</strong></p>
-            <input type="hidden" name="article_id" value="{{ $articleSelectionne }}">
+            <div>
+                <p>Article sélectionné : <strong>{{ $article->libelle ?? 'N/A' }}</strong></p>
+                <input type="hidden" name="article_id" value="{{ $articleSelectionne }}">
+            </div>
         @else
-            <label for="article_id">Article</label>
-            <select name="article_id" id="article_id" required>
-                <option value="">-- Sélectionner un article --</option>
-                @foreach ($articles as $article)
-                    <option value="{{ $article->article_id }}" @if (old('article_id') == $article->article_id) selected @endif>
-                        {{ $article->libelle }}
-                    </option>
-                @endforeach
-            </select>
+            <div>
+                <label for="article_id">Article</label>
+                <select name="article_id" id="article_id" required>
+                    <option value="">-- Sélectionner un article --</option>
+                    @foreach ($articles as $article)
+                        <option value="{{ $article->article_id }}" @if (old('article_id') == $article->article_id) selected @endif>
+                            {{ $article->libelle }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('article_id')
+                    <div style="color:red;">{{ $message }}</div>
+                @enderror
+            </div>
         @endif
 
-        <a href="{{ route('articles.create') }}" target="_blank">Ajouter un article</a>
-        <p><em>Si l'article n’apparaît pas, créez-le puis actualisez cette page.</em></p>
+        <div>
+            <a href="{{ route('articles.create') }}" target="_blank">Ajouter un article</a>
+            <p><em>Si l'article n’apparaît pas, créez-le puis actualisez cette page.</em></p>
+        </div>
 
-        <label for="origine">Origine</label>
-        <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine') }}" />
+        <div>
+            <label for="origine">Origine</label>
+            <input type="text" name="origine" id="origine" required pattern="[^,;:]+"
+                title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine') }}" />
+            @error('origine')
+                <div style="color:red;">{{ $message }}</div>
+            @enderror
+        </div>
 
-        <label for="quantite_commandee">Quantité commandée</label>
-        <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required value="{{ old('quantite_commandee') }}" />
+        <div>
+            <label for="quantite_commandee">Quantité commandée</label>
+            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required
+                value="{{ old('quantite_commandee') }}" />
+            @error('quantite_commandee')
+                <div style="color:red;">{{ $message }}</div>
+            @enderror
+        </div>
 
-        <label for="quantite_entree">Quantité entrée</label>
-        <input type="number" name="quantite_entree" id="quantite_entree" min="1" value="{{ old('quantite_entree') }}" />
+        <div>
+            <label for="quantite_entree">Quantité entrée</label>
+            <input type="number" name="quantite_entree" id="quantite_entree" min="1"
+                value="{{ old('quantite_entree') }}" />
+            @error('quantite_entree')
+                <div style="color:red;">{{ $message }}</div>
+            @enderror
+        </div>
 
-        <label for="quantite_sortie">Quantité sortie</label>
-        <input type="number" name="quantite_sortie" id="quantite_sortie" min="1" value="{{ old('quantite_sortie') }}" />
+        <div>
+            <label for="quantite_sortie">Quantité sortie</label>
+            <input type="number" name="quantite_sortie" id="quantite_sortie" min="1"
+                value="{{ old('quantite_sortie') }}" />
+            @error('quantite_sortie')
+                <div style="color:red;">{{ $message }}</div>
+            @enderror
+        </div>
 
-        <label for="stock_debut_mois">Stock début du mois</label>
-        <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required value="{{ old('stock_debut_mois') }}" />
+        <div>
+            <label for="stock_debut_mois">Stock début du mois</label>
+            <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required
+                value="{{ old('stock_debut_mois') }}" />
+            @error('stock_debut_mois')
+                <div style="color:red;">{{ $message }}</div>
+            @enderror
+        </div>
 
-        <label for="avarie">Avarie</label>
-        <input type="number" name="avarie" id="avarie" min="1" value="{{ old('avarie') }}" />
+        <div>
+            <label for="avarie">Avarie</label>
+            <input type="number" name="avarie" id="avarie" min="1" value="{{ old('avarie') }}" />
+            @error('avarie')
+                <div style="color:red;">{{ $message }}</div>
+            @enderror
+        </div>
 
-        <label for="observation">Observation</label>
-        <textarea name="observation" id="observation">{{ old('observation') }}</textarea>
+        <div>
+            <label for="observation">Observation</label>
+            <textarea name="observation" id="observation">{{ old('observation') }}</textarea>
+            @error('observation')
+                <div style="color:red;">{{ $message }}</div>
+            @enderror
+        </div>
 
-        <button type="submit">Créer</button>
+        <div>
+            <button type="submit">Créer</button>
+        </div>
     </form>
+
 
     <hr />
 
@@ -102,18 +154,17 @@
                         <td>{{ $mouvement->stock_jour }}</td>
                         <td>{{ $mouvement->observation }}</td>
                         <td>
-                            <a href="{{ route('mouvements-articles.edit', $mouvement->mouvementArt_id) }}" title="Modifier">
+                            <a href="{{ route('mouvements-articles.edit', $mouvement->mouvementArt_id) }}"
+                                title="Modifier">
                                 <button type="button">
                                     <!-- SVG original conservé -->
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1
                            2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897
                            1.13L6 18l.8-2.685a4.5 4.5 0 0 1
                            1.13-1.897l8.932-8.931Z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M18 14v4.75A2.25 2.25 0 0 1
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 14v4.75A2.25 2.25 0 0 1
                            15.75 21H5.25A2.25 2.25 0 0 1
                            3 18.75V8.25A2.25 2.25 0 0 1
                            5.25 6H10" />
@@ -135,7 +186,7 @@
     {{-- Notification de succès --}}
     @if (session('success'))
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'success',
                     title: 'Succès',
@@ -149,7 +200,7 @@
     {{-- Notification d’échec --}}
     @if (session('error'))
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Erreur',

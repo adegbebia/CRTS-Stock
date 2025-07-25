@@ -102,11 +102,11 @@ class ConsommationArticle extends Model
            
         }
 
-        $cons = static::firstOrNew([
-            'article_id' => $article_id,
-            'annee'      => $annee,
-        ]);
+        // $cons = static::firstOrNew([
+        //     'article_id' => $article_id,
+        //     'annee'      => $annee,
+        // ]);
 
-        $cons->fill($data)->save();
+        // $cons->fill($data)->save();
     }
 }

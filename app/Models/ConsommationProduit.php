@@ -122,15 +122,15 @@ class ConsommationProduit extends Model
         return;
     }
 
-    // Sinon, créer ou mettre à jour
-    if (!$cons) {
-        $cons = new static([
-            'produit_id' => $produit_id,
-            'annee' => $annee,
-        ]);
-    }
+    // // Sinon, créer ou mettre à jour
+    // if (!$cons) {
+    //     $cons = new static([
+    //         'produit_id' => $produit_id,
+    //         'annee' => $annee,
+    //     ]);
+    // }
 
-    $cons->fill($data)->save();
+    // $cons->fill($data)->save();
 }
 
 }
