@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Article;
+use Carbon\Carbon;
+
 
 
 class ArticleSeeder extends Seeder
@@ -28,6 +30,8 @@ class ArticleSeeder extends Seeder
             'dateperemption'  => '2026-08-30',
             'lot'             => 'LOT2025SNACK1',
             'user_id'         => 1,
+            'date'            => Carbon::now()->toDateString(),
+
         ]);
 
         Article::create([
@@ -41,6 +45,8 @@ class ArticleSeeder extends Seeder
             'dateperemption'  => '2026-10-10',
             'lot'             => 'LOT2025SNACK2',
             'user_id'         => 2,
+            'date'            => Carbon::now()->toDateString(),
+
         ]);
 
         Article::create([
@@ -54,6 +60,8 @@ class ArticleSeeder extends Seeder
             'dateperemption'  => '2026-12-01',
             'lot'             => 'LOT2025SNACK3',
             'user_id'         => 3,
+            'date'            => Carbon::now()->toDateString(),
+
         ]);
     }
 }

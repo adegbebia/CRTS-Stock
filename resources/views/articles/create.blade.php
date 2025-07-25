@@ -25,15 +25,15 @@
         @csrf
 
         <label for="codearticle">Code Article</label>
-        <input type="text" name="codearticle" id="codearticle" required pattern="[^,;]+"><br>
+        <input type="text" name="codearticle" id="codearticle" required pattern="[^,;:]+"><br>
 
         <label for="libelle">Libellé</label>
-        <input type="text" name="libelle" id="libelle" required pattern="[^,;]+"><br>
+        <input type="text" name="libelle" id="libelle" required pattern="[^,;:]+"><br>
 
         <label for="conditionnement">Conditionnement</label>
-        <input type="text" name="conditionnement" id="conditionnement" required pattern="[^,;]+"><br>
+        <input type="text" name="conditionnement" id="conditionnement" required pattern="[^,;:]+"><br>
 
-        <label for="quantitestock">Quantité en stock</label>
+        <label for="quantitestock">Quantité</label>
         <input type="number" name="quantitestock" id="quantitestock" min="0" required><br>
 
         <label for="stockmax">Stock maximum</label>
@@ -49,7 +49,7 @@
         <input type="date" name="dateperemption" id="dateperemption" required min="{{ date('Y-m-d', strtotime('+1 day')) }}"><br>
 
         <label for="lot">Lot</label>
-        <input type="text" name="lot" id="lot" required pattern="[^,;]+"><br>
+        <input type="text" name="lot" id="lot" required pattern="[^,;:]+"><br>
 
         <label for="user_id">Auteur</label>
         <select name="user_id" id="user_id" required>

@@ -104,7 +104,7 @@
                     <th>Trimestre 4</th>
                     <th>Semestre 1</th>
                     <th>Semestre 2</th>
-                    <th>Action</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>

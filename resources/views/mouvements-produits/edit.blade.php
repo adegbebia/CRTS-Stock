@@ -34,7 +34,7 @@
 
         <!-- Origine -->
         <label for="origine">Origine</label>
-        <input type="text" name="origine" id="origine" value="{{ old('origine', $mouvement->origine) }}">
+        <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine', $mouvement->origine) }}">
 
         <!-- Quantité commandée -->
         <label for="quantite_commandee">Quantité commandée</label>

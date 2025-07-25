@@ -22,7 +22,7 @@
         </select>
 
         <label for="origine">Origine</label>
-        <input type="text" name="origine" id="origine" value="{{ old('origine', $mouvement->origine) }}">
+        <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine', $mouvement->origine) }}">
 
         <label for="quantite_commandee">Quantité commandée</label>
         <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}" required>

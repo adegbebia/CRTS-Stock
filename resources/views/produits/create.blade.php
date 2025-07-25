@@ -23,7 +23,7 @@
 
         <div>
             <label for="libelle">Libellé</label>
-            <input type="text" name="libelle" id="libelle" required pattern="[^,;:]+" value="{{ old('libelle') }}">
+            <input type="text" name="libelle" id="libelle" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('libelle') }}">
             @error('libelle')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -31,7 +31,7 @@
 
         <div>
             <label for="conditionnement">Conditionnement</label>
-            <input type="text" name="conditionnement" id="conditionnement" required pattern="[^,;:]+" value="{{ old('conditionnement') }}">
+            <input type="text" name="conditionnement" id="conditionnement" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('conditionnement') }}">
             @error('conditionnement')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -79,7 +79,7 @@
 
         <div>
             <label for="lot">Lot</label>
-            <input type="text" name="lot" id="lot" required pattern="[^,;:]+" value="{{ old('lot') }}">
+            <input type="text" name="lot" id="lot" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('lot') }}">
             @error('lot')
                 <div style="color:red;">{{ $message }}</div>
             @enderror

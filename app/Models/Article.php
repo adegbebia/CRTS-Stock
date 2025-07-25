@@ -24,6 +24,7 @@ class Article extends Model
         'stocksecurite',
         'dateperemption',
         'lot',
+        'date',
         'user_id',
     ];
 

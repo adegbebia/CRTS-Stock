@@ -6,45 +6,64 @@ use App\Models\Article;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArticleRequest;
+use Carbon\Carbon;
+
 
 class ArticleController extends Controller
 {
     public function index()
     {
         $articles = Article::all();
-        return view('articles.index', compact('articles'));
+        $users = User::all();
+        return view('articles.index', compact('articles','users'));
     }
 
     public function create()
     {
+        
+        $articles = Article::all();
         $users = User::all();
-        return view('articles.create', compact('users')); 
+        return view('articles.create', compact('articles','users')); 
     }
 
     public function store(ArticleRequest $request)
     {
         $validated = $request->validated();
 
-        // Vérifie si un article identique existe déjà
-        $articleExistant = Article::where('codearticle', $validated['codearticle'])
-                                  ->where('libelle', $validated['libelle'])
-                                  ->where('lot', $validated['lot'])
-                                  ->first();
+        // Vérifier s'il existe un article avec le même codearticle mais un libellé différent
+        $articleAvecCode = Article::where('codearticle', $validated['codearticle'])->first();
 
-        if ($articleExistant) {
-            // Mise à jour manuelle de la quantité
-            $nouvelleQuantite = $articleExistant->quantitestock + $validated['quantitestock'];
-            $articleExistant->update(['quantitestock' => $nouvelleQuantite]);
+        if($articleAvecCode && $articleAvecCode->libelle !== $validated['libelle']) {
 
-            return redirect()->route('articles.index')
-                ->with('success', 'L’article existait déjà. Sa quantité a été augmentée.');
-        } else {
-            // Création d’un nouveau article
-            Article::create($validated);
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['codearticle' => 'Ce code article est déjà utilisé pour un autre libellé. Veuillez en choisir un autre.']);
 
-            return redirect()->route('articles.index')
-                ->with('success', 'Article ajouté avec succès.');
         }
+        
+        // Vérifier s'il existe déjà un article avec le même libellé et conditionnement
+        $articleExistant=Article::where('libelle', $validated['libelle'])
+                            ->where('conditionnement', $validated['conditionnement'])
+                            ->first();               
+        if ($articleExistant) {
+            // Calcul manuel de la nouvelle quantité
+            $nouvelleQuantite = $articleExistant->quantitestock + $validated['quantitestock'];
+            $articleExistant->quantitestock = $nouvelleQuantite;
+            $articleExistant->save();
+
+
+            return redirect()->route('articles.index')
+                ->with('success', 'L’article déjà existant .  Quantité mise à jour avec succès.');
+        } 
+
+        // Ajouter la date de création du produit
+        $validated['date'] = Carbon::now()->toDateString();
+        // Création d’un nouveau article
+        Article::create($validated);
+
+        return redirect()->route('articles.index')
+            ->with('success', 'Article ajouté avec succès.');
+        
     }
 
     public function show(Article $article)
@@ -54,8 +73,8 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        $users = User::all();
-        return view('articles.edit', compact('article', 'users'));
+        
+        return view('articles.edit', compact('article'));
     }
 
     public function update(ArticleRequest $request, Article $article)

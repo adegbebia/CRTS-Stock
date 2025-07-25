@@ -19,7 +19,7 @@ class ArticleRequest extends FormRequest
     {
         $rules= [
             //
-            'codearticle' => 'required|string|unique:articles,codearticle',
+            'codearticle'     => 'required|string|max:255',
             'libelle'         => 'required|string|max:255',
             'conditionnement' => 'required|string|max:255',
             'quantitestock'   => 'required|integer',

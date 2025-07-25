@@ -12,16 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('articles', function (Blueprint $table) {
-            $table->id('article_id')->unique();
+            $table->id('article_id');
             $table->string('codearticle');
-            $table->string('libelle')->unique();
+            $table->string('libelle');
             $table->string('conditionnement');
             $table->integer('quantitestock');
             $table->integer('stockmax');
             $table->integer('stockmin');
             $table->integer('stocksecurite');
             $table->date('dateperemption');
-            $table->string('lot')->unique();
+            $table->string('lot');
+            $table->date('date');
             $table->integer('user_id');
             $table->foreign('user_id')->references('user_id')->on('users')->OnDelete('cascade');
             $table->timestamps();

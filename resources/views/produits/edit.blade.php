@@ -35,25 +35,25 @@
         <div class="mb-3">
             <label>Quantité en stock</label>
             <input type="number" name="quantitestock" class="form-control" value="{{ $produit->quantitestock }}"
-                   required min="1" title="La valeur ne peut pas être négative">
+                   required min="0" title="La valeur ne peut pas être négative">
         </div>
 
         <div class="mb-3">
             <label>Stock max</label>
             <input type="number" name="stockmax" class="form-control" value="{{ $produit->stockmax }}"
-                   required min="1" title="La valeur ne peut pas être négative">
+                   required min="0" title="La valeur ne peut pas être négative">
         </div>
 
         <div class="mb-3">
             <label>Stock min</label>
             <input type="number" name="stockmin" class="form-control" value="{{ $produit->stockmin }}"
-                   required min="1" title="La valeur ne peut pas être négative">
+                   required min="0" title="La valeur ne peut pas être négative">
         </div>
 
         <div class="mb-3">
             <label>Stock sécurité</label>
             <input type="number" name="stocksecurite" class="form-control" value="{{ $produit->stocksecurite }}"
-                   required min="1" title="La valeur ne peut pas être négative">
+                   required min="0" title="La valeur ne peut pas être négative">
         </div>
 
         <div class="mb-3">

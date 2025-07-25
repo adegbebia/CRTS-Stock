@@ -47,7 +47,7 @@
         <p><em>Si le produit n’apparaît pas, créez-le puis actualisez cette page.</em></p>
 
         <label for="origine">Origine</label>
-        <input type="text" name="origine" id="origine" value="{{ old('origine') }}" />
+        <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine') }}"  />
 
         <label for="quantite_commandee">Quantité commandée</label>
         <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required value="{{ old('quantite_commandee') }}" />
@@ -65,7 +65,7 @@
         <input type="number" name="avarie" id="avarie" min="1" value="{{ old('avarie') }}" />
 
         <label for="observation">Observation</label>
-        <textarea name="observation" id="observation">{{ old('observation') }}</textarea>
+        <textarea name="observation" id="observation" >{{ old('observation') }}</textarea>
 
         <button type="submit">Créer</button>
     </form>
