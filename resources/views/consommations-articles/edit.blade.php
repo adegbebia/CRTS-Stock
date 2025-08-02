@@ -6,14 +6,22 @@
 </head>
 <body>
 
-<h2>Modifier la consommation ({{ $consommation->annee }})</h2>
+@php
+    $peutModifier = auth()->check()
+        && auth()->user()->hasRole('magasinier_collation')
+        && auth()->user()->magasin_affecte === 'collation';
+@endphp
 
-<form action="{{ route('consommations-articles.update', ['consommation_article' => $consommation->consommationArt_id]) }}" method="POST">
+<h2>Modifier la consommation ({{ $consommation->annee }})</h2>
+@if (!$peutModifier)
+    <p style="color:red;">⚠️ Vous n’êtes pas autorisé à modifier cette consommation.</p>
+@endif
+<form action="{{ $peutModifier ? route('consommations-articles.update', ['consommation_article' => $consommation->consommationArt_id]) : '#' }}" method="POST" @if(!$peutModifier) onsubmit="return false;" @endif>
     @csrf
     @method('PUT')
 
     <label>Article :</label>
-    <select name="article_id" required>
+    <select name="article_id" required @if(!$peutModifier) disabled @endif>
         @foreach($articles as $a)
             <option value="{{ $a->article_id }}" {{ $a->article_id == $consommation->article_id ? 'selected' : '' }}>
                 {{ $a->libelle }}
@@ -59,8 +67,9 @@
             </tr>
         </tbody>
     </table>
-
-    <button type="submit">Mettre à jour</button>
+    @if ($peutModifier)
+        <button type="submit">Mettre à jour</button>
+    @endif
 </form>
 
 <p><a href="{{ route('consommations-articles.index') }}">← Retour à la liste</a></p>

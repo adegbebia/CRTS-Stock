@@ -7,12 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+
+// /**
+//  * @method bool hasRole(string|array $role)
+//  * @method bool hasAnyRole(array|string ...$roles)
+//  * @method \Spatie\Permission\Models\Role[] getRoleNames()
+//  */
+
 
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -58,7 +66,7 @@ class User extends Authenticatable
 
     public function mouvements():HasMany{
 
-        return $this->hasMany(MouvementProduit::class,'user_id');
+        return $this->hasMany(MouvementProduit::class,'user_id','user_id');
     }
 
     public function produits():HasMany{
@@ -74,5 +82,15 @@ class User extends Authenticatable
     public function articles():HasMany{
 
         return $this->hasMany(Article::class,'user_id');
+    }
+
+    public function consommations()
+    {
+        return $this->hasMany(ConsommationProduit::class, 'user_id', 'user_id');
+    }
+
+    public function consommationsarticles()
+    {
+        return $this->hasMany(ConsommationArticle::class, 'user_id', 'user_id');
     }
 }

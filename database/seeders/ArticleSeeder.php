@@ -29,7 +29,7 @@ class ArticleSeeder extends Seeder
             'stocksecurite'   => 70,
             'dateperemption'  => '2026-08-30',
             'lot'             => 'LOT2025SNACK1',
-            'user_id'         => 1,
+            'user_id'         => 5,
             'date'            => Carbon::now()->toDateString(),
 
         ]);
@@ -44,7 +44,7 @@ class ArticleSeeder extends Seeder
             'stocksecurite'   => 50,
             'dateperemption'  => '2026-10-10',
             'lot'             => 'LOT2025SNACK2',
-            'user_id'         => 2,
+            'user_id'         => 4,
             'date'            => Carbon::now()->toDateString(),
 
         ]);
@@ -59,7 +59,7 @@ class ArticleSeeder extends Seeder
             'stocksecurite'   => 40,
             'dateperemption'  => '2026-12-01',
             'lot'             => 'LOT2025SNACK3',
-            'user_id'         => 3,
+            'user_id'         => 5,
             'date'            => Carbon::now()->toDateString(),
 
         ]);

@@ -20,6 +20,7 @@ class ConsommationProduitSeeder extends Seeder
             ConsommationProduit::create([
                 'produit_id'      => $produit->produit_id,
                 'annee'           => $annee,
+                // 'user_id'         => 1,
 
                 'consommation_janvier'   => rand(20, 40),
                 'consommation_fevrier'   => rand(20, 40),

@@ -4,13 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Ajout de mouvement</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body>
+     @php
+        $peutModifier = auth()->user()->hasRole('magasinier_collation') && auth()->user()->magasin_affecte === 'collation';
+    @endphp
 
     <h2>Ajouter un mouvement</h2>
 
-    {{-- Affichage des erreurs --}}
+    @if (!$peutModifier)
+        <p style="color:red;">⚠️ Vous n’êtes pas autorisé à créer un mouvement.</p>
+    @endif
+
+    <!-- {{-- Affichage des erreurs --}}
     {{-- @if ($errors->any())
         <div style="color:red;">
             <ul>
@@ -19,36 +28,42 @@
                 @endforeach
             </ul>
         </div>
-    @endif --}}
+    @endif --}} -->
 
-    <form action="{{ route('mouvements-articles.store') }}" method="POST">
+    <form action="{{ $peutModifier ? route('mouvements-articles.store') : '#' }}" method="POST"
+        {{ !$peutModifier ? 'onsubmit=return false' : '' }}>
         @csrf
 
-        @if ($articleSelectionne)
-            @php
-                $article = $articles->find($articleSelectionne);
-            @endphp
-            <div>
-                <p>Article sélectionné : <strong>{{ $article->libelle ?? 'N/A' }}</strong></p>
-                <input type="hidden" name="article_id" value="{{ $articleSelectionne }}">
-            </div>
-        @else
-            <div>
-                <label for="article_id">Article</label>
-                <select name="article_id" id="article_id" required>
-                    <option value="">-- Sélectionner un article --</option>
-                    @foreach ($articles as $article)
-                        <option value="{{ $article->article_id }}" @if (old('article_id') == $article->article_id) selected @endif>
-                            {{ $article->libelle }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('article_id')
-                    <div style="color:red;">{{ $message }}</div>
-                @enderror
-            </div>
-        @endif
+        {{-- Sélection ou affichage de l'articles --}}
 
+
+        <div>
+
+            @if ($articleSelectionne)
+                @php
+                    $article = $articles->find($articleSelectionne);
+                @endphp
+                <div>
+                    <p>Article sélectionné : <strong>{{ $article->libelle ?? 'N/A' }}</strong></p>
+                    <input type="hidden" name="article_id" value="{{ $articleSelectionne }}">
+                </div>
+            @else
+                <div>
+                    <label for="article_id">Article</label>
+                    <select name="article_id" id="article_id" required>
+                        <option value="">-- Sélectionner un article --</option>
+                        @foreach ($articles as $article)
+                            <option value="{{ $article->article_id }}" @if (old('article_id') == $article->article_id) selected @endif>
+                                {{ $article->libelle }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('article_id')
+                        <div style="color:red;">{{ $message }}</div>
+                    @enderror
+                </div>
+            @endif
+        </div>
         <div>
             <a href="{{ route('articles.create') }}" target="_blank">Ajouter un article</a>
             <p><em>Si l'article n’apparaît pas, créez-le puis actualisez cette page.</em></p>
@@ -56,8 +71,8 @@
 
         <div>
             <label for="origine">Origine</label>
-            <input type="text" name="origine" id="origine" required pattern="[^,;:]+"
-                title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine') }}" />
+            <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
+                title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('origine')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -66,7 +81,7 @@
         <div>
             <label for="quantite_commandee">Quantité commandée</label>
             <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required
-                value="{{ old('quantite_commandee') }}" />
+                value="{{ old('quantite_commandee') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('quantite_commandee')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -75,7 +90,7 @@
         <div>
             <label for="quantite_entree">Quantité entrée</label>
             <input type="number" name="quantite_entree" id="quantite_entree" min="1"
-                value="{{ old('quantite_entree') }}" />
+                value="{{ old('quantite_entree') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('quantite_entree')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -84,7 +99,7 @@
         <div>
             <label for="quantite_sortie">Quantité sortie</label>
             <input type="number" name="quantite_sortie" id="quantite_sortie" min="1"
-                value="{{ old('quantite_sortie') }}" />
+                value="{{ old('quantite_sortie') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('quantite_sortie')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -93,7 +108,7 @@
         <div>
             <label for="stock_debut_mois">Stock début du mois</label>
             <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required
-                value="{{ old('stock_debut_mois') }}" />
+                value="{{ old('stock_debut_mois') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('stock_debut_mois')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -101,7 +116,8 @@
 
         <div>
             <label for="avarie">Avarie</label>
-            <input type="number" name="avarie" id="avarie" min="1" value="{{ old('avarie') }}" />
+            <input type="number" name="avarie" id="avarie" min="1" 
+                value="{{ old('avarie') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('avarie')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -109,19 +125,21 @@
 
         <div>
             <label for="observation">Observation</label>
-            <textarea name="observation" id="observation">{{ old('observation') }}</textarea>
+            <textarea name="observation" id="observation" {{ !$peutModifier ? 'disabled' : '' }}>{{ old('observation') }}</textarea>
             @error('observation')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
         </div>
 
         <div>
-            <button type="submit">Créer</button>
+            @if ($peutModifier)
+                <button type="submit">Créer</button>
+            @endif        
         </div>
     </form>
 
 
-    <hr />
+    <hr/>
 
     <h3>Liste des mouvements déjà créés</h3>
 
@@ -181,7 +199,6 @@
     @endif
 
     <!-- SweetAlert2 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     {{-- Notification de succès --}}
     @if (session('success'))

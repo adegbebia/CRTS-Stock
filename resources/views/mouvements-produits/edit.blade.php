@@ -6,22 +6,26 @@
 </head>
 <body>
 
+    @php
+        $user = auth()->user();
+        $peutModifier = $user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique';
+    @endphp
+
     <h2>Modifier le mouvement</h2>
 
-    {{-- @if ($errors->any())
-        <div style="color: red;">
-            <strong>Veuillez corriger les erreurs ci-dessous :</strong>
-        </div>
-    @endif --}}
+    @if (!$peutModifier)
+        <p style="color: red;">⚠️ Vous n’êtes pas autorisé à modifier ce mouvement.</p>
+    @endif
 
-    <form action="{{ route('mouvements-produits.update', ['mouvements_produit' => $mouvement->mouvementProd_id]) }}" method="POST">
+    <form action="{{ $peutModifier ? route('mouvements-produits.update', ['mouvements_produit' => $mouvement->mouvementProd_id]) : '#' }}"
+          method="POST" {{ !$peutModifier ? 'onsubmit=return false' : '' }}>
         @csrf
         @method('PUT')
 
         <!-- Produit -->
         <div>
             <label for="produit_id">Article</label>
-            <select name="produit_id" id="produit_id" required>
+            <select name="produit_id" id="produit_id" required {{ !$peutModifier ? 'disabled' : '' }}>
                 @foreach ($produits as $produit)
                     <option value="{{ $produit->produit_id }}"
                         {{ old('produit_id', $mouvement->produit_id) == $produit->produit_id ? 'selected' : '' }}>
@@ -39,7 +43,7 @@
             <label for="origine">Origine</label>
             <input type="text" name="origine" id="origine" required pattern="[^,;:]+" 
                 value="{{ old('origine', $mouvement->origine) }}"
-                title="Ne doit pas contenir les caractères , ; :">
+                title="Ne doit pas contenir les caractères , ; :" {{ !$peutModifier ? 'disabled' : '' }}>
             @error('origine')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
@@ -49,7 +53,7 @@
         <div>
             <label for="quantite_commandee">Quantité commandée</label>
             <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required
-                value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}">
+                value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}" {{ !$peutModifier ? 'disabled' : '' }}>
             @error('quantite_commandee')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
@@ -58,8 +62,8 @@
         <!-- Quantité entrée -->
         <div>
             <label for="quantite_entree">Quantité entrée</label>
-            <input type="number" name="quantite_entree" id="quantite_entree" min="0"
-                value="{{ old('quantite_entree', $mouvement->quantite_entree) }}">
+            <input type="number" name="quantite_entree" id="quantite_entree" min="1"
+                value="{{ old('quantite_entree', $mouvement->quantite_entree) }}" {{ !$peutModifier ? 'disabled' : '' }}>
             @error('quantite_entree')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
@@ -68,8 +72,8 @@
         <!-- Quantité sortie -->
         <div>
             <label for="quantite_sortie">Quantité sortie</label>
-            <input type="number" name="quantite_sortie" id="quantite_sortie" min="0"
-                value="{{ old('quantite_sortie', $mouvement->quantite_sortie) }}">
+            <input type="number" name="quantite_sortie" id="quantite_sortie" min="1"
+                value="{{ old('quantite_sortie', $mouvement->quantite_sortie) }}" {{ !$peutModifier ? 'disabled' : '' }}>
             @error('quantite_sortie')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
@@ -78,8 +82,8 @@
         <!-- Stock début du mois -->
         <div>
             <label for="stock_debut_mois">Stock début du mois</label>
-            <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="0" required
-                value="{{ old('stock_debut_mois', $mouvement->stock_debut_mois) }}">
+            <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required
+                value="{{ old('stock_debut_mois', $mouvement->stock_debut_mois) }}" {{ !$peutModifier ? 'disabled' : '' }}>
             @error('stock_debut_mois')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
@@ -88,8 +92,8 @@
         <!-- Avarie -->
         <div>
             <label for="avarie">Avarie</label>
-            <input type="number" name="avarie" id="avarie" min="0"
-                value="{{ old('avarie', $mouvement->avarie) }}">
+            <input type="number" name="avarie" id="avarie" min="1"
+                value="{{ old('avarie', $mouvement->avarie) }}" {{ !$peutModifier ? 'disabled' : '' }}>
             @error('avarie')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
@@ -98,7 +102,7 @@
         <!-- Observation -->
         <div>
             <label for="observation">Observation</label>
-            <textarea name="observation" id="observation">{{ old('observation', $mouvement->observation) }}</textarea>
+            <textarea name="observation" id="observation" {{ !$peutModifier ? 'disabled' : '' }}>{{ old('observation', $mouvement->observation) }}</textarea>
             @error('observation')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
@@ -106,7 +110,9 @@
 
         <!-- Bouton de soumission -->
         <div>
-            <button type="submit">Mettre à jour</button>
+            @if ($peutModifier)
+                <button type="submit">Mettre à jour</button>
+            @endif
         </div>
 
     </form>

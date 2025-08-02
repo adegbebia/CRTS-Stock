@@ -35,12 +35,12 @@ class Article extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function mouvements(): HasMany
+    public function mouvementsarticles(): HasMany
     {
         return $this->hasMany(MouvementArticle::class, 'article_id'); 
     }
 
-    public function consommations(): HasMany
+    public function consommationsarticles(): HasMany
     {
         return $this->hasMany(ConsommationArticle::class, 'article_id'); 
     }

@@ -17,12 +17,12 @@ class UserSeeder extends Seeder
     {
         $now = Carbon::now();
 
-        User::create([
+        $user1=User::create([
             'nom'               => 'DEGBEBIA',
             'prenom'            => 'Aïmane',
             'adresse'            => 'Komah',
-            'telephone'            => 98112012,
-            'magasin_affecte' => 'technique',
+            'telephone'         => 98112012,
+            'magasin_affecte'   => 'admin',
             'email'             => 'aimane@gmail.com',
             'email_verified_at' => $now,
             'password'          => Hash::make('password123'),
@@ -30,8 +30,9 @@ class UserSeeder extends Seeder
             'created_at'        => $now,
             'updated_at'        => $now,
         ]);
+        $user1->assignRole('admin');
 
-        User::create([
+        $user2=User::create([
             'nom'               => 'BABA',
             'prenom'            => 'Traore-hannatou',
             'adresse'            => 'Didaoure',
@@ -44,8 +45,10 @@ class UserSeeder extends Seeder
             'created_at'        => $now,
             'updated_at'        => $now,
         ]);
+        $user2->assignRole('magasinier_technique');
 
-        User::create([
+
+        $user3=User::create([
             'nom'               => 'ADOUN',
             'prenom'            => 'Hyaceinthe',
             'adresse'            => 'Bariere',
@@ -58,8 +61,9 @@ class UserSeeder extends Seeder
             'created_at'        => $now,
             'updated_at'        => $now,
         ]);
+        $user3->assignRole('magasinier_technique');
 
-        User::create([
+        $user4=User::create([
             'nom'               => 'YERIMA',
             'prenom'            => 'Sadate',
             'adresse'           => 'Komah3',
@@ -72,8 +76,10 @@ class UserSeeder extends Seeder
             'created_at'        => $now,
             'updated_at'        => $now,
         ]);
+        $user4->assignRole('magasinier_collation');
 
-        User::create([
+
+        $user5=User::create([
             'nom'               => 'KODJO',
             'prenom'            => 'Ama',
             'adresse'           => 'Koulounde',
@@ -86,5 +92,8 @@ class UserSeeder extends Seeder
             'created_at'        => $now,
             'updated_at'        => $now,
         ]);
+
+        $user5->assignRole('magasinier_collation');
+
     }
 }

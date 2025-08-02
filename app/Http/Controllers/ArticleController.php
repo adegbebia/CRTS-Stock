@@ -13,6 +13,16 @@ class ArticleController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+
+        // dd(auth()->user());
+        // dd($user->getRoleNames());
+
+        if (!($user->hasRole(['magasinier_collation', 'admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'collation')) {
+        // if (!($user->hasRole(['magasinier_collation', 'admin']))) {
+
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
         $articles = Article::all();
         $users = User::all();
         return view('articles.index', compact('articles','users'));
@@ -20,6 +30,12 @@ class ArticleController extends Controller
 
     public function create()
     {
+        $user = auth()->user();
+
+        // Vérification des droits manuellement
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
         
         $articles = Article::all();
         $users = User::all();
@@ -28,6 +44,12 @@ class ArticleController extends Controller
 
     public function store(ArticleRequest $request)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
+
         $validated = $request->validated();
 
         // Vérifier s'il existe un article avec le même codearticle mais un libellé différent
@@ -68,17 +90,39 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
+        $user = auth()->user();
+
+    // Vérification des droits manuellement
+        if (!($user->hasRole(['magasinier_collation', 'admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'collation')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }  
         return view('articles.show', compact('article'));
     }
 
     public function edit(Article $article)
     {
-        
+
+        $user = auth()->user();
+
+    // Vérification des droits manuellement
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
         return view('articles.edit', compact('article'));
     }
 
     public function update(ArticleRequest $request, Article $article)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
+
+        if ($article->user_id !== $user->user_id) {
+            return redirect()->back()->with('error', 'Vous ne pouvez mettre à jour que vos propres articles.');
+        }
+
         $validated = $request->validated();
 
         $article->update($validated);
@@ -88,6 +132,16 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
+
+        if ($article->user_id !== $user->user_id) {
+            return redirect()->back()->with('error', 'Vous ne pouvez mettre à jour que vos propres articles.');
+        }
+
         $article->alertes()->delete();
         $article->delete();
 

@@ -11,12 +11,23 @@ use Illuminate\Http\Request;
 class MouvementProduitController extends Controller
 {
     public function index()
+
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole(['magasinier_technique','admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'technique')) {
+            return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         return redirect()->route('mouvements-produits.create');
     }
 
     public function create(Request $request)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $produits = Produit::all();
         $produitSelectionne = $request->query('produit');
 
@@ -31,6 +42,11 @@ class MouvementProduitController extends Controller
 
     public function store(MouvementRequest $request)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $data = $request->validated();
         $produit = Produit::findOrFail($data['produit_id']);
 
@@ -69,6 +85,11 @@ class MouvementProduitController extends Controller
 
     public function edit(MouvementProduit $mouvements_produit)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $produits = Produit::all();
 
         return view('mouvements-produits.edit', [
@@ -79,6 +100,11 @@ class MouvementProduitController extends Controller
 
     public function update(MouvementRequest $request, MouvementProduit $mouvements_produit)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $data = $request->validated();
         $produit = $mouvements_produit->produit;
 
@@ -122,6 +148,11 @@ class MouvementProduitController extends Controller
 
     public function destroy(MouvementProduit $mouvements_produit)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $produit = $mouvements_produit->produit;
         $impact  = ($mouvements_produit->quantite_entree ?? 0) - ($mouvements_produit->quantite_sortie ?? 0);
 

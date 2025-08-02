@@ -20,7 +20,7 @@ class ConsommationProduit extends Model
     protected $fillable = [
         'produit_id',
         'annee',
-
+        // 'user_id',
         'consommation_janvier', 'rupture_janvier',
         'consommation_fevrier', 'rupture_fevrier',
         'consommation_mars',    'rupture_mars',
@@ -101,12 +101,16 @@ class ConsommationProduit extends Model
     ];
 
     $data = [];
-    $total = 0;
+    // $total = 0;
 
     foreach ($moisNoms as $mois => $nom) {
-        $val = $mensuelles[$mois] ?? 0;
-        $data["consommation_$nom"] = $val;
-        $total += $val;
+        // $val = $mensuelles[$mois] ?? 0;
+        // $data["consommation_$nom"] = $val;
+        // $total += $val;
+        $data["consommation_$nom"] = $mensuelles[$mois] ?? 0;
+
+
+
     }
 
     // Cherche la ligne existante
@@ -114,13 +118,13 @@ class ConsommationProduit extends Model
                   ->where('annee', $annee)
                   ->first();
 
-    if ($total === 0) {
-        // S'il n'y a plus aucune consommation, supprimer la ligne si elle existe
-        if ($cons) {
-            $cons->delete();
-        }
-        return;
-    }
+    // if ($total === 0) {
+    //     // S'il n'y a plus aucune consommation, supprimer la ligne si elle existe
+    //     if ($cons) {
+    //         $cons->delete();
+    //     }
+    //     return;
+    // }
 
     // // Sinon, créer ou mettre à jour
     // if (!$cons) {

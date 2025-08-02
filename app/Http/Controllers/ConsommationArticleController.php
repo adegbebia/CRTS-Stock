@@ -13,11 +13,20 @@ class ConsommationArticleController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('dashboard')->with('error', 'Accès refusé.');
+        }
         return redirect()->route('consommations-articles.create');
     }
 
     public function create(Request $request)
     {
+
+        $user = auth()->user();
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $articles = Article::all();
         $article_id = $request->query('article_id');
         $annee = $request->query('annee') ?? date('Y');
@@ -54,6 +63,10 @@ class ConsommationArticleController extends Controller
 
     public function store(ConsommationArticleRequest $request)
     {
+        $user = auth()->user();
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('consommations-articles.create')->with('error', 'Accès refusé.');
+        }
         $data = $request->validated();
         ConsommationArticle::create($data);
 
@@ -73,6 +86,10 @@ class ConsommationArticleController extends Controller
 
     public function edit(ConsommationArticle $consommation_article)
     {
+        $user = auth()->user();
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('consommations-articles.create')->with('error', 'Accès refusé.');
+        }
         $articles = Article::all();
         return view('consommations-articles.edit', [
             'consommation' => $consommation_article,
@@ -83,6 +100,10 @@ class ConsommationArticleController extends Controller
 
     public function update(ConsommationArticleRequest $request, ConsommationArticle $consommation_article)
     {
+        $user = auth()->user();
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('consommations-articles.create')->with('error', 'Accès refusé.');
+        }
         $data = $request->validated();
         $consommation_article->update($data);
 
@@ -98,6 +119,10 @@ class ConsommationArticleController extends Controller
 
     public function destroy(ConsommationArticle $consommation_article)
     {
+        $user = auth()->user();
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('consommations-articles.create')->with('error', 'Accès refusé.');
+        }
         $article_id = $consommation_article->article_id;
         $annee = $consommation_article->annee;
 

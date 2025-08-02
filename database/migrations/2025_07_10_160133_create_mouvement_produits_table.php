@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('mouvement_produits', function (Blueprint $table) {
             $table->id('mouvementProd_id');
-            $table->unsignedBigInteger('produit_id');
+            $table->integer('produit_id');
+            // $table->integer('user_id')->nullable()->after('produit_id');
             $table->date('date');
             $table->string('origine')->nullable(); 
             $table->integer('quantite_commandee');
@@ -24,6 +25,8 @@ return new class extends Migration
             $table->integer('stock_jour');
             $table->text('observation')->nullable(); 
             $table->foreign('produit_id')->references('produit_id')->on('produits')->onDelete('cascade');
+            // $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+
             $table->timestamps();
         
         });

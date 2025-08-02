@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('consommation_produits', function (Blueprint $table) {
                 $table->id('consommationProd_id');
                 $table->integer('produit_id');
+                // $table->integer('user_id');
                 $table->year('annee'); // année de consommation
 
                 // Colonnes pour chaque mois
@@ -31,6 +32,11 @@ return new class extends Migration
                     ->references('produit_id')
                     ->on('produits')
                     ->onDelete('cascade');
+
+                // $table->foreign('user_id')
+                // ->references('user_id')
+                // ->on('users')
+                // ->onDelete('cascade');
             });
 
     }

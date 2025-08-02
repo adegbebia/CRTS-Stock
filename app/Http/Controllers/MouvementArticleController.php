@@ -13,11 +13,20 @@ class MouvementArticleController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        if (!($user->hasRole(['magasinier_collation','admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'collation')) {
+            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         return redirect()->route('mouvements-articles.create');
     }
 
     public function create(Request $request)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $articles = Article::all();
         $articleSelectionne = $request->query('article'); // ex: article=123
 
@@ -32,6 +41,12 @@ class MouvementArticleController extends Controller
 
     public function store(MouvementArticleRequest $request)
     {
+
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $data = $request->validated();
         $article = Article::findOrFail($data['article_id']);
 
@@ -64,6 +79,12 @@ class MouvementArticleController extends Controller
 
     public function edit(MouvementArticle $mouvements_article)
     {
+
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $articles = Article::all();
         return view('mouvements-articles.edit', [
             'mouvement' => $mouvements_article,
@@ -73,10 +94,15 @@ class MouvementArticleController extends Controller
 
     public function update(MouvementArticleRequest $request, MouvementArticle $mouvements_article)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $data = $request->validated();
         $article = $mouvements_article->article;
 
-        $ancienImpact = ($mouvement->quantite_entree ?? 0) - ($mouvement->quantite_sortie ?? 0);
+        $ancienImpact = ($mouvements_article->quantite_entree ?? 0) - ($mouvements_article->quantite_sortie ?? 0);
         $article->quantitestock -= $ancienImpact;
 
         $newEntree = $data['quantite_entree'] ?? 0;
@@ -107,6 +133,11 @@ class MouvementArticleController extends Controller
 
     public function destroy(MouvementArticle $mouvements_article)
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         $article = $mouvements_article->article;
         $impact  = ($mouvements_article->quantite_entree ?? 0) - ($mouvements_article->quantite_sortie ?? 0);
         $article->quantitestock -= $impact;

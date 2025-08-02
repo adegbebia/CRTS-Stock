@@ -14,6 +14,7 @@ class MouvementProduit extends Model
     protected $fillable = [
 
         'produit_id',
+        // 'user_id',
         'date',
         'origine',
         'quantite_commandee',
@@ -27,7 +28,7 @@ class MouvementProduit extends Model
 
     public function user():BelongsTo{
 
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'user_id','user_id');
      }
 
   

@@ -12,22 +12,44 @@ class ProduitController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+
+        // Vérification des droits manuellement
+        if (!($user->hasRole(['magasinier_technique', 'admin']) && $user->magasin_affecte !== 'admin'  || $user->magasin_affecte !== 'technique')) {
+        // if (!($user->hasRole(['magasinier_technique', 'admin']) && $user->magasin_affecte === 'technique' && $user->magasin_affecte === 'admin')) {
+
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
+
         $produits = Produit::all();
-        $users = User::all(); 
+        $users = User::all();
         return view('produits.index', compact('produits', 'users'));
     }
 
 
+
     public function create()
-        {
+    {
+        $user = auth()->user();
+
+    // Vérification des droits manuellement
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
             $produits = Produit::all();
             $users = User::all(); 
             return view('produits.create', compact('produits', 'users'));
-        }
+    }
 
 
     public function store(ProduitRequest $request)
     {
+        $user = auth()->user();
+
+    // Vérification des droits manuellement
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
         $validated = $request->validated();
 
         // Vérifier s'il existe un produit avec le même codeproduit mais un libellé différent
@@ -66,16 +88,37 @@ class ProduitController extends Controller
 
     public function show(Produit $produit)
     {
+        $user = auth()->user();
+
+    // Vérification des droits manuellement
+        if (!($user->hasRole(['magasinier_technique', 'admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'technique')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
         return view('produits.show', compact('produit'));
     }
 
     public function edit(Produit $produit)
     {
+        $user = auth()->user();
+
+    // Vérification des droits manuellement
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
         return view('produits.edit', compact('produit'));
     }
 
     public function update(ProduitRequest $request, Produit $produit)
     {
+        $user = auth()->user();
+
+    // Vérification des droits manuellement
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
+        if ($produit->user_id !== $user->user_id) {
+            return redirect()->back()->with('error', 'Vous ne pouvez mettre à jour que vos propres produits.');
+        }
         $validated = $request->validated();
 
         $produit->update($validated);
@@ -85,6 +128,16 @@ class ProduitController extends Controller
 
     public function destroy(Produit $produit)
     {
+        $user = auth()->user();
+
+    // Vérification des droits manuellement
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
+
+        if ($produit->user_id !== $user->user_id) {
+            return redirect()->back()->with('error', 'Vous ne pouvez mettre à jour que vos propres produits.');
+        }
         $produit->alertes()->delete();
         $produit->delete();
 
