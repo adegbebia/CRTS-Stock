@@ -19,7 +19,7 @@ class ArticleSeeder extends Seeder
      */
     public function run(): void
     {
-        Article::create([
+        $article1=Article::create([
             'codearticle'     => 'C001',
             'libelle'         => 'Barre énergétique',
             'conditionnement' => 'Boîte de 20',
@@ -34,7 +34,7 @@ class ArticleSeeder extends Seeder
 
         ]);
 
-        Article::create([
+        $article2=Article::create([
             'codearticle'     => 'C002',
             'libelle'         => 'Jus de fruits 200ml',
             'conditionnement' => 'Pack de 6',
@@ -49,7 +49,7 @@ class ArticleSeeder extends Seeder
 
         ]);
 
-        Article::create([
+        $article3=Article::create([
             'codearticle'     => 'C003',
             'libelle'         => 'Biscuits salés',
             'conditionnement' => 'Sachet de 12',

@@ -13,7 +13,7 @@ class ProduitSeeder extends Seeder
      */
     public function run(): void
     {
-        Produit::create([
+        $produit1 =Produit::create([
             'codeproduit'     => 'P001',
             'libelle'         => 'Gants chirurgicaux',
             'conditionnement' => 'Boîte de 100',
@@ -27,7 +27,7 @@ class ProduitSeeder extends Seeder
             'date'            => Carbon::now()->toDateString(),
         ]);
 
-        Produit::create([
+        $produit2 = Produit::create([
             'codeproduit'     => 'P002',
             'libelle'         => 'Seringues 5ml',
             'conditionnement' => 'Paquet de 50',
@@ -41,7 +41,7 @@ class ProduitSeeder extends Seeder
             'date'            => Carbon::now()->toDateString(),
         ]);
 
-        Produit::create([
+        $produit3=Produit::create([
             'codeproduit'     => 'P003',
             'libelle'         => 'Poches de sang',
             'conditionnement' => 'Unité',

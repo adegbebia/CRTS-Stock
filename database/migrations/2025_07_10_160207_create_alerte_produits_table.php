@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('alerte_produits', function (Blueprint $table) {
             $table->id('alerteProd_id');
-            $table->integer('produit_id');
             $table->string('typealerte');
             $table->timestamp('datedeclenchement')->useCurrent();
+            $table->integer('produit_id');
             $table->foreign('produit_id')->references('produit_id')->on('produits')->OnDelete('cascade');
             $table->timestamps();
         });

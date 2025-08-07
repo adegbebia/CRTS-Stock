@@ -104,10 +104,11 @@ class UserController extends Controller
                 $user->assignRole('magasinier_technique');
             }elseif ($user->magasin_affecte === 'collation') {
                 $user->assignRole('magasinier_collation');
-            }else{
+            }elseif($user->magasin_affecte === 'admin'){
                 $user->assignRole('admin');
-
             }
+
+            
 
             return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès.');
         } catch (\Exception $e) {
@@ -165,7 +166,7 @@ class UserController extends Controller
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
-            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/'],
+            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/','unique:users,telephone'],
             'magasin_affecte' => 'required|in:collation,technique,admin',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->user_id . ',user_id',
             'password' => 'nullable|string|min:6|confirmed',
@@ -185,6 +186,18 @@ class UserController extends Controller
 
             $user->save();
 
+             // 🎯 Met à jour le rôle selon le nouveau magasin_affecte
+            // Supprime tous les rôles existants d'abord
+            $user->syncRoles([]); // Optionnel : supprime tous les rôles
+
+            if ($user->magasin_affecte === 'technique') {
+                $user->assignRole('magasinier_technique');
+            } elseif ($user->magasin_affecte === 'collation') {
+                $user->assignRole('magasinier_collation');
+            } elseif ($user->magasin_affecte === 'admin') {
+                $user->assignRole('admin');
+            }
+
             return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Erreur lors de la mise à jour : ' . $e->getMessage()]);
@@ -199,31 +212,39 @@ class UserController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
-    {
-        $currentUser = auth()->user();
+{
+    $currentUser = auth()->user();
 
-        if (!$currentUser->hasRole('admin')) {
-            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à supprimer un utilisateur.');
-        }
-
-        if (
-            $user->produits()->exists() ||
-            $user->articles()->exists() 
-            // $user->mouvements()->exists() ||
-            // $user->mouvementsarticles()->exists()
-        )
-        {
-            return back()->with('error', 'Impossible de supprimer cet utilisateur : des données lui sont encore liées.');
-        }
-
-        if ($user->user_id === $currentUser->user_id) {
-            return redirect()->back()->with('error', 'Vous ne pouvez pas vous supprimer vous-même.');
-        }
-
-        $user->delete();
-
-        return redirect()->route('users.index')->with('success', 'Employé(é) supprimé avec succès !');
+    // 1. Vérifie que l'utilisateur connecté est un admin
+    if (!$currentUser->hasRole('admin')) {
+        return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à supprimer un utilisateur.');
     }
+
+    // 2. Interdit la suppression de soi-même
+    if ($user->user_id === $currentUser->user_id) {
+        return redirect()->back()->with('error', 'Vous ne pouvez pas vous supprimer vous-même.');
+    }
+
+    // 3. Interdit de supprimer un autre admin
+    if ($user->hasRole('admin')) {
+        return redirect()->back()->with('error', 'Vous ne pouvez pas supprimer un autre administrateur.');
+    }
+
+    // 4. Vérifie s'il existe des données liées empêchant la suppression
+    if (
+        $user->produits()->exists() ||
+        $user->articles()->exists()
+        // $user->mouvements()->exists() ||
+        // $user->mouvementsarticles()->exists()
+    ) {
+        return redirect()->back()->with('error', 'Impossible de supprimer cet utilisateur : des données lui sont encore liées.');
+    }
+
+    // 5. Suppression autorisée
+    $user->delete();
+
+    return redirect()->route('users.index')->with('success', 'Employé(é) supprimé avec succès !');
+}
 
 
 }

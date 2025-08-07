@@ -1,30 +1,30 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Détails article</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+@extends('layouts.app')
 
-<div class="container mt-5">
-    <h2>Détails de l'article</h2>
+@section('content')
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-2xl font-bold mb-6">Détails de l'Alerte Produit</h1>
 
-    <ul class="list-group">
-        <li class="list-group-item"><strong>Code :</strong> {{ $article->codeproduit }}</li>
-        <li class="list-group-item"><strong>Libellé :</strong> {{ $article->libelle }}</li>
-        <li class="list-group-item"><strong>Conditionnement :</strong> {{ $article->conditionnement }}</li>
-        <li class="list-group-item"><strong>Quantité en stock :</strong> {{ $article->quantitestock }}</li>
-        <li class="list-group-item"><strong>Stock max :</strong> {{ $article->stockmax }}</li>
-        <li class="list-group-item"><strong>Stock min :</strong> {{ $article->stockmin }}</li>
-        <li class="list-group-item"><strong>Stock sécurité :</strong> {{ $article->stocksecurite }}</li>
-        <li class="list-group-item"><strong>Date péremption :</strong> {{ $article->dateperemption }}</li>
-        <li class="list-group-item"><strong>Lot :</strong> {{ $article->lot }}</li>
-    </ul>
+    <div class="bg-white rounded shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">Informations sur l'alerte</h2>
 
-    <a href="{{ route('articles.index') }}" class="btn btn-secondary mt-3">Retour</a>
-</div>
+        <ul class="mb-6">
+            <li><strong>ID de l'Alerte :</strong> {{ $alerte->alerteProd_id }}</li>
+            <li><strong>Type d'alerte :</strong> {{ $alerte->typealerte }}</li>
+            <li><strong>Date de déclenchement :</strong> {{ $alerte->datedeclenchement ? $alerte->datedeclenchement->format('d/m/Y H:i') : 'Non définie' }}</li>
+        </ul>
 
-</body>
-</html>
+        @if($alerte->produit)
+        <h2 class="text-xl font-semibold mb-4">Informations sur le produit lié</h2>
+        <ul>
+            <li><strong>Code Produit :</strong> {{ $alerte->produit->codeproduit }}</li>
+            <li><strong>Libellé :</strong> {{ $alerte->produit->libelle }}</li>
+            <li><strong>Conditionnement :</strong> {{ $alerte->produit->conditionnement }}</li>
+            <li><strong>Stock actuel :</strong> {{ $alerte->produit->quantitestock }}</li>
+            <li><strong>Stock de sécurité :</strong> {{ $alerte->produit->stocksecurite }}</li>
+            <li><strong>Date de péremption :</strong> {{ $alerte->produit->dateperemption }}</li>
+            <li><strong>Lot :</strong> {{ $alerte->produit->lot }}</li>
+        </ul>
+        @else
+        <div class="text-red-600 font-semibold">
+            ⚠️ Aucun produit lié à cette alerte.
+        </div>
