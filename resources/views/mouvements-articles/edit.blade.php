@@ -44,7 +44,7 @@
 
         <div>
             <label for="quantite_commandee">Quantité commandée</label>
-            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}" required {{ !$peutModifier ? 'disabled' : '' }}>
+            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}"  {{ !$peutModifier ? 'disabled' : '' }}>
             @error('quantite_commandee')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -66,13 +66,13 @@
             @enderror
         </div>
 
-        <div>
+        <!-- <div>
             <label for="stock_debut_mois">Stock début du mois</label>
             <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" value="{{ old('stock_debut_mois', $mouvement->stock_debut_mois) }}" required {{ !$peutModifier ? 'disabled' : '' }} >
             @error('stock_debut_mois')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
-        </div>
+        </div> -->
 
         <div>
             <label for="avarie">Avarie</label>

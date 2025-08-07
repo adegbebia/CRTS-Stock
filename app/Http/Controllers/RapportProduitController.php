@@ -121,7 +121,7 @@ class RapportProduitController extends Controller
         }
 
         // Sauvegarde du fichier .tex
-        $fileName = "rapport-{$periodeType}-{$periode}-{$annee}-articles";
+        $fileName = "rapport-{$periodeType}-{$periode}-{$annee}-produis";
         $relativePath = "rapports/{$fileName}.tex";
         $filePath = storage_path("app/{$relativePath}");
 
