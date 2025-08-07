@@ -21,61 +21,54 @@ class ConsommationProduitController extends Controller
     }
 
     public function create(Request $request)
-    {
-        $user = auth()->user();
-        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
-            return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
-        }
+{
+    $user = auth()->user();
 
-        $produits = Produit::all();
-        $produit_id = $request->query('produit_id');
-        $annee = $request->query('annee') ?? date('Y');
+    if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+        return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+    }
+    $produits = Produit::all();
+    $produit_id = $request->query('produit_id');
+    $annee = $request->query('annee', date('Y'));
+    $search = $request->query('search');
+    $consommations_mensuelles = array_fill(1, 12, 0);
 
-        // $consommations_mensuelles = [];
-        // $afficher_formulaire = false;
-        $consommations_mensuelles = array_fill(1, 12, 0);
+    // Récupération des consommations annuelles, filtrées par libellé
+    $consommationsQuery = ConsommationProduit::with('produit')->orderBy('annee', 'desc');
 
+    if (!empty($search)) {
+        $produitIds = Produit::where('libelle', 'like', '%' . $search . '%')->pluck('produit_id');
+        $consommationsQuery->whereIn('produit_id', $produitIds);
+    }
 
-        // if ($produit_id) {
-        //     // Vérifie si une conso existe déjà pour ce produit/année
-        //     $deja_enregistre = ConsommationProduit::where('produit_id', $produit_id)
-        //                         ->where('annee', $annee)
-        //                         ->exists();
+    $consommations = $consommationsQuery->paginate(10);
 
-        if ($produit_id) {
-            // $afficher_formulaire = true;
-
-            // Pré-calculer la conso mensuelle à afficher dans le formulaire
-            $mensuelles = MouvementProduit::selectRaw("
-                    CAST(strftime('%m', date) AS INTEGER) AS mois,
-                    COALESCE(SUM(quantite_sortie), 0) AS total")
-                ->where('produit_id', $produit_id)
-                ->whereYear('date', $annee)
-                ->where('quantite_sortie', '>', 0)
-                ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
-                ->pluck('total', 'mois');
-
-            // $consommations_mensuelles = array_fill(1, 12, 0);
-
-            foreach ($mensuelles as $mois => $total) {
-                $consommations_mensuelles[$mois] = $total;
-            }
-         }
-        //}
-
-        $consommations = ConsommationProduit::with('produit')
-            ->orderBy('annee', 'desc')
+    // Si un produit est sélectionné, on calcule ses consommations mensuelles
+    if (!empty($produit_id)) {
+        $resultats = MouvementProduit::selectRaw("CAST(strftime('%m', date) AS INTEGER) AS mois, SUM(quantite_sortie) AS total")
+            ->where('produit_id', $produit_id)
+            ->whereYear('date', $annee)
+            ->where('quantite_sortie', '>', 0)
+            ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
             ->get();
 
-        return view('consommations-produits.create', compact(
-            'produits',
-            'consommations',
-            'produit_id',
-            'annee',
-            'consommations_mensuelles',
-            // 'afficher_formulaire'
-        ));
+        foreach ($resultats as $resultat) {
+            $mois = $resultat->mois;
+            $total = $resultat->total;
+            $consommations_mensuelles[$mois] = $total;
+        }
     }
+
+    return view('consommations-produits.create', compact(
+        'produits',
+        'consommations',
+        'produit_id',
+        'annee',
+        'consommations_mensuelles',
+        'search'
+    ));
+}
+
 
     public function store(ConsommationRequest $request)
     {

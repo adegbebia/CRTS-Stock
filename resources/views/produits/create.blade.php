@@ -29,6 +29,8 @@
 
         <h2>Ajouter / Créer un nouveau produit</h2>
 
+        
+
 
         <form action="{{ route('produits.store') }}" method="POST">
             @csrf

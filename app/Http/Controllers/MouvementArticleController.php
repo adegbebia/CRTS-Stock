@@ -27,17 +27,27 @@ class MouvementArticleController extends Controller
         if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
             return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
         }
+
         $articles = Article::all();
-        $articleSelectionne = $request->query('article'); // ex: article=123
+        $articleSelectionne = $request->query('article');
+        $date = $request->query('date');
+
+        // Construction de la requête
+        $query = MouvementArticle::with('article')->latest();
 
         if ($articleSelectionne) {
-            $mouvements = MouvementArticle::where('article_id', $articleSelectionne)->latest()->get();
-        } else {
-            $mouvements = MouvementArticle::latest()->get();
+            $query->where('article_id', $articleSelectionne);
         }
 
-        return view('mouvements-articles.create', compact('articles', 'articleSelectionne', 'mouvements'));
+        if ($date) {
+            $query->whereDate('date', $date);
+        }
+
+        $mouvements = $query->paginate(10);
+
+        return view('mouvements-articles.create', compact('articles', 'articleSelectionne', 'date', 'mouvements'));
     }
+
 
     public function store(MouvementArticleRequest $request)
     {
@@ -54,6 +64,12 @@ class MouvementArticleController extends Controller
         $sortie = $data['quantite_sortie'] ?? 0;
         $avarie = $data['avarie'] ?? 0;
 
+        if ($sortie > $article->quantitestock) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Quantité en stock insuffisante pour cette sortie. Stock disponible : ' . $article->quantitestock);
+        }
+
         $article->quantitestock += $entree - $sortie;
         $article->save();
 
@@ -63,10 +79,10 @@ class MouvementArticleController extends Controller
             'article_id'         => $article->article_id,
             'date'               => Carbon::now()->toDateString(),
             'origine'            => $data['origine'] ?? null,
-            'quantite_commandee' => $data['quantite_commandee'],
+            'quantite_commandee' => $data['quantite_commandee']?? null,
             'quantite_entree'    => $entree ?: null,
             'quantite_sortie'    => $sortie ?: null,
-            'stock_debut_mois'   => $data['stock_debut_mois'],
+            // 'stock_debut_mois'   => $data['stock_debut_mois'],
             'avarie'             => $avarie ?: null,
             'stock_jour'         => $stockJour,
             'observation'        => $data['observation'] ?? null,
@@ -111,16 +127,23 @@ class MouvementArticleController extends Controller
         $article->quantitestock += $newImpact;
         $article->save();
 
+        // Vérification du stock disponible
+    if ($newSortie > $article->quantitestock + $ancienImpact) {
+        return redirect()->back()
+                         ->withInput()
+                         ->with('error', 'Quantité en stock insuffisante pour cette sortie. Stock disponible : ' . ($article->quantitestock + $ancienImpact));
+    }
+
         $avarie = $data['avarie'] ?? 0;
         $stockJour = $article->quantitestock - $avarie;
 
         $mouvements_article->update([
             'date'               => Carbon::now()->toDateString(),
             'origine'            => $data['origine'] ?? null,
-            'quantite_commandee' => $data['quantite_commandee'],
+            'quantite_commandee' => $data['quantite_commandee']?? null,
             'quantite_entree'    => $newEntree ?: null,
             'quantite_sortie'    => $newSortie ?: null,
-            'stock_debut_mois'   => $data['stock_debut_mois'],
+            // 'stock_debut_mois'   => $data['stock_debut_mois'],
             'avarie'             => $avarie ?: null,
             'stock_jour'         => $stockJour,
             'observation'        => $data['observation'] ?? null,

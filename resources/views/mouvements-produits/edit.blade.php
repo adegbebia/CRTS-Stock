@@ -115,6 +115,12 @@
             @endif
         </div>
 
+        <!-- Lien de retour vers le formulaire avec produit sélectionné -->
+        <div>
+            <p><a href="{{ route('mouvements-produits.create', ['produit_id' => $mouvement->mouvementProd_id]) }}">← Revenir au produit concerné</a></p>
+        </div>
+
+
     </form>
 
 </body>

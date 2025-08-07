@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
 
@@ -23,7 +23,16 @@ class ArticleController extends Controller
 
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }
-        $articles = Article::all();
+
+        $query = Article::query();
+
+        if ($request->filled('search')) {
+            $query->where('libelle', 'like', '%' . $request->search . '%');
+        }
+        
+        
+        
+        $articles = $query->paginate(10); 
         $users = User::all();
         return view('articles.index', compact('articles','users'));
     }

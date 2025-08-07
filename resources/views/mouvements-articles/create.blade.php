@@ -30,6 +30,10 @@
         </div>
     @endif --}} -->
 
+     <div>
+        <p><a href="{{ route('articles.index') }}">← Revenir au niveau des articles</a></p>
+    </div>
+
     <form action="{{ $peutModifier ? route('mouvements-articles.store') : '#' }}" method="POST"
         {{ !$peutModifier ? 'onsubmit=return false' : '' }}>
         @csrf
@@ -64,10 +68,10 @@
                 </div>
             @endif
         </div>
-        <div>
+        {{-- <div>
             <a href="{{ route('articles.create') }}" target="_blank">Ajouter un article</a>
             <p><em>Si l'article n’apparaît pas, créez-le puis actualisez cette page.</em></p>
-        </div>
+        </div> --}}
 
         <div>
             <label for="origine">Origine</label>
@@ -80,7 +84,7 @@
 
         <div>
             <label for="quantite_commandee">Quantité commandée</label>
-            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required
+            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" 
                 value="{{ old('quantite_commandee') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('quantite_commandee')
                 <div style="color:red;">{{ $message }}</div>
@@ -105,14 +109,14 @@
             @enderror
         </div>
 
-        <div>
+        {{-- <div>
             <label for="stock_debut_mois">Stock début du mois</label>
             <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required
                 value="{{ old('stock_debut_mois') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('stock_debut_mois')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
-        </div>
+        </div> --}}
 
         <div>
             <label for="avarie">Avarie</label>
@@ -142,6 +146,13 @@
     <hr/>
 
     <h3>Liste des mouvements déjà créés</h3>
+
+   <form method="GET" action="{{ route('mouvements-articles.create') }}">   
+        <label for="date">Filtrer par date :</label>
+        <input type="date" name="date" id="date" value="{{ $date }}">
+        <button type="submit">Rechercher</button>
+    </form>
+
 
     @if ($mouvements->count())
         <table border="1" cellpadding="5" cellspacing="0">
@@ -194,6 +205,10 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div>
+            {{ $mouvements->links() }}
+        </div>
     @else
         <p>Aucun mouvement enregistré pour le moment.</p>
     @endif

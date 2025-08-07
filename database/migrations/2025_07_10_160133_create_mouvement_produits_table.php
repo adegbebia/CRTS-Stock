@@ -17,10 +17,10 @@ return new class extends Migration
             // $table->integer('user_id')->nullable()->after('produit_id');
             $table->date('date');
             $table->string('origine')->nullable(); 
-            $table->integer('quantite_commandee');
+            $table->integer('quantite_commandee')->nullable();
             $table->integer('quantite_entree')->nullable();
             $table->integer('quantite_sortie')->nullable();
-            $table->integer('stock_debut_mois');
+            // $table->integer('stock_debut_mois');
             $table->integer('avarie')->nullable(); 
             $table->integer('stock_jour');
             $table->text('observation')->nullable(); 

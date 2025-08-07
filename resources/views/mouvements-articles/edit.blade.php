@@ -96,6 +96,11 @@
             @endif        
         </div>
 
+
+        <div>
+            <p><a href="{{ route('mouvements-articles.create', ['article_id' => $mouvement->mouvementArt_id]) }}">← Revenir a l'article concerné</a></p>
+        </div>
+
     </form>
 
 </body>

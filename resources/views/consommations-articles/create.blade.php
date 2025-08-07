@@ -13,9 +13,10 @@
 <body>
     @php
         // Définir la variable de permission selon ton besoin réel
-        $peutModifier = auth()->check() 
-            && auth()->user()->hasRole('magasinier_collation') 
-            && auth()->user()->magasin_affecte === 'collation';
+        $peutModifier =
+            auth()->check() &&
+            auth()->user()->hasRole('magasinier_collation') &&
+            auth()->user()->magasin_affecte === 'collation';
     @endphp
     <h2>Nouvelle fiche de consommation</h2>
 
@@ -41,11 +42,11 @@
             $user = auth()->user();
         @endphp
 
-        @if($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')
+        {{-- @if ($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')
 
             <a href="{{ route('articles.create') }}" target="_blank">Ajouter un article</a>
             <p><em>Créez l’article puis actualisez cette page.</em></p>
-        @endif
+        @endif --}}
         <label for="annee">Année :</label>
         <input type="number" name="annee" id="annee" min="2020" max="{{ date('Y') + 1 }}" required
             value="{{ $annee ?? old('annee', date('Y')) }}"
@@ -94,13 +95,13 @@
                         <td>
                             <input type="number" name="rupture_{{ $m }}" min="0"
                                 value="{{ old('rupture_' . $m, 0) }}" required
-                                @if(!$peutModifier) disabled @endif>
+                                @if (!$peutModifier) disabled @endif>
                         </td>
                     @endforeach
                 </tr>
             </tbody>
         </table>
-        @if($peutModifier)
+        @if ($peutModifier)
             <button type="submit">Enregistrer</button>
         @endif
     </form>
@@ -108,6 +109,12 @@
     <hr>
 
     <h3>Consommations enregistrées</h3>
+    <form method="GET" action="{{ route('consommations-articles.create') }}">
+        <input type="text" name="search" value="{{ request('search') }}"
+            placeholder="Rechercher par libellé article">
+        <button type="submit">Rechercher</button>
+    </form>
+
     @if ($consommations->count())
         <table border="1" cellpadding="4" cellspacing="0">
             <thead>
@@ -137,18 +144,17 @@
                         <td>{{ $c->semestre1 }}</td>
                         <td>{{ $c->semestre2 }}</td>
                         <td>
-                            @if($peutModifier)
-                                <a href="{{ route('consommations-articles.edit',$c->consommationArt_id)}}" title="Modifier">
+                            @if ($peutModifier)
+                                <a href="{{ route('consommations-articles.edit', $c->consommationArt_id) }}"
+                                    title="Modifier">
                                     <button type="button" aria-label="Modifier">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1
                             2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897
                             1.13L6 18l.8-2.685a4.5 4.5 0 0 1
                             1.13-1.897l8.932-8.931Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M18 14v4.75A2.25 2.25 0 0 1
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M18 14v4.75A2.25 2.25 0 0 1
                             15.75 21H5.25A2.25 2.25 0 0 1
                             3 18.75V8.25A2.25 2.25 0 0 1
                             5.25 6H10" />
@@ -156,16 +162,16 @@
                                     </button>
                                 </a>
 
-                                <form id="delete-form-{{ $c->consommationArt_id }}" 
-                                    action="{{ route('consommations-articles.destroy', ['consommation_article' => $c->consommationArt_id]) }}" 
+                                <form id="delete-form-{{ $c->consommationArt_id }}"
+                                    action="{{ route('consommations-articles.destroy', ['consommation_article' => $c->consommationArt_id]) }}"
                                     method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" onclick="confirmDelete('{{ $c->consommationArt_id }}')" title="Supprimer" aria-label="Supprimer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107
+                                    <button type="button" onclick="confirmDelete('{{ $c->consommationArt_id }}')"
+                                        title="Supprimer" aria-label="Supprimer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107
                             1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0
                             1-2.244 2.077H8.084a2.25 2.25 0 0
                             1-2.244-2.077L4.772 5.79m14.456 0a48.108
@@ -187,6 +193,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div>
+            {{ $consommations->links() }}
+        </div>
     @else
         <p>Aucune consommation enregistrée.</p>
     @endif
@@ -212,7 +221,7 @@
 
     @if (session('success'))
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'success',
                     title: 'Succès',
@@ -225,7 +234,7 @@
 
     @if (session('error'))
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     icon: 'error',
                     title: 'Erreur',

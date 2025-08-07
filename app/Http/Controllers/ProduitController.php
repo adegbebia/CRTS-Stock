@@ -10,21 +10,28 @@ use Carbon\Carbon;
 
 class ProduitController extends Controller
 {
-    public function index()
-    {
-        $user = auth()->user();
+    public function index(Request $request)
+{
+    $user = auth()->user();
 
-        // Vérification des droits manuellement
-        if (!($user->hasRole(['magasinier_technique', 'admin']) && $user->magasin_affecte !== 'admin'  || $user->magasin_affecte !== 'technique')) {
-        // if (!($user->hasRole(['magasinier_technique', 'admin']) && $user->magasin_affecte === 'technique' && $user->magasin_affecte === 'admin')) {
-
-            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
-        }
-
-        $produits = Produit::all();
-        $users = User::all();
-        return view('produits.index', compact('produits', 'users'));
+    // Vérification des droits manuellement
+    if (!($user->hasRole(['magasinier_technique', 'admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'technique')) {
+        return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
     }
+
+    $query = Produit::query();
+
+    if ($request->filled('search')) {
+        $query->where('libelle', 'like', '%' . $request->search . '%');
+    }
+
+    // Ajout de la pagination ici (10 produits par page)
+    $produits = $query->paginate(10); 
+    $users = User::all();
+
+    return view('produits.index', compact('produits', 'users'));
+}
+
 
 
 
