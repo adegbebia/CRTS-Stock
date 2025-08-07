@@ -2,63 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlerteProduit;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+
 
 class AlerteProduitController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Affiche la liste des alertes produits (dashboard ou page alertes).
      */
     public function index()
     {
-        //
+        // Récupérer les alertes les plus récentes avec le produit lié
+
+        $user = auth()->user();
+
+        // Vérifie si l'utilisateur est autorisé
+        if (!($user->hasRole('admin') || ($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique'))) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à voir les alertes des produits.');
+        }
+        $alertesProduits = AlerteProduit::with('produit')
+            ->orderByDesc('datedeclenchement')
+            ->get();
+
+        // Compter le nombre total d'alertes
+        $nbAlertes = $alertesProduits->count();
+
+        // Retourner la vue avec les données
+        return view('alertes-produits.index', compact('alertesProduits', 'nbAlertes'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Affiche une alerte produit précise (par exemple, pour voir le détail).
      */
-    public function create()
+    public function show($alerteProd_id)
     {
-        //
+        $user = auth()->user();
+
+        // Vérifie si l'utilisateur est autorisé
+        if (!($user->hasRole('admin') || ($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique'))) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à voir les alertes des produits.');
+        } 
+        $alerte = AlerteProduit::with('produit')
+            ->where('alerteProd_id', $alerteProd_id)
+            ->firstOrFail();
+
+        return view('alertes-produits.show', compact('alerte'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    // Tu peux ajouter d'autres méthodes CRUD si besoin (create, update, delete)
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function destroy(AlerteProduit $alerte): RedirectResponse
     {
-        //
-    }
+        $user = auth()->user();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        // Vérifie si l'utilisateur est autorisé
+        if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à supprimé les alertes du produits.');
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        $alerte->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('alertes-produits.index')
+            ->with('success', 'L’alerte a bien été supprimée.');
     }
 }

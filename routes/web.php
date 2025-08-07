@@ -58,8 +58,10 @@ Route::middleware(['auth'])->group(function () {
     ]);
 
     // Alertes (valables pour les produits et articles si tu gères tout au même endroit)
-    Route::resource('alertes-produits', AlerteProduitController::class);
-    Route::resource('alertes-articles', AlerteArticleController::class);
+    
+    Route::resource('alertes-produits', AlerteProduitController::class)->parameters(['alertes-produits' => 'alerte']);
+
+    Route::resource('alertes-articles', AlerteArticleController::class)->parameters(['alertes-articles'=>'alerte']);
 
 
     // RAPPORTS PRODUITS

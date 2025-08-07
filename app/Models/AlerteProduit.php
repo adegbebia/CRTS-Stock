@@ -9,7 +9,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AlerteProduit extends Model
 {
     //
+    protected $table = 'alerte_produits'; // important si le nom est non standard
+
     protected $primaryKey='alerteProd_id';
+
+    
+    
+    protected $with = ['produit'];
+
+    
+
 
     protected $fillable=[
         'produit_id',
@@ -18,8 +27,17 @@ class AlerteProduit extends Model
         
     ];
 
+    protected $casts = [
+        'datedeclenchement' => 'datetime',
+    ];
+
+    public function getRouteKeyName()
+    {
+        return 'alerteProd_id';
+    }
+
     public function produit()
     {
-        return $this->belongsTo(Produit::class, 'produit_id', 'produit_id');
+        return $this->belongsTo(Produit::class, 'produit_id','produit_id');
     }
 }

@@ -47,7 +47,7 @@ class Produit extends Model
 
     public function alertes(): HasMany
     {
-        return $this->hasMany(AlerteProduit::class, 'produit_id'); 
+        return $this->hasMany(AlerteProduit::class, 'produit_id','produit_id'); 
     }
 
 
