@@ -19,7 +19,7 @@ class MouvementArticle extends Model
         'quantite_commandee',
         'quantite_entree',
         'quantite_sortie',
-        'stock_debut_mois',
+        // 'stock_debut_mois',
         'avarie',
         'stock_jour',
         'observation',

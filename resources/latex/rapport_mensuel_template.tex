@@ -1,5 +1,5 @@
-\documentclass[10pt]{article}
-\usepackage[margin=1.5cm,landscape]{geometry} % Marges plus larges
+\documentclass[10pt,landscape]{report}
+\usepackage[margin=3.6cm]{geometry}
 \usepackage[french]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -7,30 +7,78 @@
 \usepackage{array}
 \usepackage{supertabular}
 \usepackage{makecell}
-\usepackage{graphicx} % Pour ajustements fins
+\usepackage{graphicx}
+\usepackage{calc}
+\usepackage{float}
 
 \begin{document}
 
+% Premier logo centré en haut
 \begin{center}
-\Large \textbf{RAPPORT DU MAGASIN TECHNIQUE -- {{periode}} {{annee}}}
+    \includegraphics[width=6cm]{ministere.png}
+\end{center}
+
+\vspace{1cm}
+
+% Ligne avec bloc administratif à gauche et logo droit à droite
+\noindent
+\begin{minipage}[t]{0.6\textwidth}
+  \small
+  \textbf{CABINET} \\
+  \rule{6cm}{0.4pt} \\[0.2em]
+  \textbf{SECRETARIAT GENERAL} \\
+  \rule{8cm}{0.4pt} \\[0.2em]
+  \textbf{DIRECTION DE LA PHARMACIE,} \\
+  \textbf{DU MEDICAMENT ET DES LABORATOIRES} \\
+  \rule{8cm}{0.4pt} \\[0.2em]
+  \textbf{DIVISION DES LABORATOIRES} \\
+  \rule{8cm}{0.4pt} \\[0.2em]
+  \textbf{CENTRE REGIONAL DE TRANSFUSION} \\
+  \textbf{SANGUINE DE SOKODE} \\
+  \rule{8cm}{0.4pt} \\[0.2em]
+  \textbf{MAGASIN TECHNIQUE} \\
+  \rule{5cm}{0.4pt} \\[0.2em]
+  B.P. 39 \\
+  Tél. 70 45 66 80 / 92 21 49 21 \\
+  E-mail : crtssokode2020@gmail.com
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.35\textwidth}
+  \vspace{2cm}
+  \centering
+  \includegraphics[width=6cm]{logo_crts.png}
+\end{minipage}
+
+\vspace{1cm}
+
+% Titre encadré et centré
+\begin{center}
+\fbox{
+    \begin{minipage}{0.8\textwidth}
+    \centering
+    \Large \textbf{Rapport des activités du Magasin Technique {{periode}} {{annee}}}
+    \end{minipage}
+}
 \end{center}
 
 \vspace{0.5cm}
 
-\normalsize % Taille de police normale
-\setlength{\tabcolsep}{8pt} % Plus d'espace entre colonnes
-\renewcommand{\arraystretch}{2} % Plus de hauteur dans les lignes
+% Tableau des stocks
+\normalsize
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{2}
 
+% Décalage du tableau vers la droite
+\noindent\hspace*{1.5cm}%
 \begin{supertabular}{
-|>{\raggedright\arraybackslash}p{3.5cm}| % Désignation (plus large)
-c|c|c| % Stocks (début, entrée, total)
->{\raggedright\arraybackslash}p{2.5cm}| % Unité (avec retours à ligne)
-c|c| % Sortie, Stock fin
->{\raggedright\arraybackslash}p{4cm}|} % Observation (plus large)
-
+|>{\raggedright\arraybackslash}p{3.5cm}|
+c|c|c|
+>{\raggedright\arraybackslash}p{3.5cm}|
+c|c|
+>{\raggedright\arraybackslash}p{3.5cm}|}
 \hline
 \multicolumn{1}{|c|}{\textbf{\makecell{Désignation}}} & 
-\multicolumn{1}{c|}{\textbf{\makecell{Stock\\début}}} & 
+\multicolumn{1}{c|}{\textbf{\makecell{Stock\\du jour}}} & 
 \multicolumn{1}{c|}{\textbf{Entrée}} & 
 \multicolumn{1}{c|}{\textbf{\makecell{Stock\\total}}} & 
 \multicolumn{1}{c|}{\textbf{Unité}} & 
@@ -41,7 +89,19 @@ c|c| % Sortie, Stock fin
 
 {{rows}}
 
+\hline
 \end{supertabular}
 
-\end{document}
+\vspace{2cm}
 
+\begin{flushright}
+Fait à Sokodé, le \today
+
+\vspace{1cm}
+Le Chargé du Magasin Technique
+
+\vspace{1cm}
+\makebox[5cm]{\hrulefill}
+\end{flushright}
+
+\end{document}

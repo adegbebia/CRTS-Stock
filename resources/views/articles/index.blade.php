@@ -54,10 +54,18 @@
     </script>
     @endif -->
 
+    
+
 
     @if ($articles->isEmpty())
         <p>Aucun article enregistré pour le moment.</p>
     @else
+
+    {{-- Formulaire de recherche --}}
+    <form method="GET" action="{{ route('articles.index') }}" style="margin-bottom: 20px;">
+        <input type="text" name="search" placeholder="Rechercher un article..." value="{{ request('search') }}">
+        <button type="submit">Rechercher</button>
+    </form>
         <table border="1" cellpadding="5" cellspacing="0">
             <thead>
                 <tr>
@@ -71,7 +79,7 @@
                     <th>Date péremption</th>
                     <th>Lot</th>
                     <th>Date de création</th>
-                    <th>Auteur</th>
+                    {{-- <th>Auteur</th> --}}
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -90,7 +98,7 @@
                     <td>
                         {{ \Carbon\Carbon::parse($article->date)->translatedFormat('d F Y') }}
                     </td>
-                    <td>{{ $article->user->nom ?? 'Inconnu' }}</td>
+                    {{-- <td>{{ $article->user->nom ?? 'Inconnu' }}</td> --}}
                     <td>
                         <!-- Voir -->
                         <a href="{{ route('articles.show', $article->article_id) }}" title="Voir">
@@ -172,6 +180,14 @@
                 @endforeach
             </tbody>
         </table>
+        {{-- Pagination --}}
+    <div style="margin-top: 20px;">
+        {{ $articles->links() }}
+    </div>
+    <div>
+        <p><a href="{{ route('dashboard') }}">← Revenir au tableau de bord</a></p>
+    </div>
+
     @endif
 
     <script>

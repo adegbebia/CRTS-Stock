@@ -15,6 +15,14 @@
 
     <h2>Ajouter un mouvement</h2>
 
+    
+    <div>
+        <p><a href="{{ route('produits.index') }}">← Revenir au niveau des produits</a></p>
+    </div>
+
+   
+
+
     @if (!$peutModifier)
         <p style="color:red;">⚠️ Vous n’êtes pas autorisé à créer un mouvement.</p>
     @endif
@@ -49,32 +57,32 @@
                     </select>
                 
                     @error('produit_id') 
-                        <div>{{ $message }}</div> 
+                        <div style="color:red;">{{ $message }}</div> 
                     @enderror
                 </div>
             @endif
         </div>
 
-        <div>
+        {{-- <div>
             <a href="{{ route('produits.create') }}" target="_blank">Ajouter un produit</a>
             <p><em>Si le produit n’apparaît pas, créez-le puis actualisez cette page.</em></p>
-        </div>
+        </div> --}}
 
         <div>
             <label for="origine">Origine</label><br>
             <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
                 value="{{ old('origine') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('origine') 
-                <div>{{ $message }}</div> 
+                <div style="color:red;">{{ $message }}</div> 
             @enderror
         </div>
 
         <div>
             <label for="quantite_commandee">Quantité commandée</label><br>
-            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" required
+            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" 
                 value="{{ old('quantite_commandee') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('quantite_commandee') 
-                <div>{{ $message }}</div> 
+                <div style="color:red;" >{{ $message }}</div> 
             @enderror
         </div>
 
@@ -82,7 +90,7 @@
             <label for="quantite_entree">Quantité entrée</label><br>
             <input type="number" name="quantite_entree" id="quantite_entree" min="1"
                 value="{{ old('quantite_entree') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
-            @error('quantite_entree') <div>{{ $message }}</div> @enderror
+            @error('quantite_entree') <div style="color:red;" >{{ $message }}</div> @enderror
         </div>
 
         <div>
@@ -90,29 +98,29 @@
             <input type="number" name="quantite_sortie" id="quantite_sortie" min="1"
                 value="{{ old('quantite_sortie') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
             @error('quantite_sortie') 
-                <div>{{ $message }}</div> 
+                <div style="color:red;" >{{ $message }}</div> 
             @enderror
         </div>
 
-        <div>
+        {{-- <div>
             <label for="stock_debut_mois">Stock début du mois</label><br>
             <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required
                 value="{{ old('stock_debut_mois') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
-            @error('stock_debut_mois') <div>{{ $message }}</div> @enderror
-        </div>
+            @error('stock_debut_mois') <div style="color:red;">{{ $message }}</div> @enderror
+        </div> --}}
 
         <div>
             <label for="avarie">Avarie</label><br>
             <input type="number" name="avarie" id="avarie" min="1"
                 value="{{ old('avarie') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
-            @error('avarie') <div>{{ $message }}</div> @enderror
+            @error('avarie') <div style="color:red;" >{{ $message }}</div> @enderror
         </div>
 
         <div>
             <label for="observation">Observation</label><br>
             <textarea name="observation" id="observation" {{ !$peutModifier ? 'disabled' : '' }}>{{ old('observation') }}</textarea>
             @error('observation') 
-                <div>{{ $message }}</div> 
+                <div style="color:red;">{{ $message }}</div> 
             @enderror
         </div>
 
@@ -126,6 +134,25 @@
     <hr/>
 
     <h3>Liste des mouvements déjà créés</h3>
+
+    <form method="GET" action="{{ route('mouvements-produits.create') }}">
+    {{-- <label for="produit">Filtrer par produit :</label>
+    <select name="produit" id="produit">
+        <option value="">-- Tous les produits --</option>
+        @foreach($produits as $produit)
+            <option value="{{ $produit->produit_id }}" {{ $produitSelectionne == $produit->produit_id ? 'selected' : '' }}>
+                {{ $produit->libelle }}
+            </option>
+        @endforeach
+    </select> --}}
+
+    <label for="date">Filtrer par date :</label>
+    <input type="date" name="date" id="date" value="{{ $date }}">
+
+    <button type="submit">Rechercher</button>
+</form>
+
+    
 
     @if ($mouvements->count())
         <table border="1" cellpadding="5" cellspacing="0">
@@ -178,6 +205,7 @@
                 @endforeach
             </tbody>
         </table>
+        
     @else
         <p>Aucun mouvement enregistré pour le moment.</p>
     @endif

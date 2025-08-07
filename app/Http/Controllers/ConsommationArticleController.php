@@ -21,45 +21,57 @@ class ConsommationArticleController extends Controller
     }
 
     public function create(Request $request)
-    {
+{
+    $user = auth()->user();
 
-        $user = auth()->user();
-        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
-            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
-        }
-        $articles = Article::all();
-        $article_id = $request->query('article_id');
-        $annee = $request->query('annee') ?? date('Y');
-
-        $consommations_mensuelles = array_fill(1, 12, 0);
-
-        if ($article_id) {
-            $mensuelles = MouvementArticle::selectRaw("
-                    CAST(strftime('%m', date) AS INTEGER)  AS mois,
-                    COALESCE(SUM(quantite_sortie),0)      AS total")
-                ->where('article_id', $article_id)
-                ->whereYear('date', $annee)           
-                ->where('quantite_sortie', '>', 0)
-                ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
-                ->pluck('total', 'mois');
-
-            foreach ($mensuelles as $mois => $total) {
-                $consommations_mensuelles[$mois] = $total;
-            }
-        }
-
-        $consommations = ConsommationArticle::with('article')
-                          ->orderBy('annee', 'desc')
-                          ->get();
-
-        return view('consommations-articles.create', compact(
-            'articles',
-            'consommations',
-            'article_id',
-            'annee',
-            'consommations_mensuelles'
-        ));
+    if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+        return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
     }
+
+    $articles = Article::all();
+    $article_id = $request->query('article_id');
+    $annee = $request->query('annee', date('Y'));
+    $search = $request->query('search');
+    $consommations_mensuelles = array_fill(1, 12, 0);
+
+    // Requête principale pour les consommations, ordonnée par année décroissante
+    $consommationsQuery = ConsommationArticle::with('article')->orderBy('annee', 'desc');
+
+    // Filtrage par libellé (style article)
+    if (!empty($search)) {
+        $articleIds = Article::where('libelle', 'like', '%' . $search . '%')->pluck('article_id');
+        $consommationsQuery->whereIn('article_id', $articleIds);
+    }
+
+    $consommations = $consommationsQuery->paginate(10);
+
+    // Si un article est sélectionné, on calcule les consommations mensuelles
+    if (!empty($article_id)) {
+        $resultats = MouvementArticle::selectRaw("CAST(strftime('%m', date) AS INTEGER) AS mois, SUM(quantite_sortie) AS total")
+            ->where('article_id', $article_id)
+            ->whereYear('date', $annee)
+            ->where('quantite_sortie', '>', 0)
+            ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
+            ->get();
+
+        foreach ($resultats as $resultat) {
+            $mois = $resultat->mois;
+            $total = $resultat->total;
+            $consommations_mensuelles[$mois] = $total;
+        }
+    }
+
+    return view('consommations-articles.create', compact(
+        'articles',
+        'consommations',
+        'article_id',
+        'annee',
+        'consommations_mensuelles',
+        'search'
+    ));
+}
+
+
 
     public function store(ConsommationArticleRequest $request)
     {

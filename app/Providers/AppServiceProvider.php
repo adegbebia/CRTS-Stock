@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Produit;
 use App\Observers\ProduitObserver;
+use App\Models\Article;
+use App\Observers\ArticleObserver;
 use Illuminate\Support\Facades\DB;
 
 
@@ -24,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Produit::observe(ProduitObserver::class);
+        Article::observe(ArticleObserver::class);
+
         if (DB::getDriverName() === 'sqlite') {
             DB::statement('PRAGMA foreign_keys = ON;');
          }
