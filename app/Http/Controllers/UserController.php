@@ -11,7 +11,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+   public function index(Request $request)
     {
         $user = auth()->user();
 
@@ -20,20 +20,48 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
         }
 
+        $search = $request->input('search');
+
+        $paginates=3;
+
+        $query = User::query();
+
+
         // Récupération des utilisateurs selon le rôle
         if ($user->hasRole('admin')) {
-            $users = User::all();
+            // Admin voit tous les utilisateurs
+            $query = User::query();
         } elseif ($user->hasRole('magasinier_technique')) {
-            $users = User::where('magasin_affecte', 'technique')->get();
+            $query->where('magasin_affecte', 'technique');
         } elseif ($user->hasRole('magasinier_collation')) {
-            $users = User::where('magasin_affecte', 'collation')->get();
+            $query->where('magasin_affecte', 'collation');
         } else {
             // Sécurité supplémentaire
-            $users = collect();
+            $query->whereRaw('1 = 0'); // renvoie une collection vide
         }
+
+        // Appliquer le filtre de recherche
+        if ($search) {
+            $search = strtolower($search);
+
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(nom) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(nom_pseudo) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(prenom) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(adresse) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(telephone) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(magasin_affecte) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(email) LIKE ?', ["%$search%"]);
+            });
+        }
+
+        // Exécuter la requête (sans pagination)
+        
+        $users = $query->paginate($paginates);
 
         return view('users.index', compact('users'));
     }
+
 
 
     /**
@@ -66,9 +94,10 @@ class UserController extends Controller
         }
         $request->validate([
             'nom' => 'required|string|max:255',
+            'nom_pseudo' => 'required|unique|string|max:255',
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
-            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/'],
+            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/','unique:users,telephone,' . $user->user_id . ',user_id'],
             'magasin_affecte' => 'required|in:collation,technique',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
@@ -79,6 +108,8 @@ class UserController extends Controller
 
             // Transformer nom en majuscules
             $user->nom = mb_strtoupper($request->input('nom'));
+
+            $user->nom_pseudo = mb_strtoupper($request->input('nom_pseudo'));
 
             // Prénom et adresse : Première lettre en majuscule, le reste en minuscules
             $user->prenom = ucfirst(mb_strtolower($request->input('prenom')));
@@ -164,9 +195,10 @@ class UserController extends Controller
         }
         $request->validate([
             'nom' => 'required|string|max:255',
+            'nom_pseudo' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
-            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/','unique:users,telephone'],
+            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/'],
             'magasin_affecte' => 'required|in:collation,technique,admin',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->user_id . ',user_id',
             'password' => 'nullable|string|min:6|confirmed',
@@ -174,6 +206,7 @@ class UserController extends Controller
 
         try {
             $user->nom = $request->input('nom');
+            $user->nom_pseudo = $request->input('nom_pseudo');
             $user->prenom = $request->input('prenom');
             $user->adresse = $request->input('adresse');
             $user->telephone = $request->input('telephone');

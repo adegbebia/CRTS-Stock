@@ -5,7 +5,7 @@
     <title>Liste des employés</title>
 </head>
 <body>
-    <h1>Employés</h1>
+    <h1>Liste des Employés</h1>
 
     @if (session('success'))
         <p style="color:green;">{{ session('success') }}</p>
@@ -29,11 +29,17 @@
         </a>
 
     @endif
-
+        {{-- Formulaire de recherche --}}
+    <form method="GET" action="{{ route('users.index')}}" style="margin-bottom: 20px;">
+        <input type="text" name="search" placeholder="Rechercher un employer..." value="{{ request('search') }}">
+        <button type="submit">Rechercher</button>
+    </form>
     <table border="1" cellpadding="5" cellspacing="0">
         <thead>
             <tr>
+                <th>Date de création Employé</th>
                 <th>Nom</th>
+                <th>Nom Pseudo </th>
                 <th>Prénom</th>
                 <th>Adresse</th>
                 <th>Téléphone</th>
@@ -45,7 +51,9 @@
         <tbody>
             @forelse ($users as $user)
                 <tr>
+                    <td>{{ \Carbon\Carbon::parse($user->datecreation)->translatedFormat('d F Y') }}</td>
                     <td>{{ $user->nom }}</td>
+                    <td>{{ $user->nom_pseudo }}</td>
                     <td>{{ $user->prenom }}</td>
                     <td>{{ $user->adresse }}</td>
                     <td>{{ $user->telephone }}</td>
@@ -97,6 +105,9 @@
             @endforelse
         </tbody>
     </table>
+    {{ $users->links() }}
+
+    
 
     {{-- SweetAlert pour confirmation suppression --}}
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

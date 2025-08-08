@@ -29,6 +29,9 @@
             <label for="nom">Nom :</label><br>
             <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"><br><br>
 
+            <label for="nom_pseudo">Nom Pseudo:</label><br>
+            <input type="text" name="nom_pseudo" id="nom_pseudo" value="{{ old('nom_pseudo') }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"><br><br>
+
             <label for="prenom">Prénom :</label><br>
             <input type="text" name="prenom" id="prenom" value="{{ old('prenom') }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"><br><br>
 
