@@ -4,33 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'Mon Application')</title>
-    {{-- Inclure tes assets CSS/JS (Vite, Mix ou autre) --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Styles Tailwind/DaisyUI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-gray-100 flex min-h-screen">
+<body class="min-h-screen flex flex-col bg-gray-50">
 
-    {{-- Sidebar fixe à gauche --}}
-    @include('layouts.partials.sidebar')
+    @include('layouts.navbar')
 
-    {{-- Conteneur principal (laisse la place pour la sidebar) --}}
-    <div class="flex-1 flex flex-col ml-64 min-h-screen">
-        
-        {{-- Navbar en haut --}}
-        @include('layouts.partials.navbar')
+    <div class="flex flex-1">
+        <!-- Sidebar avec gestion complète de l'affichage -->
+        <div id="sidebar" class="w-64 bg-base-200 p-4 shadow-lg transition-all duration-300 transform">
+            @include('layouts.sidebar')
+        </div>
 
-        
-
-        {{-- Zone contenu principale --}}
-        <main class="flex-grow p-6 bg-gray-50">
+        <!-- Contenu principal - sans marge gauche initiale -->
+        <main class="flex-1 p-6 overflow-auto">
             @yield('content')
         </main>
-
-        {{-- Footer simple --}}
-        <footer class="bg-white border-t border-gray-200 text-center py-4 text-sm text-gray-500">
-            &copy; {{ date('Y') }} Mon Application. Tous droits réservés.
-        </footer>
-
     </div>
 
+    @include('layouts.footer')
+
+    {{-- <!-- Bouton toggle amélioré -->
+    <button id="toggleSidebar" class="fixed top-4 left-4 z-50 btn btn-ghost btn-circle">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button> --}}
+
+    <!-- Script de bascule -->
+    <script>
+        document.getElementById('toggleSidebar').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            
+            // Solution optimale combinant translation et suppression d'espace
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('w-0');
+            sidebar.classList.toggle('overflow-hidden');
+        });
+    </script>
 </body>
 </html>

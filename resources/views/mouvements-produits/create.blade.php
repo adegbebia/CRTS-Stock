@@ -136,7 +136,7 @@
     <h3>Liste des mouvements déjà créés</h3>
 
     <form method="GET" action="{{ route('mouvements-produits.create') }}">
-    {{-- <label for="produit">Filtrer par produit :</label>
+    <label for="produit">Filtrer par produit :</label>
     <select name="produit" id="produit">
         <option value="">-- Tous les produits --</option>
         @foreach($produits as $produit)
@@ -144,7 +144,7 @@
                 {{ $produit->libelle }}
             </option>
         @endforeach
-    </select> --}}
+    </select>
 
     <label for="date">Filtrer par date :</label>
     <input type="date" name="date" id="date" value="{{ $date }}">

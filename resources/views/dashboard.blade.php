@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard - Alertes</title>
-    <!-- SweetAlert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body>
+@extends('layouts.app')
 
+@section('title', 'Dashboard - Alertes')
+
+@section('content')
+<div id="dashboardContent" class="transition-all duration-300 ml-64">
     <h1>Bienvenue sur le Dashboard</h1>
 
     {{-- SweetAlert message de succès --}}
@@ -59,6 +55,23 @@
             <p>Aucune alerte article pour le moment.</p>
         @endif
     @endif
+</div>
 
-</body>
-</html>
+@push('scripts')
+<script>
+document.getElementById('toggleSidebar').addEventListener('click', function () {
+    let sidebar = document.getElementById('sidebar');
+    let content = document.getElementById('dashboardContent');
+
+    sidebar.classList.toggle('-translate-x-full');
+    if (sidebar.classList.contains('-translate-x-full')) {
+        content.classList.remove('ml-64');
+        content.classList.add('ml-0');
+    } else {
+        content.classList.remove('ml-0');
+        content.classList.add('ml-64');
+    }
+});
+</script>
+@endpush
+@endsection

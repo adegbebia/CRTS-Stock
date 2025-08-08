@@ -67,7 +67,9 @@ class RapportProduitController extends Controller
 
             $totalSortie = $uniteSortieLignes->sum('sortie');
 
-            $stockFin = $produit->quantitestock;
+            // $stockFin = $produit->quantitestock;
+            $stockFin = $stockTotal - $totalSortie;
+
 
 
             // Modification importante ici :
@@ -109,12 +111,13 @@ class RapportProduitController extends Controller
         }
 
 
-        // Remplacement des variables dans le template
+        $typeMagasin = "Technique";
         $latexContent = str_replace(
-            ['{{periode}}', '{{annee}}', '{{rows}}'],
-            [ucfirst($periodeNom), $annee, $rows],
+            ['{{periode}}', '{{annee}}', '{{rows}}', '{{typeMagasin}}'],
+            [ucfirst($periodeNom), $annee, $rows, $this->escapeLatex($typeMagasin)],
             $template
         );
+
 
         if (empty(trim($latexContent))) {
             return response("❌ Le contenu LaTeX est vide. Vérifie le template ou les données.", 500);

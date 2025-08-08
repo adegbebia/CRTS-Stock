@@ -65,7 +65,9 @@ class RapportArticleController extends Controller
 
             $totalSortie = $uniteSortieLignes->sum('sortie');
 
-            $stockFin = $article->quantitestock;
+            // $stockFin = $article->quantitestock;
+            $stockFin = $stockTotal - $totalSortie;
+
 
             $uniteColumn = "\\begin{tabular}[t]{@{}l@{}}\n";
             $uniteColumn .= implode(" \\\\\n", $uniteSortieLignes->pluck('origine')->all());
@@ -96,9 +98,10 @@ class RapportArticleController extends Controller
             );
         }
 
+        $typeMagasin = "Collation";
         $latexContent = str_replace(
-            ['{{periode}}', '{{annee}}', '{{rows}}'],
-            [ucfirst($periodeNom), $annee, $rows],
+            ['{{periode}}', '{{annee}}', '{{rows}}', '{{typeMagasin}}'],
+            [ucfirst($periodeNom), $annee, $rows, $this->escapeLatex($typeMagasin)],
             $template
         );
 
