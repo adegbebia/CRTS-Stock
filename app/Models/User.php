@@ -32,7 +32,9 @@ class User extends Authenticatable
     protected $primaryKey ='user_id';
 
     protected $fillable = [
+        'datecreation',
         'nom',
+        'nom_pseudo',
         'prenom',
         'adresse',
         'telephone',

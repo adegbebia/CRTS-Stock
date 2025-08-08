@@ -17,20 +17,29 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <label for="email">E-mail</label><br>
-        <input type="email" id="email" name="email" value="{{ old('email') }}" required autofocus><br><br>
+        @if(session('error'))
+            <div style="color: red">{{ session('error') }}</div>
+        @endif
 
-        <label for="password">Mot de passe</label><br>
-        <input type="password" id="password" name="password" required oninput="handleInput()">
+        <div>
+            <label for="nom_pseudo">Pseudo</label>
+            <input type="text" id="nom_pseudo" name="nom_pseudo" required>
+        </div><br/>
+        <div>
+            <label for="password">Mot de passe</label><br>
+            <input type="password" id="password" name="password" required oninput="handleInput()">
+        </div><br/>
         <i
             id="eyeIcon"
             class="fa-solid fa-eye-slash"
             onclick="togglePassword()"
             style="cursor: pointer; display: none;"
-        ></i><br><br>
+        ></i><br/>
 
-        <input type="checkbox" id="remember" name="remember">
-        <label for="remember">Se souvenir de moi</label><br><br>
+        <!-- <div>
+            <input type="checkbox" id="remember" name="remember">
+            <label for="remember">Se souvenir de moi</label><br><br>
+        </div> -->
 
         <button type="submit">Se connecter</button>
     </form>

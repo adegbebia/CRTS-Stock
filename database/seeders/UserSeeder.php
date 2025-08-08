@@ -18,7 +18,9 @@ class UserSeeder extends Seeder
         $now = Carbon::now();
 
         $user1=User::create([
+            'datecreation'      =>Carbon::now()->toDateString(),
             'nom'               => 'DEGBEBIA',
+            'nom_pseudo'        => 'goat',
             'prenom'            => 'Aïmane',
             'adresse'            => 'Komah',
             'telephone'         => 98112012,
@@ -33,10 +35,12 @@ class UserSeeder extends Seeder
         $user1->assignRole('admin');
 
         $user2=User::create([
+            'datecreation'      =>Carbon::now()->toDateString(),
             'nom'               => 'BABA',
             'prenom'            => 'Traore-hannatou',
-            'adresse'            => 'Didaoure',
-            'telephone'            => 90909138,
+            'nom_pseudo'        => 'hanna',
+            'adresse'           => 'Didaoure',
+            'telephone'          => 90909138,
             'magasin_affecte' => 'technique',
             'email'             => 'hannatou@gmail.com',
             'email_verified_at' => $now,
@@ -49,8 +53,11 @@ class UserSeeder extends Seeder
 
 
         $user3=User::create([
+
+            'datecreation'      =>Carbon::now()->toDateString(),
             'nom'               => 'ADOUN',
-            'prenom'            => 'Hyaceinthe',
+            'prenom'            => 'Hyaceinth',
+            'nom_pseudo'        => 'Hy',
             'adresse'            => 'Bariere',
             'telephone'            => 90205203,
             'magasin_affecte' => 'technique',
@@ -64,7 +71,10 @@ class UserSeeder extends Seeder
         $user3->assignRole('magasinier_technique');
 
         $user4=User::create([
+
+            'datecreation'      =>Carbon::now()->toDateString(),
             'nom'               => 'YERIMA',
+            'nom_pseudo'        => 'yersa',
             'prenom'            => 'Sadate',
             'adresse'           => 'Komah3',
             'telephone'         => 98112012,
@@ -80,8 +90,11 @@ class UserSeeder extends Seeder
 
 
         $user5=User::create([
+
+            'datecreation'      =>Carbon::now()->toDateString(),
             'nom'               => 'KODJO',
             'prenom'            => 'Ama',
+            'nom_pseudo'        => 'am',
             'adresse'           => 'Koulounde',
             'telephone'         => 98112012,
             'magasin_affecte'   => 'collation',
