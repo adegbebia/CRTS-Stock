@@ -16,7 +16,7 @@
 
     <div class="flex flex-1">
         <!-- Sidebar avec gestion complète de l'affichage -->
-        <div id="sidebar" class="w-64 bg-base-200 p-4 shadow-lg transition-all duration-300 transform">
+        <div id="sidebar" class="w-64 bg-base-200 p-4  transition-all duration-300 transform">
             @include('layouts.sidebar')
         </div>
 
