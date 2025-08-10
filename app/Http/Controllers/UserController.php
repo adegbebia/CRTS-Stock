@@ -109,7 +109,7 @@ class UserController extends Controller
             // Transformer nom en majuscules
             $user->nom = mb_strtoupper($request->input('nom'));
 
-            $user->nom_pseudo = mb_strtoupper($request->input('nom_pseudo'));
+            $user->nom_pseudo = ucfirst(mb_strtoupper($request->input('nom_pseudo')));
 
             // Prénom et adresse : Première lettre en majuscule, le reste en minuscules
             $user->prenom = ucfirst(mb_strtolower($request->input('prenom')));

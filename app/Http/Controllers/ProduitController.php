@@ -19,15 +19,48 @@ class ProduitController extends Controller
         return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
     }
 
+
+    $search = $request->input('search');
+
+    $paginates=2;
+
     $query = Produit::query();
 
-    if ($request->filled('search')) {
-        $query->where('libelle', 'like', '%' . $request->search . '%');
-    }
+    // $query->whereRaw('1=0');
 
-    // Ajout de la pagination ici (10 produits par page)
-    $produits = $query->paginate(10); 
+    // if ($request->filled('search')) {
+    //     $query->where('libelle', 'like', '%' . $request->search . '%');
+    // }
+
+    // // Ajout de la pagination ici (10 produits par page)
+    // $produits = $query->paginate(10); 
+   
+
+    if ($search) {
+            $search = strtolower($search);
+
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(codeproduit) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(libelle) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(conditionnement) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(quantitestock) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(stockmax) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(stockmin) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(stocksecurite) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(dateperemption) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(lot) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(date) LIKE ?', ["%$search%"]);
+            });
+
+
+}
+
+
+    $produits = $query->paginate($paginates);
+
     $users = User::all();
+
+
 
     return view('produits.index', compact('produits', 'users'));
 }

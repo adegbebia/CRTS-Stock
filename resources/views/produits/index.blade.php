@@ -5,9 +5,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Liste des produits</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
+
 
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .pagination svg {
+            width: 1rem; /* Taille plus petite */
+            height: 1rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -168,10 +176,11 @@
             @endforeach
         </tbody>
     </table>
-    </table>
         
     @endif
-
+    <div class="pagination">
+        {{ $produits->links() }}
+    </div>
     <div>
         <p><a href="{{ route('dashboard') }}">← Revenir au tableau de bord</a></p>
     </div>
