@@ -11,8 +11,19 @@
 </head>
 
 <body>
+   
+</body>
 
-    <h2>Liste des produits dans la base</h2>
+</html>
+
+
+@extends('layouts.app')
+
+@section('title', '')
+
+@section('content')
+
+<h2>Liste des produits dans la base</h2>
 
     @php
         $user = auth()->user();
@@ -194,6 +205,6 @@
         }
     </script>
 
-</body>
 
-</html>
+@endsection
+

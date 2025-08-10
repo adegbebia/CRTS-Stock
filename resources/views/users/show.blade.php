@@ -1,17 +1,16 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Détails utilisateur</title>
-</head>
-<body>
+@extends('layouts.app')
+
+
+
+@section('content')
+
     <h1>Détails de l'utilisateur</h1>
 
     @php
         $userAuth = auth()->user();
     @endphp
 
-    @if (! $userAuth->hasRole(['admin', 'magasinier_technique', 'magasinier_collation']))
+    @if (!$userAuth->hasRole(['admin', 'magasinier_technique', 'magasinier_collation']))
         <p style="color: red;">Accès refusé : vous n'êtes pas autorisé à voir ces informations.</p>
         <a href="{{ route('dashboard') }}">Retour</a>
     @else
@@ -28,5 +27,5 @@
 
         <a href="{{ route('users.index') }}">Retour à la liste</a>
     @endif
-</body>
-</html>
+
+@endsection

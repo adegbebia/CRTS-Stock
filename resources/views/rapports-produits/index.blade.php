@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Générer un rapport</title>
-</head>
-<body>
+@extends('layouts.app')
+
+
+
+@section('content')
     <h2>Génération de rapport</h2>
 
     <form method="POST" action="{{ route('rapports-produits.generer') }}">
-         @csrf
+        @csrf
         <label>Type de rapport :</label><br>
         <input type="radio" name="type" value="mois" required> Mensuel<br>
         <input type="radio" name="type" value="trimestre"> Trimestriel<br>
@@ -41,8 +39,7 @@
         <input type="submit" value="Générer le rapport">
     </form>
 
-    @if(session('pdf'))
+    @if (session('pdf'))
         <p><a href="{{ session('pdf') }}">📄 Télécharger le rapport généré</a></p>
     @endif
-</body>
-</html>
+@endsection

@@ -28,3 +28,12 @@
 
 </body>
 </html>
+
+@extends('layouts.app')
+
+@section('title', 'Dashboard - Alertes')
+
+@section('content')
+
+@endsection
+
