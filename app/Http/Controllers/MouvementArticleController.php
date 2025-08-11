@@ -29,23 +29,23 @@ class MouvementArticleController extends Controller
         }
 
         $articles = Article::all();
-        $articleSelectionne = $request->query('article');
+        $articlesSelectionne = $request->query('article');
         $date = $request->query('date');
 
         // Construction de la requête
         $query = MouvementArticle::with('article')->latest();
 
-        if ($articleSelectionne) {
-            $query->where('article_id', $articleSelectionne);
+        if ($articlesSelectionne) {
+            $query->where('article_id', $articlesSelectionne);
         }
 
         if ($date) {
             $query->whereDate('date', $date);
         }
 
-        $mouvements = $query->paginate(10);
+        $mouvements = $query->paginate(2);
 
-        return view('mouvements-articles.create', compact('articles', 'articleSelectionne', 'date', 'mouvements'));
+        return view('mouvements-articles.create', compact('articles', 'articlesSelectionne', 'date', 'mouvements'));
     }
 
 

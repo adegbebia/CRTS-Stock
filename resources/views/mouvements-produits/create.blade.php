@@ -1,10 +1,4 @@
-
-
-
 @extends('layouts.app')
-
-
-
 @section('content')
 
 
@@ -142,6 +136,8 @@
         <label for="produit">Filtrer par produit :</label>
         <select name="produit" id="produit">
             <option value="">-- Tous les produits --</option>
+            @foreach($produits as $produit)
+                <option value="{{ $produit->produit_id }}" {{ $produitSelectionne == $produit->produit_id ? 'selected' : '' }}>
             @foreach ($produits as $produit)
                 <option value="{{ $produit->produit_id }}"
                     {{ $produitSelectionne == $produit->produit_id ? 'selected' : '' }}>
@@ -155,9 +151,6 @@
 
         <button type="submit">Rechercher</button>
     </form>
-
-
-
     @if ($mouvements->count())
         <table border="1" cellpadding="5" cellspacing="0">
             <thead>
@@ -208,6 +201,10 @@
                 @endforeach
             </tbody>
         </table>
+        <!-- {{ $mouvements->links() }} -->
+        <div class="pagination">
+            {{ $mouvements->links() }}
+        </div>
     @else
         <p>Aucun mouvement enregistré pour le moment.</p>
     @endif

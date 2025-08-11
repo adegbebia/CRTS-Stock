@@ -24,17 +24,47 @@ class ArticleController extends Controller
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }
 
-        $query = Article::query();
+        // $query = Article::query();
 
-        if ($request->filled('search')) {
-            $query->where('libelle', 'like', '%' . $request->search . '%');
+        // if ($request->filled('search')) {
+        //     $query->where('libelle', 'like', '%' . $request->search . '%');
+        // }
+        
+        $search = $request->input('search');
+
+        $paginates=2;
+
+        $query = Article::query();
+        
+        // $articles = $query->paginate(10); 
+
+        if ($search) {
+
+            $search = strtolower($search);
+
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(codearticle) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(libelle) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(conditionnement) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(quantitestock) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(stockmax) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(stockmin) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(stocksecurite) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(dateperemption) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(lot) LIKE ?', ["%$search%"])
+                ->orWhereRaw('LOWER(date) LIKE ?', ["%$search%"]);
+            });
+
+
         }
-        
-        
-        
-        $articles = $query->paginate(10); 
+
+        $articles = $query->paginate($paginates); 
+
         $users = User::all();
+
         return view('articles.index', compact('articles','users'));
+
+
     }
 
     public function create()

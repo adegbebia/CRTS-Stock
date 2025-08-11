@@ -44,7 +44,7 @@ class MouvementProduitController extends Controller
                 $query->whereDate('date', $date);
             }
 
-            $mouvements = $query->paginate(10);
+            $mouvements = $query->paginate(2);
 
             return view('mouvements-produits.create', compact('produits', 'produitSelectionne', 'date', 'mouvements'));
         }

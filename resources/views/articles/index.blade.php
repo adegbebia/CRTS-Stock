@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des articles</title>
-
-    <!-- SweetAlert CDN -->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-</head>
-
-<body>
-
-    
-
-</body>
-
-</html>
-
-
 @extends('layouts.app')
-
-
 
 @section('content')
 
@@ -204,9 +181,9 @@
             </tbody>
         </table>
         {{-- Pagination --}}
-    <div style="margin-top: 20px;">
-        {{ $articles->links() }}
-    </div>
+        <div class="pagination">
+            {{ $articles->links() }}
+        </div>
     <div>
         <p><a href="{{ route('dashboard') }}">← Revenir au tableau de bord</a></p>
     </div>

@@ -1,8 +1,6 @@
-
-
 @extends('layouts.app')
 
-
+@section('content')
 
 <h2>Génération de rapport</h2>
 
@@ -17,7 +15,7 @@
     <select name="mois">
         @for ($i = 1; $i <= 12; $i++)
             <option value="{{ $i }}">{{ $i }}</option>
-        @endfor
+            @endfor
     </select><br><br>
 
     <label>Trimestre :</label><br>
@@ -41,7 +39,7 @@
 </form>
 
 @if (session('pdf'))
-    <p><a href="{{ session('pdf') }}">📄 Télécharger le rapport généré</a></p>
+<p><a href="{{ session('pdf') }}">📄 Télécharger le rapport généré</a></p>
 @endif
 
 @endsection

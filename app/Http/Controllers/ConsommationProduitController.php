@@ -41,7 +41,7 @@ class ConsommationProduitController extends Controller
         $consommationsQuery->whereIn('produit_id', $produitIds);
     }
 
-    $consommations = $consommationsQuery->paginate(10);
+    $consommations = $consommationsQuery->paginate(2);
 
     // Si un produit est sélectionné, on calcule ses consommations mensuelles
     if (!empty($produit_id)) {

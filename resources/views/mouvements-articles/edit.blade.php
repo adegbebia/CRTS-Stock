@@ -1,21 +1,6 @@
-
-
-</body>
-</html>
-
 @extends('layouts.app')
-
-
-
 @section('content')
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Modifier un mouvement</title>
-</head>
-<body>
     @php
         $user = auth()->user();
         $peutModifier = $user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation';

@@ -1,7 +1,4 @@
 @extends('layouts.app')
-
-
-
 @section('content')
 
     @php
@@ -195,7 +192,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div>
+        <div class="pagination">
             {{ $consommations->links() }}
         </div>
         <div>

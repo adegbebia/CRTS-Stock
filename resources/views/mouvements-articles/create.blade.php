@@ -1,7 +1,4 @@
 @extends('layouts.app')
-
-
-
 @section('content')
 
     @php
@@ -39,13 +36,13 @@
 
         <div>
 
-            @if ($articleSelectionne)
+            @if ($articlesSelectionne)
                 @php
-                    $article = $articles->find($articleSelectionne);
+                    $article = $articles->find($articlesSelectionne);
                 @endphp
                 <div>
                     <p>Article sélectionné : <strong>{{ $article->libelle ?? 'N/A' }}</strong></p>
-                    <input type="hidden" name="article_id" value="{{ $articleSelectionne }}">
+                    <input type="hidden" name="article_id" value="{{ $articlesSelectionne }}">
                 </div>
             @else
                 <div>
@@ -144,9 +141,23 @@
 
     <h3>Liste des mouvements déjà créés</h3>
 
+   <form method="GET" action="{{ route('mouvements-articles.create') }}">
+    <label for="produit">Filtrer par article :</label>
+        <select name="article" id="article">
+            <option value="">-- Tous les articles --</option>
+            @foreach($articles as $article)
+                <option value="{{ $article->article_id }}" {{ $articlesSelectionne == $article->article_id ? 'selected' : '' }}>
+                    {{ $article->libelle }}
+                </option>
+            @endforeach
+        </select>  
+        
+        
+
     <form method="GET" action="{{ route('mouvements-articles.create') }}">
         <label for="date">Filtrer par date :</label>
         <input type="date" name="date" id="date" value="{{ $date }}">
+
         <button type="submit">Rechercher</button>
     </form>
 
@@ -203,7 +214,7 @@
             </tbody>
         </table>
 
-        <div>
+        <div class="pagination">
             {{ $mouvements->links() }}
         </div>
     @else

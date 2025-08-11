@@ -158,9 +158,32 @@
 
         </table>
 
+
     @endif
 
     
+
+                        <br>
+                        <a href="{{ route('mouvements-produits.create', ['produit' => $produit->produit_id]) }}">
+                            <button type="button" title="Enregistrer un mouvement">
+                                📦 Mouvement
+                            </button>
+                        </a>
+                    </td>
+                @endif
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+        
+    @endif
+    <div class="pagination">
+        {{ $produits->links() }}
+    </div>
+    <div>
+        <p><a href="{{ route('dashboard') }}">← Revenir au tableau de bord</a></p>
+    </div>
+>>>>>>> b2273750be6cb7825fb2d3649782f15e9cf5efea
 
     <script>
         function confirmDelete(id) {
