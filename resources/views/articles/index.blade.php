@@ -1,35 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des articles</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
-
-
-    <!-- SweetAlert CDN -->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <style>
-        .pagination svg {
-            width: 1rem; /* Taille plus petite */
-            height: 1rem;
-        }
-    </style>
-</head>
-
-<body>
-
-    
-
-</body>
-
-</html>
-
-
 @extends('layouts.app')
-
-
 
 @section('content')
 

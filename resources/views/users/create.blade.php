@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-
-
 @section('content')
 
     <h1>Créer un utilisateur</h1>

@@ -22,7 +22,7 @@ class UserController extends Controller
 
         $search = $request->input('search');
 
-        $paginates=3;
+        $paginates=2;
 
         $query = User::query();
 

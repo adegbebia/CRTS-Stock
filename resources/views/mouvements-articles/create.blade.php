@@ -1,18 +1,4 @@
 @extends('layouts.app')
-
-<head>
-    <meta charset="UTF-8">
-    <title>Ajout de mouvement</title>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        .pagination svg {
-            width: 1rem; /* Taille plus petite */
-            height: 1rem;
-        }
-    </style>
-
-
-
 @section('content')
 
     @php
