@@ -17,7 +17,7 @@
             <a href="{{ route('produits.create') }}" class="bg-red-200 inline-flex items-center p-1 rounded hover:bg-gray-100"
                 title="Ajouter un produit">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" width="20" height="20" class="text-red-600">
+                    stroke="currentColor" width="20" height="20" class="text-red-300">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
@@ -59,7 +59,7 @@
                 <input name="search" type="search" required placeholder="Search" value="{{ request('search') }}"
                     class="outline-none" />
             </label>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+            <button class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-red-600 transition"
                 type="submit">Rechercher</button>
         </form>
 
@@ -139,7 +139,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" onclick="confirmDelete('{{ $produit->produit_id }}')"
-                                        class="text-red-500 hover:underline"title="Supprimer">
+                                        class="text-red-300 hover:underline" title="Supprimer">
                                         {{-- ton SVG supprimer --}}
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

@@ -3,7 +3,9 @@
 
 
 @section('content')
-    <h1>Liste des Employés</h1>
+    <h2 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">
+        Liste des Employés
+    </h2>
 
     @if (session('success'))
         <p style="color:green;">{{ session('success') }}</p>
@@ -15,48 +17,62 @@
 
     {{-- Bouton créer uniquement pour admin --}}
     @if ($currentUser->hasRole('admin'))
-        <a href="{{ route('users.create') }}" title="Ajouter un nouvel employé(é)">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                width="20" height="20">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0
-                            3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318
-                            12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-            </svg>
-        </a>
+        <div class="flex justify-end">
+            <a href="{{ route('users.create') }}" class="bg-red-200 inline-flex items-center p-1 rounded hover:bg-gray-100"
+                title="Ajouter un nouvel employé(é)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" width="20" height="20" class="text-red-600">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0
+                                3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318
+                                12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                </svg>
+            </a>
+        </div>
     @endif
     {{-- Formulaire de recherche --}}
-    <form method="GET" action="{{ route('users.index') }}" style="margin-bottom: 20px;">
-        <input type="text" name="search" placeholder="Rechercher un employer..." value="{{ request('search') }}">
-        <button type="submit">Rechercher</button>
+    <form method="GET" action="{{ route('produits.index') }}" style="margin-bottom: 20px;">
+        <label class="input inline-flex items-center border rounded px-2 py-1 mr-2">
+            <svg class="h-5 w-5 opacity-50 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+            </svg>
+            <input name="search" type="search" required placeholder="Search" value="{{ request('search') }}"
+                class="outline-none" />
+        </label>
+        <button class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-red-300 transition"
+            type="submit">Rechercher</button>
     </form>
-    <table border="1" cellpadding="5" cellspacing="0">
-        <thead>
+    <table class="min-w-full border border-gray-300 rounded-lg shadow">
+        <thead class="bg-red-200">
             <tr>
-                <th>Date de création Employé</th>
-                <th>Nom</th>
-                <th>Nom Pseudo </th>
-                <th>Prénom</th>
-                <th>Adresse</th>
-                <th>Téléphone</th>
-                <th>Magasin Affecté</th>
-                <th>Email</th>
-                <th>Actions</th>
+                <th class="px-4 py-2 border">Date de création Employé</th>
+                <th class="px-4 py-2 border">Nom</th>
+                <th class="px-4 py-2 border">Nom Pseudo </th>
+                <th class="px-4 py-2 border">Prénom</th>
+                <th class="px-4 py-2 border">Adresse</th>
+                <th class="px-4 py-2 border">Téléphone</th>
+                <th class="px-4 py-2 border">Magasin Affecté</th>
+                <th class="px-4 py-2 border">Email</th>
+                <th class="px-4 py-2 border">Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse ($users as $user)
-                <tr>
-                    <td>{{ \Carbon\Carbon::parse($user->datecreation)->translatedFormat('d F Y') }}</td>
-                    <td>{{ $user->nom }}</td>
-                    <td>{{ $user->nom_pseudo }}</td>
-                    <td>{{ $user->prenom }}</td>
-                    <td>{{ $user->adresse }}</td>
-                    <td>{{ $user->telephone }}</td>
-                    <td>{{ $user->magasin_affecte }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2 border">{{ \Carbon\Carbon::parse($user->datecreation)->translatedFormat('d F Y') }}
+                    </td>
+                    <td class="px-4 py-2 border">{{ $user->nom }}</td>
+                    <td class="px-4 py-2 border">{{ $user->nom_pseudo }}</td>
+                    <td class="px-4 py-2 border">{{ $user->prenom }}</td>
+                    <td class="px-4 py-2 border">{{ $user->adresse }}</td>
+                    <td class="px-4 py-2 border">{{ $user->telephone }}</td>
+                    <td class="px-4 py-2 border">{{ $user->magasin_affecte }}</td>
+                    <td class="px-4 py-2 border">{{ $user->email }}</td>
+                    <td class="px-4 py-2 border">
                         {{-- Tout le monde peut voir --}}
-                        <a href="{{ route('users.show', $user->user_id) }}" title="Voir">
+                        <a href="{{ route('users.show', $user->user_id) }}" class="text-indigo-600 hover:underline"
+                            title="Voir">
                             <button type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     width="20" height="20">
@@ -70,7 +86,8 @@
 
                         {{-- Modifier et Supprimer uniquement pour admin --}}
                         @if ($currentUser->hasRole('admin'))
-                            <a href="{{ route('users.edit', $user->user_id) }}" title="Modifier">
+                            <a href="{{ route('users.edit', $user->user_id) }}" class="text-yellow-600 hover:underline"
+                                title="Modifier">
                                 <button type="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                         width="20" height="20">
@@ -86,7 +103,7 @@
                                 style="display:inline;" class="delete-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" class="btn-delete" title="Supprimer">
+                                <button type="button" class="btn-delete text-red-500 hover:underline " title="Supprimer">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                         width="20" height="20">
                                         <path fill-rule="evenodd"
@@ -105,7 +122,14 @@
             @endforelse
         </tbody>
     </table>
-    {{ $users->links() }}
+
+    <div class="join mt-4 flex justify-end">
+        @for ($page = 1; $page <= $users->lastPage(); $page++)
+            <input type="radio" name="pagination" aria-label="{{ $page }}"
+                class="join-item btn btn-square bg-red-200 checked:bg-blue-500 checked:text-white"
+                @if ($users->currentPage() == $page) checked @endif onchange="window.location='{{ $users->url($page) }}'" />
+        @endfor
+    </div>
 
 
 
