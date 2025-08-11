@@ -5,6 +5,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Consommations – Création</title>
+    <style>
+        .pagination svg {
+            width: 1rem; /* Taille plus petite */
+            height: 1rem;
+        }
+    </style>
 
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -204,7 +210,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div>
+        <div class="pagination">
             {{ $consommations->links() }}
         </div>
         <div>

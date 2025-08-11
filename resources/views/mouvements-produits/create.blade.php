@@ -5,6 +5,12 @@
     <meta charset="UTF-8" />
     <title>Ajout de mouvement</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .pagination svg {
+            width: 1rem; /* Taille plus petite */
+            height: 1rem;
+        }
+    </style>
 </head>
 
 <body>
@@ -136,21 +142,21 @@
     <h3>Liste des mouvements déjà créés</h3>
 
     <form method="GET" action="{{ route('mouvements-produits.create') }}">
-    <label for="produit">Filtrer par produit :</label>
-    <select name="produit" id="produit">
-        <option value="">-- Tous les produits --</option>
-        @foreach($produits as $produit)
-            <option value="{{ $produit->produit_id }}" {{ $produitSelectionne == $produit->produit_id ? 'selected' : '' }}>
-                {{ $produit->libelle }}
-            </option>
-        @endforeach
-    </select>
+        <label for="produit">Filtrer par produit :</label>
+        <select name="produit" id="produit">
+            <option value="">-- Tous les produits --</option>
+            @foreach($produits as $produit)
+                <option value="{{ $produit->produit_id }}" {{ $produitSelectionne == $produit->produit_id ? 'selected' : '' }}>
+                    {{ $produit->libelle }}
+                </option>
+            @endforeach
+        </select>
 
-    <label for="date">Filtrer par date :</label>
-    <input type="date" name="date" id="date" value="{{ $date }}">
+        <label for="date">Filtrer par date :</label>
+        <input type="date" name="date" id="date" value="{{ $date }}">
 
-    <button type="submit">Rechercher</button>
-</form>
+        <button type="submit">Rechercher</button>
+    </form>
 
     
 
@@ -205,6 +211,10 @@
                 @endforeach
             </tbody>
         </table>
+        <!-- {{ $mouvements->links() }} -->
+        <div class="pagination">
+            {{ $mouvements->links() }}
+        </div>
         
     @else
         <p>Aucun mouvement enregistré pour le moment.</p>

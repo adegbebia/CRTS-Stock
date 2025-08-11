@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <title>Ajout de mouvement</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .pagination svg {
+            width: 1rem; /* Taille plus petite */
+            height: 1rem;
+        }
+    </style>
 
 </head>
 
@@ -43,13 +49,13 @@
 
         <div>
 
-            @if ($articleSelectionne)
+            @if ($articlesSelectionne)
                 @php
-                    $article = $articles->find($articleSelectionne);
+                    $article = $articles->find($articlesSelectionne);
                 @endphp
                 <div>
                     <p>Article sélectionné : <strong>{{ $article->libelle ?? 'N/A' }}</strong></p>
-                    <input type="hidden" name="article_id" value="{{ $articleSelectionne }}">
+                    <input type="hidden" name="article_id" value="{{ $articlesSelectionne }}">
                 </div>
             @else
                 <div>
@@ -147,9 +153,21 @@
 
     <h3>Liste des mouvements déjà créés</h3>
 
-   <form method="GET" action="{{ route('mouvements-articles.create') }}">   
+   <form method="GET" action="{{ route('mouvements-articles.create') }}">
+    <label for="produit">Filtrer par article :</label>
+        <select name="article" id="article">
+            <option value="">-- Tous les articles --</option>
+            @foreach($articles as $article)
+                <option value="{{ $article->article_id }}" {{ $articlesSelectionne == $article->article_id ? 'selected' : '' }}>
+                    {{ $article->libelle }}
+                </option>
+            @endforeach
+        </select>  
+        
+        
         <label for="date">Filtrer par date :</label>
         <input type="date" name="date" id="date" value="{{ $date }}">
+
         <button type="submit">Rechercher</button>
     </form>
 
@@ -206,7 +224,7 @@
             </tbody>
         </table>
 
-        <div>
+        <div class="pagination">
             {{ $mouvements->links() }}
         </div>
     @else
