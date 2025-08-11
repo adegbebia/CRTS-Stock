@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
+@extends('layouts.app')
 
 <head>
     <meta charset="UTF-8">
@@ -12,11 +11,13 @@
         }
     </style>
 
-</head>
 
-<body>
-     @php
-        $peutModifier = auth()->user()->hasRole('magasinier_collation') && auth()->user()->magasin_affecte === 'collation';
+
+@section('content')
+
+    @php
+        $peutModifier =
+            auth()->user()->hasRole('magasinier_collation') && auth()->user()->magasin_affecte === 'collation';
     @endphp
 
     <h2>Ajouter un mouvement</h2>
@@ -26,7 +27,7 @@
     @endif
 
     <!-- {{-- Affichage des erreurs --}}
-    {{-- @if ($errors->any())
+        {{-- @if ($errors->any())
         <div style="color:red;">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -36,7 +37,7 @@
         </div>
     @endif --}} -->
 
-     <div>
+    <div>
         <p><a href="{{ route('articles.index') }}">← Revenir au niveau des articles</a></p>
     </div>
 
@@ -81,8 +82,9 @@
 
         <div>
             <label for="origine">Origine</label>
-            <input type="text" name="origine" id="origine" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
-                title="Ne doit pas contenir les caractères , ; :" value="{{ old('origine') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
+            <input type="text" name="origine" id="origine" required pattern="[^,;:]+"
+                title="Ne doit pas contenir les caractères , ; :" title="Ne doit pas contenir les caractères , ; :"
+                value="{{ old('origine') }}" {{ !$peutModifier ? 'disabled' : '' }} />
             @error('origine')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -90,8 +92,8 @@
 
         <div>
             <label for="quantite_commandee">Quantité commandée</label>
-            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1" 
-                value="{{ old('quantite_commandee') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
+            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1"
+                value="{{ old('quantite_commandee') }}" {{ !$peutModifier ? 'disabled' : '' }} />
             @error('quantite_commandee')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -100,7 +102,7 @@
         <div>
             <label for="quantite_entree">Quantité entrée</label>
             <input type="number" name="quantite_entree" id="quantite_entree" min="1"
-                value="{{ old('quantite_entree') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
+                value="{{ old('quantite_entree') }}" {{ !$peutModifier ? 'disabled' : '' }} />
             @error('quantite_entree')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -109,7 +111,7 @@
         <div>
             <label for="quantite_sortie">Quantité sortie</label>
             <input type="number" name="quantite_sortie" id="quantite_sortie" min="1"
-                value="{{ old('quantite_sortie') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
+                value="{{ old('quantite_sortie') }}" {{ !$peutModifier ? 'disabled' : '' }} />
             @error('quantite_sortie')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -126,8 +128,8 @@
 
         <div>
             <label for="avarie">Avarie</label>
-            <input type="number" name="avarie" id="avarie" min="1" 
-                value="{{ old('avarie') }}" {{ !$peutModifier ? 'disabled' : '' }}/>
+            <input type="number" name="avarie" id="avarie" min="1" value="{{ old('avarie') }}"
+                {{ !$peutModifier ? 'disabled' : '' }} />
             @error('avarie')
                 <div style="color:red;">{{ $message }}</div>
             @enderror
@@ -144,12 +146,12 @@
         <div>
             @if ($peutModifier)
                 <button type="submit">Créer</button>
-            @endif        
+            @endif
         </div>
     </form>
 
 
-    <hr/>
+    <hr />
 
     <h3>Liste des mouvements déjà créés</h3>
 
@@ -165,6 +167,8 @@
         </select>  
         
         
+
+    <form method="GET" action="{{ route('mouvements-articles.create') }}">
         <label for="date">Filtrer par date :</label>
         <input type="date" name="date" id="date" value="{{ $date }}">
 
@@ -208,13 +212,13 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1
-                           2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897
-                           1.13L6 18l.8-2.685a4.5 4.5 0 0 1
-                           1.13-1.897l8.932-8.931Z" />
+                               2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897
+                               1.13L6 18l.8-2.685a4.5 4.5 0 0 1
+                               1.13-1.897l8.932-8.931Z" />
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 14v4.75A2.25 2.25 0 0 1
-                           15.75 21H5.25A2.25 2.25 0 0 1
-                           3 18.75V8.25A2.25 2.25 0 0 1
-                           5.25 6H10" />
+                               15.75 21H5.25A2.25 2.25 0 0 1
+                               3 18.75V8.25A2.25 2.25 0 0 1
+                               5.25 6H10" />
                                     </svg>
                                 </button>
                             </a>
@@ -261,6 +265,4 @@
         </script>
     @endif
 
-</body>
-
-</html>
+@endsection

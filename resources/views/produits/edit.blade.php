@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier un produit</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'modification produits')
+
+@section('content')
 
 <div class="container mt-5">
     <h2>Modifier le produit : {{ $produit->libelle }}</h2>
@@ -72,5 +69,4 @@
     </form>
 </div>
 
-</body>
-</html>
+@endsection

@@ -1,3 +1,14 @@
+
+
+</body>
+</html>
+
+@extends('layouts.app')
+
+
+
+@section('content')
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -103,5 +114,4 @@
 
     </form>
 
-</body>
-</html>
+@endsection

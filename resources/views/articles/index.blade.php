@@ -20,7 +20,20 @@
 
 <body>
 
-    <h2>Liste des articles dans la base</h2>
+    
+
+</body>
+
+</html>
+
+
+@extends('layouts.app')
+
+
+
+@section('content')
+
+<h2>Liste des articles dans la base</h2>
     @php
         $user = auth()->user();
     @endphp
@@ -224,6 +237,5 @@
         }
     </script>
 
-</body>
+@endsection
 
-</html>

@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Modifier un mouvement</title>
-</head>
-<body>
+@extends('layouts.app')
 
+
+
+@section('content')
     @php
         $user = auth()->user();
         $peutModifier = $user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique';
@@ -17,8 +14,9 @@
         <p style="color: red;">⚠️ Vous n’êtes pas autorisé à modifier ce mouvement.</p>
     @endif
 
-    <form action="{{ $peutModifier ? route('mouvements-produits.update', ['mouvements_produit' => $mouvement->mouvementProd_id]) : '#' }}"
-          method="POST" {{ !$peutModifier ? 'onsubmit=return false' : '' }}>
+    <form
+        action="{{ $peutModifier ? route('mouvements-produits.update', ['mouvements_produit' => $mouvement->mouvementProd_id]) : '#' }}"
+        method="POST" {{ !$peutModifier ? 'onsubmit=return false' : '' }}>
         @csrf
         @method('PUT')
 
@@ -41,9 +39,9 @@
         <!-- Origine -->
         <div>
             <label for="origine">Origine</label>
-            <input type="text" name="origine" id="origine" required pattern="[^,;:]+" 
-                value="{{ old('origine', $mouvement->origine) }}"
-                title="Ne doit pas contenir les caractères , ; :" {{ !$peutModifier ? 'disabled' : '' }}>
+            <input type="text" name="origine" id="origine" required pattern="[^,;:]+"
+                value="{{ old('origine', $mouvement->origine) }}" title="Ne doit pas contenir les caractères , ; :"
+                {{ !$peutModifier ? 'disabled' : '' }}>
             @error('origine')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
@@ -53,7 +51,8 @@
         <div>
             <label for="quantite_commandee">Quantité commandée</label>
             <input type="number" name="quantite_commandee" id="quantite_commandee" min="1"
-                value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}" {{ !$peutModifier ? 'disabled' : '' }}>
+                value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}"
+                {{ !$peutModifier ? 'disabled' : '' }}>
             @error('quantite_commandee')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
@@ -81,13 +80,13 @@
 
         <!-- Stock début du mois -->
         <!-- <div>
-            <label for="stock_debut_mois">Stock début du mois</label>
-            <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required
-                value="{{ old('stock_debut_mois', $mouvement->stock_debut_mois) }}" {{ !$peutModifier ? 'disabled' : '' }}>
-            @error('stock_debut_mois')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
-        </div> -->
+                <label for="stock_debut_mois">Stock début du mois</label>
+                <input type="number" name="stock_debut_mois" id="stock_debut_mois" min="1" required
+                    value="{{ old('stock_debut_mois', $mouvement->stock_debut_mois) }}" {{ !$peutModifier ? 'disabled' : '' }}>
+                @error('stock_debut_mois')
+        <div style="color: red;">{{ $message }}</div>
+    @enderror
+            </div> -->
 
         <!-- Avarie -->
         <div>
@@ -102,26 +101,13 @@
         <!-- Observation -->
         <div>
             <label for="observation">Observation</label>
-            <textarea name="observation" id="observation" {{ !$peutModifier ? 'disabled' : '' }}>{{ old('observation', $mouvement->observation) }}</textarea>
-            @error('observation')
-                <div style="color: red;">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <!-- Bouton de soumission -->
-        <div>
-            @if ($peutModifier)
-                <button type="submit">Mettre à jour</button>
-            @endif
-        </div>
-
+            <textarea name="observation" fezfezfezffffvezfzfA   
         <!-- Lien de retour vers le formulaire avec produit sélectionné -->
         <div>
-            <p><a href="{{ route('mouvements-produits.create', ['produit_id' => $mouvement->mouvementProd_id]) }}">← Revenir au produit concerné</a></p>
+            <p><a href="{{ route('mouvements-produits.create', ['produit_id' => $mouvement->mouvementProd_id]) }}">←
+                    Revenir au produit concerné</a></p>
         </div>
 
 
     </form>
-
-</body>
-</html>
+@endsection

@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier un article</title>
-</head>
-<body>
+@extends('layouts.app')
 
+@section('content')
 <div class="container mt-5">
     <h2>Modifier l'article : {{ $article->libelle }}</h2>
 
@@ -15,53 +9,123 @@
         @method('PUT')
 
         <div class="mb-3">
-            <label>Code article</label>
-            <input type="text" name="codearticle" class="form-control" value="{{ $article->codearticle }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :">
+            <label for="codearticle" class="form-label">Code article</label>
+            <input 
+                type="text" 
+                id="codearticle" 
+                name="codearticle" 
+                class="form-control" 
+                value="{{ old('codearticle', $article->codearticle) }}" 
+                required 
+                pattern="[^,;:]+" 
+                title="Ne doit pas contenir les caractères , ; :">
         </div>
 
         <div class="mb-3">
-            <label>Libellé</label>
-            <input type="text" name="libelle" class="form-control" value="{{ $article->libelle }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :">
+            <label for="libelle" class="form-label">Libellé</label>
+            <input 
+                type="text" 
+                id="libelle" 
+                name="libelle" 
+                class="form-control" 
+                value="{{ old('libelle', $article->libelle) }}" 
+                required 
+                pattern="[^,;:]+" 
+                title="Ne doit pas contenir les caractères , ; :">
         </div>
 
         <div class="mb-3">
-            <label>Conditionnement</label>
-            <input type="text" name="conditionnement" class="form-control" value="{{ $article->conditionnement }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :">
+            <label for="conditionnement" class="form-label">Conditionnement</label>
+            <input 
+                type="text" 
+                id="conditionnement" 
+                name="conditionnement" 
+                class="form-control" 
+                value="{{ old('conditionnement', $article->conditionnement) }}" 
+                required 
+                pattern="[^,;:]+" 
+                title="Ne doit pas contenir les caractères , ; :">
         </div>
 
         <div class="mb-3">
-            <label>Quantité en stock</label>
-            <input type="number" name="quantitestock" class="form-control" value="{{ $article->quantitestock }}" required min="0" title="La valeur ne peut pas être négative">
+            <label for="quantitestock" class="form-label">Quantité en stock</label>
+            <input 
+                type="number" 
+                id="quantitestock" 
+                name="quantitestock" 
+                class="form-control" 
+                value="{{ old('quantitestock', $article->quantitestock) }}" 
+                required 
+                min="0" 
+                title="La valeur ne peut pas être négative">
         </div>
 
         <div class="mb-3">
-            <label>Stock max</label>
-            <input type="number" name="stockmax" class="form-control" value="{{ $article->stockmax }}" required min="0" title="La valeur ne peut pas être négative">
+            <label for="stockmax" class="form-label">Stock max</label>
+            <input 
+                type="number" 
+                id="stockmax" 
+                name="stockmax" 
+                class="form-control" 
+                value="{{ old('stockmax', $article->stockmax) }}" 
+                required 
+                min="0" 
+                title="La valeur ne peut pas être négative">
         </div>
 
         <div class="mb-3">
-            <label>Stock min</label>
-            <input type="number" name="stockmin" class="form-control" value="{{ $article->stockmin }}" required min="0" title="La valeur ne peut pas être négative">
+            <label for="stockmin" class="form-label">Stock min</label>
+            <input 
+                type="number" 
+                id="stockmin" 
+                name="stockmin" 
+                class="form-control" 
+                value="{{ old('stockmin', $article->stockmin) }}" 
+                required 
+                min="0" 
+                title="La valeur ne peut pas être négative">
         </div>
 
         <div class="mb-3">
-            <label>Stock sécurité</label>
-            <input type="number" name="stocksecurite" class="form-control" value="{{ $article->stocksecurite }}" required min="0" title="La valeur ne peut pas être négative">
+            <label for="stocksecurite" class="form-label">Stock sécurité</label>
+            <input 
+                type="number" 
+                id="stocksecurite" 
+                name="stocksecurite" 
+                class="form-control" 
+                value="{{ old('stocksecurite', $article->stocksecurite) }}" 
+                required 
+                min="0" 
+                title="La valeur ne peut pas être négative">
         </div>
 
         <div class="mb-3">
-            <label>Date de péremption</label>
-            <input type="date" name="dateperemption" class="form-control" value="{{ $article->dateperemption }}" required min="{{ date('Y-m-d', strtotime('+1 day')) }}" title="La date doit être ultérieure à aujourd'hui">
+            <label for="dateperemption" class="form-label">Date de péremption</label>
+            <input 
+                type="date" 
+                id="dateperemption" 
+                name="dateperemption" 
+                class="form-control" 
+                value="{{ old('dateperemption', $article->dateperemption) }}" 
+                required 
+                min="{{ date('Y-m-d', strtotime('+1 day')) }}" 
+                title="La date doit être ultérieure à aujourd'hui">
         </div>
 
         <div class="mb-3">
-            <label>Lot</label>
-            <input type="text" name="lot" class="form-control" value="{{ $article->lot }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :">
+            <label for="lot" class="form-label">Lot</label>
+            <input 
+                type="text" 
+                id="lot" 
+                name="lot" 
+                class="form-control" 
+                value="{{ old('lot', $article->lot) }}" 
+                required 
+                pattern="[^,;:]+" 
+                title="Ne doit pas contenir les caractères , ; :">
         </div>
 
         <button type="submit" class="btn btn-primary">Mettre à jour</button>
     </form>
 </div>
-
-</body>
-</html>
+@endsection
