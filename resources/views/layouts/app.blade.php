@@ -36,6 +36,7 @@
     </button> --}}
 
     <!-- Script de bascule -->
+        <!-- Script de bascule -->
     <script>
         document.getElementById('toggleSidebar').addEventListener('click', function() {
             const sidebar = document.getElementById('sidebar');
@@ -46,5 +47,8 @@
             sidebar.classList.toggle('overflow-hidden');
         });
     </script>
+
+    <!-- Alpine.js -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </body>
 </html>
