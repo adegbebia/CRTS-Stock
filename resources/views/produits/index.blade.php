@@ -5,7 +5,7 @@
 @section('content')
 
     <h2 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">
-        Liste des produits dans la base
+        Liste des produits stockés
     </h2>
 
 
@@ -139,7 +139,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" onclick="confirmDelete('{{ $produit->produit_id }}')"
-                                        class="text-red-500 hover:underline"title="Supprimer">
+                                        class="text-red-500 hover:underline" title="Supprimer">
                                         {{-- ton SVG supprimer --}}
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

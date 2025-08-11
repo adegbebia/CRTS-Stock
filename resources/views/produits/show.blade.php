@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="max-w-xl mx-auto mt-10 p-6 bg-white shadow rounded">
-    <h2 class="text-2xl font-semibold mb-6 text-gray-800">Détails du produit</h2>
+    <h2 class="text-2xl font-semibold mb-6 text-gray-800">Détails de l'Alerte produit</h2>
 
     <ul class="divide-y divide-gray-200">
         <li class="py-3 flex justify-between">
@@ -19,7 +19,7 @@
             <span class="text-gray-900">{{ $produit->conditionnement }}</span>
         </li>
         <li class="py-3 flex justify-between">
-            <span class="font-medium text-gray-700">Quantité en stock :</span>
+            <span class="font-medium text-gray-700">Stock actuel :</span>
             <span class="text-gray-900">{{ $produit->quantitestock }}</span>
         </li>
         <li class="py-3 flex justify-between">
