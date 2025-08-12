@@ -95,12 +95,22 @@
                     value="{{ old('quantite_entree') }}" {{ !$peutModifier ? 'disabled' : '' }}
                     class="mt-1 block w-full rounded-md border border-gray-300 md:border-gray-400
                           md:bg-gray-100 p-2 shadow-sm
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1">
+                          focus:border-red-500 focus:ring-red-500 focus:ring-1" />
                 @error('quantite_entree')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
-
+            <div>
+                <label for="quantite_sortie" class="block text-sm font-medium text-gray-700">Quantité sortie</label>
+                <input type="number" name="quantite_sortie" id="quantite_sortie" min="1"
+                    value="{{ old('quantite_sortie') }}" {{ !$peutModifier ? 'disabled' : '' }} 
+                    class="mt-1 block w-full rounded-md border border-gray-300 md:border-gray-400
+                          md:bg-gray-100 p-2 shadow-sm
+                          focus:border-red-500 focus:ring-red-500 focus:ring-1"/>
+                @error('quantite_sortie')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
             {{-- Avarie --}}
             <div>
                 <label for="avarie" class="block text-sm font-medium text-gray-700">Avarie</label>
