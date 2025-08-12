@@ -14,7 +14,7 @@ class ConsommationProduitController extends Controller
     {
         $user = auth()->user();
         if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
-            return redirect()->route('dashboard')->with('error', 'Accès refusé.');
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
         }
 
         return redirect()->route('consommations-produits.create');

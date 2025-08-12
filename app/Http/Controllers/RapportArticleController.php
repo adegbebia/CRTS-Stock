@@ -14,6 +14,11 @@ class RapportArticleController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+
+        if (!($user->hasRole(['magasinier_collation', 'admin']))) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
         return view('rapports-articles.index');
     }
 

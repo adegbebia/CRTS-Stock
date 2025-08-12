@@ -15,8 +15,9 @@ class ConsommationArticleController extends Controller
     {
         $user = auth()->user();
         if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
-            return redirect()->route('dashboard')->with('error', 'Accès refusé.');
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
         }
+        
         return redirect()->route('consommations-articles.create');
     }
 

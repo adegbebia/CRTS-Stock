@@ -18,7 +18,7 @@ class ArticleController extends Controller
         // dd(auth()->user());
         // dd($user->getRoleNames());
 
-        if (!($user->hasRole(['magasinier_collation', 'admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'collation')) {
+        if (!($user->hasRole(['magasinier_collation', 'admin']))) {
         // if (!($user->hasRole(['magasinier_collation', 'admin']))) {
 
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');

@@ -15,7 +15,7 @@ class ProduitController extends Controller
     $user = auth()->user();
 
     // Vérification des droits manuellement
-    if (!($user->hasRole(['magasinier_technique', 'admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'technique')) {
+    if (!($user->hasRole(['magasinier_technique', 'admin']))) {
         return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
     }
 

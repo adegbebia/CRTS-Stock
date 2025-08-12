@@ -14,6 +14,11 @@ class RapportProduitController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        if (!($user->hasRole(['magasinier_technique', 'admin']))) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        }
+
         return view('rapports-produits.index');
     }
 

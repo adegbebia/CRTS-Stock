@@ -25,7 +25,7 @@
             </a>
         </div>
     @endif
-    @if (session('success'))
+    <!-- @if (session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 swal("Succès", "{{ session('success') }}", "success");
@@ -38,8 +38,8 @@
                 swal("Erreur", "{{ session('error') }}", "error");
             });
         </script>
-    @endif
-    <!-- @if(session('success'))
+    @endif -->
+    @if(session('success'))
     <script>
         Swal.fire({
             icon: 'success',
@@ -57,7 +57,7 @@
             text: @json(session('error')),
         });
     </script>
-    @endif -->
+    @endif
 
     
 
@@ -217,7 +217,7 @@
 
     @endif
 
-    <script>
+    <!-- <script>
         function confirmDelete(articleId) {
             swal({
                 title: "Supprimer ?",
@@ -228,6 +228,23 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     document.getElementById('delete-form-' + articleId).submit();
+                }
+            });
+        }
+    </script> -->
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Supprimer ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Oui, supprimer',
+                cancelButtonText: 'Annuler',
+                dangerMode: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
                 }
             });
         }
