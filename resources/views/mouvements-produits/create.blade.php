@@ -40,7 +40,7 @@
                     @endphp
                     <p class="text-gray-700 font-semibold">
                         Produit sélectionné :
-                        <span class="text-red-300">{{ $produit->libelle ?? 'N/A' }}</span>
+                        <span class="text-red-400">{{ $produit->libelle ?? 'N/A' }}</span>
                     </p>
                     <input type="hidden" name="produit_id" value="{{ $produitSelectionne }}">
                 @else
