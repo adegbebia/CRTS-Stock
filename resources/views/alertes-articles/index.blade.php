@@ -10,7 +10,7 @@
     
     @if($user->hasRole('admin') || ($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation'))
 
-        <h1 class="text-2xl font-bold mb-6">Liste des alertes articles</h1>
+        <h1 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">Liste des alertes articles</h1>
 
 
         @if(session('success'))
@@ -24,7 +24,7 @@
         @else
             <table class="min-w-full bg-white border border-gray-200 rounded shadow">
                 <thead>
-                    <tr class="bg-gray-100 text-left">
+                    <tr class="bg-red-200 text-left">
                         <th class="px-4 py-2 border-b border-gray-300">Articles</th>
                         <th class="px-4 py-2 border-b border-gray-300">Type d'alerte</th>
                         <th class="px-4 py-2 border-b border-gray-300">Date déclenchement</th>
