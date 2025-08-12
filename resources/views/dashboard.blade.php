@@ -3,8 +3,8 @@
 @section('title', 'Dashboard - Alertes')
 
 @section('content')
-<div id="dashboardContent" class="transition-all duration-300 ml-64">
-    <h1>Bienvenue sur le Dashboard</h1>
+<div id="dashboardContent" class="transition-all duration-300 ml-64 p-6 bg-gray-50 min-h-screen">
+    <h1 class="text-3xl font-semibold mb-6 text-gray-800 tracking-wide">Bienvenue sur le Dashboard</h1>
 
     {{-- SweetAlert message de succès --}}
     @if (session('success'))
@@ -20,40 +20,47 @@
 
     {{-- Alertes Produits --}}
     @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('magasinier_technique'))
-        <h2>Alertes Produits</h2>
-        @if($alertesProduits->count())
-            <ul>
-                @foreach($alertesProduits as $alerte)
-                    <li>
-                        [{{ $alerte->datedeclenchement }}] 
-                        Produit : {{ $alerte->produit->libelle ?? 'Produit supprimé' }} - 
-                        Type d'alerte : {{ $alerte->typealerte }}
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <p>Aucune alerte produit pour le moment.</p>
-        @endif
-
-        <hr>
+        <section class="mb-10">
+            <h2 class="text-3xl font-semibold mb-4 text-blue-500 border-b-2 border-blue-400 pb-1 tracking-wide">Alertes Produits</h2>
+            @if($alertesProduits->count())
+                <ul class="list-disc list-inside space-y-2 text-gray-700 text-base leading-relaxed">
+                    @foreach($alertesProduits as $alerte)
+                        <li class="bg-white rounded-md shadow-sm p-3 hover:bg-red-50 transition duration-150">
+                            <span class="font-mono text-xs text-gray-600 mr-2">[{{ $alerte->datedeclenchement }}]</span> 
+                            <span class="font-semibold ">Produit :</span> 
+                            <span class="font-medium text-gray-900">{{ $alerte->produit->libelle ?? 'Produit supprimé' }}</span> 
+                            - <span class="font-semibold">Type d'alerte :</span> 
+                            <span class="italic text-red-500">{{ $alerte->typealerte }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-gray-500 italic text-base">Aucune alerte produit pour le moment.</p>
+            @endif
+            <hr class="mt-6 border-gray-300" />
+        </section>
     @endif
 
     {{-- Alertes Articles --}}
     @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('magasinier_collation'))
-        <h2>Alertes Articles</h2>
-        @if($alertesArticles->count())
-            <ul>
-                @foreach($alertesArticles as $alerte)
-                    <li>
-                        [{{ $alerte->datedeclenchement }}] 
-                        Article : {{ $alerte->article->libelle ?? 'Article supprimé' }} - 
-                        Type d'alerte : {{ $alerte->typealerte }}
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <p>Aucune alerte article pour le moment.</p>
-        @endif
+        <section>
+            <h2 class="text-xl font-semibold mb-4 text-blue-500 border-b-2 border-blue-400 pb-1 tracking-wide">Alertes Articles</h2>
+            @if($alertesArticles->count())
+                <ul class="list-disc list-inside space-y-2 text-gray-700 text-base leading-relaxed">
+                    @foreach($alertesArticles as $alerte)
+                        <li class="bg-white rounded-md shadow-sm p-3 hover:bg-blue-50 transition duration-150">
+                            <span class="font-mono text-xs text-gray-400 mr-2">[{{ $alerte->datedeclenchement }}]</span> 
+                            <span class="font-semibold text-blue-600">Article :</span> 
+                            <span class="font-medium text-gray-900">{{ $alerte->article->libelle ?? 'Article supprimé' }}</span> 
+                            - <span class="font-semibold text-blue-600">Type d'alerte :</span> 
+                            <span class="italic text-blue-500">{{ $alerte->typealerte }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-gray-500 italic text-base">Aucune alerte article pour le moment.</p>
+            @endif
+        </section>
     @endif
 </div>
 
