@@ -1,20 +1,24 @@
-<div id="sidebar" class="bg-white w-64 p-6 shadow-lg transition-all duration-300 overflow-y-auto border-r">
-    <ul class="menu p-2 bg-white text-gray-700 rounded-lg">
+<div id="sidebar" class="bg-red-200 w-64 p-6 shadow-lg transition-all duration-300 overflow-y-auto border-r border-blue-300 min-h-screen">
+    <ul class="space-y-4 text-blue-900">
 
         @php
             $role = auth()->user()->roles->first()->name ?? '';
             $magasin = auth()->user()->magasin_affecte ?? '';
 
             function menuSection($title, $items) {
-                echo '<li class="mt-4 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wide px-2">' . $title . '</li>';
+                echo '<li>';
+                echo '<h3 class="mt-6 mb-2 text-xs font-semibold text-blue-700 uppercase tracking-wider px-2">' . $title . '</h3>';
+                echo '<ul class="space-y-1">';
                 foreach ($items as $item) {
                     echo '<li>';
-                    echo '<a href="' . route($item["route"]) . '" class="flex items-center p-2 rounded-lg transition-colors duration-150 hover:bg-gray-100">';
-                    echo '<i class="' . $item["icon"] . ' text-lg text-gray-500 mr-3"></i>';
-                    echo '<span class="text-sm font-medium">' . $item["label"] . '</span>';
+                    echo '<a href="' . route($item["route"]) . '" class="flex items-center px-3 py-2 rounded-lg text-sm font-medium text-blue-900 hover:bg-red-300 hover:text-blue-900 transition-colors">';
+                    echo '<i class="' . $item["icon"] . ' text-lg text-blue-600 mr-3"></i>';
+                    echo '<span>' . $item["label"] . '</span>';
                     echo '</a></li>';
                 }
-                echo '<li><hr class="my-3 border-gray-200"></li>';
+                echo '</ul>';
+                echo '</li>';
+                echo '<li><hr class="my-4 border-blue-400"></li>';
             }
         @endphp
 
