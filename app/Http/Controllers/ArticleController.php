@@ -71,7 +71,6 @@ class ArticleController extends Controller
     {
         $user = auth()->user();
 
-        // Vérification des droits manuellement
         if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }
@@ -90,8 +89,10 @@ class ArticleController extends Controller
         }
 
         $validated = $request->validated();
+        
+        $validated['codearticle'] = strtoupper($validated['codearticle']);
+        $validated['libelle'] = ucfirst(strtolower($validated['libelle']));
 
-        // Vérifier s'il existe un article avec le même codearticle mais un libellé différent
         $articleAvecCode = Article::where('codearticle', $validated['codearticle'])->first();
 
         if($articleAvecCode && $articleAvecCode->libelle !== $validated['libelle']) {
@@ -102,12 +103,10 @@ class ArticleController extends Controller
 
         }
         
-        // Vérifier s'il existe déjà un article avec le même libellé et conditionnement
         $articleExistant=Article::where('libelle', $validated['libelle'])
                             ->where('conditionnement', $validated['conditionnement'])
                             ->first();               
         if ($articleExistant) {
-            // Calcul manuel de la nouvelle quantité
             $nouvelleQuantite = $articleExistant->quantitestock + $validated['quantitestock'];
             $articleExistant->quantitestock = $nouvelleQuantite;
             $articleExistant->save();
@@ -117,9 +116,7 @@ class ArticleController extends Controller
                 ->with('success', 'L’article déjà existant .  Quantité mise à jour avec succès.');
         } 
 
-        // Ajouter la date de création du produit
         $validated['date'] = Carbon::now()->toDateString();
-        // Création d’un nouveau article
         Article::create($validated);
 
         return redirect()->route('articles.index')
@@ -131,7 +128,6 @@ class ArticleController extends Controller
     {
         $user = auth()->user();
 
-    // Vérification des droits manuellement
         if (!($user->hasRole(['magasinier_collation', 'admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'collation')) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }  
@@ -143,7 +139,6 @@ class ArticleController extends Controller
 
         $user = auth()->user();
 
-    // Vérification des droits manuellement
         if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }

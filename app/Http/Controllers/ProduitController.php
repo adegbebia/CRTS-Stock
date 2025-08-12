@@ -14,7 +14,6 @@ class ProduitController extends Controller
 {
     $user = auth()->user();
 
-    // Vérification des droits manuellement
     if (!($user->hasRole(['magasinier_technique', 'admin']))) {
         return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
     }
@@ -72,7 +71,6 @@ class ProduitController extends Controller
     {
         $user = auth()->user();
 
-    // Vérification des droits manuellement
         if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }
@@ -86,13 +84,15 @@ class ProduitController extends Controller
     {
         $user = auth()->user();
 
-    // Vérification des droits manuellement
         if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }
+
         $validated = $request->validated();
 
-        // Vérifier s'il existe un produit avec le même codeproduit mais un libellé différent
+        $validated['codeproduit'] = strtoupper($validated['codeproduit']); 
+        $validated['libelle'] = ucfirst(strtolower($validated['libelle']));
+
         $produitAvecCode = Produit::where('codeproduit', $validated['codeproduit'])->first();
 
         if ($produitAvecCode && $produitAvecCode->libelle !== $validated['libelle']) {
@@ -101,13 +101,11 @@ class ProduitController extends Controller
                 ->withErrors(['codeproduit' => 'Ce code produit est déjà utilisé pour un autre libellé. Veuillez en choisir un autre.']);
         }
 
-        // Vérifier s'il existe déjà un produit avec le même libellé et conditionnement
         $produitExistant = Produit::where('libelle', $validated['libelle'])
                             ->where('conditionnement', $validated['conditionnement'])
                             ->first();
 
         if ($produitExistant) {
-            // Calcul manuel de la nouvelle quantité
             $nouvelleQuantite = $produitExistant->quantitestock + $validated['quantitestock'];
             $produitExistant->quantitestock = $nouvelleQuantite;
             $produitExistant->save();
@@ -116,10 +114,8 @@ class ProduitController extends Controller
                 ->with('success', 'Produit déjà existant. Quantité mise à jour avec succès.');
         }
 
-        // Ajouter la date de création du produit
         $validated['date'] = Carbon::now()->toDateString();
 
-        // Création du nouveau produit
         Produit::create($validated);
 
         return redirect()->route('produits.index')
@@ -130,7 +126,6 @@ class ProduitController extends Controller
     {
         $user = auth()->user();
 
-    // Vérification des droits manuellement
         if (!($user->hasRole(['magasinier_technique', 'admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'technique')) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }
@@ -141,7 +136,6 @@ class ProduitController extends Controller
     {
         $user = auth()->user();
 
-    // Vérification des droits manuellement
         if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }
@@ -152,7 +146,6 @@ class ProduitController extends Controller
     {
         $user = auth()->user();
 
-    // Vérification des droits manuellement
         if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }
@@ -170,7 +163,6 @@ class ProduitController extends Controller
     {
         $user = auth()->user();
 
-    // Vérification des droits manuellement
         if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
         }

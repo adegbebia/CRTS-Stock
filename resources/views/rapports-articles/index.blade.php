@@ -2,44 +2,104 @@
 
 @section('content')
 
-<h2>Génération de rapport</h2>
+<div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold mb-6">Génération de rapport</h2>
 
-<form method="POST" action="{{ route('rapports-articles.generer') }}">
-    @csrf
-    <label>Type de rapport :</label><br>
-    <input type="radio" name="type" value="mois" required> Mensuel<br>
-    <input type="radio" name="type" value="trimestre"> Trimestriel<br>
-    <input type="radio" name="type" value="semestre"> Semestriel<br><br>
+    <form method="POST" action="{{ route('rapports-produits.generer') }}" class="space-y-6" id="rapportForm">
+        @csrf
 
-    <label>Choisir le mois :</label><br>
-    <select name="mois">
-        @for ($i = 1; $i <= 12; $i++)
-            <option value="{{ $i }}">{{ $i }}</option>
-            @endfor
-    </select><br><br>
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Type de rapport :</label>
+            <div class="flex flex-col space-y-2 text-gray-700">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="type" value="mois" required class="form-radio text-red-600" />
+                    <span class="ml-2">Mensuel</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="type" value="trimestre" class="form-radio text-red-600" />
+                    <span class="ml-2">Trimestriel</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="type" value="semestre" class="form-radio text-red-600" />
+                    <span class="ml-2">Semestriel</span>
+                </label>
+            </div>
+        </div>
 
-    <label>Trimestre :</label><br>
-    <select name="trimestre">
-        <option value="1">1 (Janv-Mars)</option>
-        <option value="2">2 (Avr-Juin)</option>
-        <option value="3">3 (Juil-Sept)</option>
-        <option value="4">4 (Oct-Déc)</option>
-    </select><br><br>
+        <div id="divMois" class="hidden">
+            <label for="mois" class="block text-sm font-medium text-gray-700 mb-1">Choisir le mois :</label>
+            <select name="mois" id="mois"
+                class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
+                       focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900">
+                @for ($i = 1; $i <= 12; $i++)
+                    <option value="{{ $i }}">{{ $i }}</option>
+                @endfor
+            </select>
+        </div>
 
-    <label>Semestre :</label><br>
-    <select name="semestre">
-        <option value="1">1 (Janv-Juin)</option>
-        <option value="2">2 (Juil-Déc)</option>
-    </select><br><br>
+        <div id="divTrimestre" class="hidden">
+            <label for="trimestre" class="block text-sm font-medium text-gray-700 mb-1">Trimestre :</label>
+            <select name="trimestre" id="trimestre"
+                class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
+                       focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900">
+                <option value="1">1 (Janv-Mars)</option>
+                <option value="2">2 (Avr-Juin)</option>
+                <option value="3">3 (Juil-Sept)</option>
+                <option value="4">4 (Oct-Déc)</option>
+            </select>
+        </div>
 
-    <label>Année :</label><br>
-    <input type="number" name="annee" value="{{ date('Y') }}" required><br><br>
+        <div id="divSemestre" class="hidden">
+            <label for="semestre" class="block text-sm font-medium text-gray-700 mb-1">Semestre :</label>
+            <select name="semestre" id="semestre"
+                class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
+                       focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900">
+                <option value="1">1 (Janv-Juin)</option>
+                <option value="2">2 (Juil-Déc)</option>
+            </select>
+        </div>
 
-    <input type="submit" value="Générer le rapport">
-</form>
+        <div>
+            <label for="annee" class="block text-sm font-medium text-gray-700 mb-1">Année :</label>
+            <input type="number" name="annee" id="annee" value="{{ date('Y') }}" required
+                class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
+                       focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900">
+        </div>
 
-@if (session('pdf'))
-<p><a href="{{ session('pdf') }}">📄 Télécharger le rapport généré</a></p>
-@endif
+        <div class="pt-4">
+            <input type="submit" value="Générer le rapport"
+                class="w-full bg-red-400 text-white font-semibold py-2 rounded hover:bg-red-700
+                       focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer">
+        </div>
+    </form>
+</div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const radios = document.querySelectorAll('input[name="type"]');
+        const divMois = document.getElementById('divMois');
+        const divTrimestre = document.getElementById('divTrimestre');
+        const divSemestre = document.getElementById('divSemestre');
+
+        function updateVisibility() {
+            const selected = document.querySelector('input[name="type"]:checked');
+            if (!selected) {
+                divMois.classList.add('hidden');
+                divTrimestre.classList.add('hidden');
+                divSemestre.classList.add('hidden');
+                return;
+            }
+            divMois.classList.toggle('hidden', selected.value !== 'mois');
+            divTrimestre.classList.toggle('hidden', selected.value !== 'trimestre');
+            divSemestre.classList.toggle('hidden', selected.value !== 'semestre');
+        }
+
+        radios.forEach(radio => {
+            radio.addEventListener('change', updateVisibility);
+        });
+
+        
+        updateVisibility();
+    });
+</script>
 @endsection

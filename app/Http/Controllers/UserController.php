@@ -94,13 +94,14 @@ class UserController extends Controller
         }
         $request->validate([
             'nom' => 'required|string|max:255',
-            'nom_pseudo' => 'required|unique|string|max:255',
+            'nom_pseudo' => 'required|string|max:255|unique:users,nom_pseudo',
             'prenom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
             'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/','unique:users,telephone,' . $user->user_id . ',user_id'],
-            'magasin_affecte' => 'required|in:collation,technique',
+            'magasin_affecte' => 'required|in:collation,technique,admin',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
+            'datecreation' => now(),
         ]);
 
         try {
@@ -109,7 +110,7 @@ class UserController extends Controller
             // Transformer nom en majuscules
             $user->nom = mb_strtoupper($request->input('nom'));
 
-            $user->nom_pseudo = ucfirst(mb_strtoupper($request->input('nom_pseudo')));
+            $user->nom_pseudo = ucfirst(mb_strtolower($request->input('nom_pseudo')));
 
             // Prénom et adresse : Première lettre en majuscule, le reste en minuscules
             $user->prenom = ucfirst(mb_strtolower($request->input('prenom')));
