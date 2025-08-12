@@ -14,8 +14,8 @@ class MouvementArticleController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if (!($user->hasRole(['magasinier_collation','admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'collation')) {
-            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        if (!($user->hasRole(['magasinier_collation','admin']))) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
         }
         return redirect()->route('mouvements-articles.create');
     }

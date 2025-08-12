@@ -14,8 +14,8 @@ class MouvementProduitController extends Controller
     {
         $user = auth()->user();
 
-        if (!($user->hasRole(['magasinier_technique','admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'technique')) {
-            return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+        if (!($user->hasRole(['magasinier_technique','admin']))) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
         }
 
         return redirect()->route('mouvements-produits.create');
