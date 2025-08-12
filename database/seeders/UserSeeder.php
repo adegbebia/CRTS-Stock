@@ -34,79 +34,79 @@ class UserSeeder extends Seeder
         ]);
         $user1->assignRole('admin');
 
-        $user2=User::create([
-            'datecreation'      =>Carbon::now()->toDateString(),
-            'nom'               => 'BABA',
-            'prenom'            => 'Traore-hannatou',
-            'nom_pseudo'        => 'hanna',
-            'adresse'           => 'Didaoure',
-            'telephone'          => 90909138,
-            'magasin_affecte' => 'technique',
-            'email'             => 'hannatou@gmail.com',
-            'email_verified_at' => $now,
-            'password'          => Hash::make('password123'),
-            'remember_token'    => Str::random(10),
-            'created_at'        => $now,
-            'updated_at'        => $now,
-        ]);
-        $user2->assignRole('magasinier_technique');
+        // $user2=User::create([
+        //     'datecreation'      =>Carbon::now()->toDateString(),
+        //     'nom'               => 'BABA',
+        //     'prenom'            => 'Traore-hannatou',
+        //     'nom_pseudo'        => 'hanna',
+        //     'adresse'           => 'Didaoure',
+        //     'telephone'          => 90909138,
+        //     'magasin_affecte' => 'technique',
+        //     'email'             => 'hannatou@gmail.com',
+        //     'email_verified_at' => $now,
+        //     'password'          => Hash::make('password123'),
+        //     'remember_token'    => Str::random(10),
+        //     'created_at'        => $now,
+        //     'updated_at'        => $now,
+        // ]);
+        // $user2->assignRole('magasinier_technique');
 
 
-        $user3=User::create([
+        // $user3=User::create([
 
-            'datecreation'      =>Carbon::now()->toDateString(),
-            'nom'               => 'ADOUN',
-            'prenom'            => 'Hyaceinth',
-            'nom_pseudo'        => 'Hy',
-            'adresse'            => 'Bariere',
-            'telephone'            => 90205203,
-            'magasin_affecte' => 'technique',
-            'email'             => 'Hyaceinthe@gmail.com',
-            'email_verified_at' => $now,
-            'password'          => Hash::make('password123'),
-            'remember_token'    => Str::random(10),
-            'created_at'        => $now,
-            'updated_at'        => $now,
-        ]);
-        $user3->assignRole('magasinier_technique');
+        //     'datecreation'      =>Carbon::now()->toDateString(),
+        //     'nom'               => 'ADOUN',
+        //     'prenom'            => 'Hyaceinth',
+        //     'nom_pseudo'        => 'Hy',
+        //     'adresse'            => 'Bariere',
+        //     'telephone'            => 90205203,
+        //     'magasin_affecte' => 'technique',
+        //     'email'             => 'Hyaceinthe@gmail.com',
+        //     'email_verified_at' => $now,
+        //     'password'          => Hash::make('password123'),
+        //     'remember_token'    => Str::random(10),
+        //     'created_at'        => $now,
+        //     'updated_at'        => $now,
+        // ]);
+        // $user3->assignRole('magasinier_technique');
 
-        $user4=User::create([
+        // $user4=User::create([
 
-            'datecreation'      =>Carbon::now()->toDateString(),
-            'nom'               => 'YERIMA',
-            'nom_pseudo'        => 'yersa',
-            'prenom'            => 'Sadate',
-            'adresse'           => 'Komah3',
-            'telephone'         => 98112012,
-            'magasin_affecte'   => 'collation',
-            'email'             => 'sadate@gmail.com',
-            'email_verified_at' => $now,
-            'password'          => Hash::make('password123'),
-            'remember_token'    => Str::random(10),
-            'created_at'        => $now,
-            'updated_at'        => $now,
-        ]);
-        $user4->assignRole('magasinier_collation');
+        //     'datecreation'      =>Carbon::now()->toDateString(),
+        //     'nom'               => 'YERIMA',
+        //     'nom_pseudo'        => 'yersa',
+        //     'prenom'            => 'Sadate',
+        //     'adresse'           => 'Komah3',
+        //     'telephone'         => 98112012,
+        //     'magasin_affecte'   => 'collation',
+        //     'email'             => 'sadate@gmail.com',
+        //     'email_verified_at' => $now,
+        //     'password'          => Hash::make('password123'),
+        //     'remember_token'    => Str::random(10),
+        //     'created_at'        => $now,
+        //     'updated_at'        => $now,
+        // ]);
+        // $user4->assignRole('magasinier_collation');
 
 
-        $user5=User::create([
+        // $user5=User::create([
 
-            'datecreation'      =>Carbon::now()->toDateString(),
-            'nom'               => 'KODJO',
-            'prenom'            => 'Ama',
-            'nom_pseudo'        => 'am',
-            'adresse'           => 'Koulounde',
-            'telephone'         => 98112012,
-            'magasin_affecte'   => 'collation',
-            'email'             => 'ama@gmail.com',
-            'email_verified_at' => $now,
-            'password'          => Hash::make('password123'),
-            'remember_token'    => Str::random(10),
-            'created_at'        => $now,
-            'updated_at'        => $now,
-        ]);
+        //     'datecreation'      =>Carbon::now()->toDateString(),
+        //     'nom'               => 'KODJO',
+        //     'prenom'            => 'Ama',
+        //     'nom_pseudo'        => 'am',
+        //     'adresse'           => 'Koulounde',
+        //     'telephone'         => 98112012,
+        //     'magasin_affecte'   => 'collation',
+        //     'email'             => 'ama@gmail.com',
+        //     'email_verified_at' => $now,
+        //     'password'          => Hash::make('password123'),
+        //     'remember_token'    => Str::random(10),
+        //     'created_at'        => $now,
+        //     'updated_at'        => $now,
+        // ]);
 
-        $user5->assignRole('magasinier_collation');
+        // $user5->assignRole('magasinier_collation');
 
     }
 }
