@@ -1,11 +1,15 @@
-<footer class="footer footer-horizontal footer-center bg-white text-base-content rounded p-10 flex flex-col items-center">
-  <nav class="grid grid-flow-col gap-4">
-    <a href="#" class="link link-hover" id="about-link">À propos</a>
-    <a href="#" class="link link-hover" id="contact-link">Contact</a>
-    <a href="#" class="link link-hover">Équipe</a>
-  </nav>
+<footer
+    class="footer footer-horizontal footer-center bg-red-200 border-r border-blue-400
+           text-base-content rounded p-10 items-center overflow-y-auto shadow-lg">
 
-  <nav class="mt-4">
+
+    <nav class="grid grid-flow-col gap-4 ">
+        <a href="#" class="link link-hover" id="about-link">À propos</a>
+        <a href="#" class="link link-hover" id="contact-link">Contact</a>
+        <a href="#" class="link link-hover">Équipe</a>
+    </nav>
+
+    {{-- <nav class="mt-4">
     <div class="grid grid-flow-col gap-4">
       <a href="#" aria-label="Twitter" class="fill-current">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
@@ -23,54 +27,58 @@
         </svg>
       </a>
     </div>
-  </nav>
+  </nav> --}}
 
-  <aside class="mt-4 text-center w-full">
-    <p>© {{ date('Y') }} CRTS Sokodé - Tous droits réservés. Gestion des stocks et transfusion sanguine.</p>
-  </aside>
+    <aside class="mt-4 text-center w-full">
+        <p>© {{ date('Y') }} CRTS Sokodé - Tous droits réservés. Gestion des stocks et transfusion sanguine.</p>
+    </aside>
 
-  <!-- Paragraphe À propos caché initialement -->
-  <div id="about-text" class="mx-auto mt-6 max-w-xl text-justify p-6 bg-base-200 rounded shadow hidden">
-    <p>
-      Le Centre Régional de Transfusion Sanguine (CRTS) de Sokodé assure la collecte, le traitement,
-      la conservation et la distribution du sang et des produits sanguins.
-    </p>
-    <p class="mt-3">
-      Cette application facilite la gestion des stocks de matériels médicaux et consommables,
-      le suivi des mouvements, la détection des ruptures et la génération de rapports
-      pour un meilleur approvisionnement.
-    </p>
-  </div>
-  <!-- Numéros cachés -->
-  <div id="contact-text" class="mx-auto mt-4 text-center p-4 bg-base-200 text-black rounded shadow hidden">
-    📞 70 45 66 80 / 92 21 49 21
-  </div>
+    <!-- Paragraphe À propos caché initialement -->
+    <div id="about-text" class="mx-auto mt-6 max-w-xl text-justify p-6 p-4 bg-blue-400 rounded shadow hidden">
+        <p>
+            Le Centre Régional de Transfusion Sanguine (CRTS) de Sokodé assure la collecte, le traitement,
+            la conservation et la distribution du sang et des produits sanguins.
+        </p>
+        <p class="mt-3">
+            Cette application facilite la gestion des stocks de matériels médicaux et consommables,
+            le suivi des mouvements, la détection des ruptures et la génération de rapports
+            pour un meilleur approvisionnement.
+        </p>
+    </div>
+    <!-- Numéros cachés -->
+    <div id="contact-text" class="mx-auto mt-4 text-center p-4 bg-blue-400 text-black rounded shadow hidden">
+        📞 + 228 70 45 66 80 / +228 92 21 49 21
+    </div>
 
-  
+
 </footer>
 
 <script>
-  const aboutLink = document.getElementById('about-link');
-  const aboutText = document.getElementById('about-text');
+    const aboutLink = document.getElementById('about-link');
+    const aboutText = document.getElementById('about-text');
 
-  const contactLink = document.getElementById('contact-link');
-  const contactText = document.getElementById('contact-text');
+    const contactLink = document.getElementById('contact-link');
+    const contactText = document.getElementById('contact-text');
 
-  // Bouton À propos
-  aboutLink.addEventListener('click', function(event) {
-    event.preventDefault();
-    aboutText.classList.toggle('hidden');
-    if (!aboutText.classList.contains('hidden')) {
-      aboutText.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
+    // Bouton À propos
+    aboutLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        aboutText.classList.toggle('hidden');
+        if (!aboutText.classList.contains('hidden')) {
+            aboutText.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
 
-  // Bouton Contact
-  contactLink.addEventListener('click', function(event) {
-    event.preventDefault();
-    contactText.classList.toggle('hidden');
-    if (!contactText.classList.contains('hidden')) {
-      contactText.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
+    // Bouton Contact
+    contactLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        contactText.classList.toggle('hidden');
+        if (!contactText.classList.contains('hidden')) {
+            contactText.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
 </script>

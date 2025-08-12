@@ -14,24 +14,24 @@ class AlerteArticleSeeder extends Seeder
     public function run(): void
     {
 
-        $article1=Article::where('codearticle','C001')->first();
-        $article2=Article::where('codearticle','C002')->first();
-        $article3=Article::where('codearticle','C003')->first();
+        // $article1=Article::where('codearticle','C001')->first();
+        // $article2=Article::where('codearticle','C002')->first();
+        // $article3=Article::where('codearticle','C003')->first();
 
 
-        AlerteArticle::create([
-            'article_id' => $article1->article_id,  // Barre énergétique
-            'typealerte' => 'Alerte rouge',
-        ]);
+        // AlerteArticle::create([
+        //     'article_id' => $article1->article_id,  // Barre énergétique
+        //     'typealerte' => 'Alerte rouge',
+        // ]);
 
-        AlerteArticle::create([
-            'article_id' => $article2->article_id,  // Jus de fruits
-            'typealerte' => 'Alerte orange',
-        ]);
+        // AlerteArticle::create([
+        //     'article_id' => $article2->article_id,  // Jus de fruits
+        //     'typealerte' => 'Alerte orange',
+        // ]);
 
-        AlerteArticle::create([
-            'article_id' => $article3->article_id,  // Biscuits salés
-            'typealerte' => 'Produit périmé',
-        ]);
+        // AlerteArticle::create([
+        //     'article_id' => $article3->article_id,  // Biscuits salés
+        //     'typealerte' => 'Produit périmé',
+        // ]);
     }
 }
