@@ -30,7 +30,7 @@
   </nav> --}}
 
     <aside class="mt-4 text-center w-full">
-        <p>© {{ date('Y') }} CRTS Sokodé - Tous droits réservés. Gestion des stocks et transfusion sanguine.</p>
+        <p>© {{ date('Y') }} CRTS Sokodé - Tous droits réservés par IFNTI Students. Gestion des Magasins (Technique & Collation ) .</p>
     </aside>
 
     <!-- Paragraphe À propos caché initialement -->
