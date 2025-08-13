@@ -41,13 +41,14 @@
                 required @if (!$peutModifier) disabled @endif
                 class="block w-28 rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
                focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50
-               text-gray-900 disabled:bg-gray-100 disabled:text-gray-500">
+               text-gray-900 disabled:bg-gray-100 disabled:text-gray-500"
+               onwheel="event.preventDefault()">
         </div>
 
         <h3 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">SORTIE MENSUELLES</h3>
 
         <div class="overflow-x-auto">
-            <table class="min-w-full border border-gray-300 rounded-lg shadow text-sm">
+            <table class="min-w-full border border-gray-300 rounded-lg shadow text-sm" onwheel="event.preventDefault()">
                 <thead class="bg-red-200 text-xs">
                     <tr>
                         <th class="px-2 py-1 border">Mois</th>
@@ -88,7 +89,7 @@
                         @foreach ($mois as $m)
                             <td class="px-1 py-1 border">
                                 <input type="number" name="rupture_{{ $m }}" min="0"
-                                    class="w-14 border border-gray-300 rounded text-xs px-1 py-0.5"
+                                    class="w-14 border border-gray-300 rounded text-xs px-1 py-0.5" onwheel="event.preventDefault()"
                                     value="{{ $consommation['rupture_' . $m] }}" required
                                     @if (!$peutModifier) disabled @endif>
                             </td>

@@ -7,9 +7,9 @@
             auth()->user()->magasin_affecte === 'collation';
     @endphp
 
-    <h2>Modifier la consommation ({{ $consommation->annee }})</h2>
+    <h2 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">Modifier la consommation ({{ $consommation->annee }})</h2>
     @if (!$peutModifier)
-        <p style="color:red;">⚠️ Vous n’êtes pas autorisé à modifier cette consommation.</p>
+        <p class="text-red-600 mb-4">⚠️ Vous n’êtes pas autorisé à modifier cette consommation.</p>
     @endif
     <form
         action="{{ $peutModifier ? route('consommations-articles.update', ['consommation_article' => $consommation->consommationArt_id]) : '#' }}"
@@ -17,24 +17,37 @@
         @csrf
         @method('PUT')
 
-        <label>Article :</label>
-        <select name="article_id" required @if (!$peutModifier) disabled @endif>
+        <div class="mb-6 max-w-xs">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Article :</label>
+            <select name="article_id" required @if (!$peutModifier) disabled @endif
+                class="block w-40 rounded-md border border-gray-300 bg-white px-100 py-2 shadow-sm
+               focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50
+               text-gray-900 disabled:bg-gray-100 disabled:text-gray-500">
             @foreach ($articles as $a)
                 <option value="{{ $a->article_id }}" {{ $a->article_id == $consommation->article_id ? 'selected' : '' }}>
                     {{ $a->libelle }}
                 </option>
             @endforeach
         </select>
+        </div>
+        
 
-        <label>Année :</label>
-        <input type="number" name="annee" value="{{ $consommation->annee }}" min="2020" max="{{ date('Y') + 1 }}"
-            required>
+        <div class="mb-6 max-w-xs">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Année :</label>
+            <input type="number" name="annee" value="{{ $consommation->annee }}" min="2020" max="{{ date('Y') + 1 }}" 
+                required @if (!$peutModifier) disabled @endif
+                class="block w-28 rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
+               focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50
+               text-gray-900 disabled:bg-gray-100 disabled:text-gray-500"
+               onwheel="event.preventDefault()">
+        </div>
+        
 
-        <h3>SORTIE MENSUELLES</h3>
-        <table border="1" cellpadding="4">
-            <thead>
+        <h3 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">SORTIE MENSUELLES</h3>
+        <table class="min-w-full border border-gray-300 rounded-lg shadow text-sm" onwheel="event.preventDefault()">
+            <thead class="bg-red-200 text-xs">
                 <tr>
-                    <th>Mois</th>
+                    <th class="px-2 py-1 border">Mois</th>
                     @php
                         $mois = [
                             'janvier',
@@ -52,26 +65,27 @@
                         ];
                     @endphp
                     @foreach ($mois as $m)
-                        <th>{{ ucfirst($m) }}</th>
+                        <th class="px-1 py-1 border">{{ ucfirst($m) }}</th>
                     @endforeach
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Consommation</td>
+            <tbody class="text-xs">
+                <tr class="hover:bg-gray-50">
+                    <td class="px-2 py-1 border">Consommation</td>
                     @foreach ($mois as $m)
                         @php $val = $consommation['consommation_'.$m]; @endphp
-                        <td>
+                        <td class="px-1 py-1 border">
                             {{ $val }}
                             <input type="hidden" name="consommation_{{ $m }}" value="{{ $val }}">
                         </td>
                     @endforeach
                 </tr>
                 <tr>
-                    <td>Jours de rupture</td>
+                    <td class="px-2 py-1 border">Jours de rupture</td>
                     @foreach ($mois as $m)
-                        <td>
-                            <input type="number" name="rupture_{{ $m }}" min="0"
+                        <td class="px-1 py-1 border">
+                            <input type="number" name="rupture_{{ $m }}" min="0" 
+                                class="w-14 border border-gray-300 rounded text-xs px-1 py-0.5" onwheel="event.preventDefault()"
                                 value="{{ $consommation['rupture_' . $m] }}" required>
                         </td>
                     @endforeach
@@ -79,12 +93,15 @@
             </tbody>
         </table>
         @if ($peutModifier)
-            <button type="submit">Mettre à jour</button>
+            <button type="submit"
+                class="mt-6 px-3 py-1.5 bg-red-200 text-black text-sm rounded hover:bg-red-400
+                focus:outline-none focus:ring-2 focus:ring-blue-300">
+                Mettre à jour
+            </button>
         @endif
     </form>
 
-    <p><a href="{{ route('consommations-articles.index') }}">← Retour à la liste</a></p>
-
+    
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

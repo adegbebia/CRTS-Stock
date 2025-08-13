@@ -59,7 +59,8 @@
                        value="{{ old('quantite_commandee', $mouvement->quantite_commandee) }}"
                        {{ !$peutModifier ? 'disabled' : '' }}
                        class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
-                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900">
+                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900"
+                              onwheel="event.preventDefault()">
                 @error('quantite_commandee')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -72,7 +73,8 @@
                        value="{{ old('quantite_entree', $mouvement->quantite_entree) }}"
                        {{ !$peutModifier ? 'disabled' : '' }}
                        class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
-                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900">
+                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900"
+                              onwheel="event.preventDefault()">
                 @error('quantite_entree')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -85,7 +87,8 @@
                        value="{{ old('quantite_sortie', $mouvement->quantite_sortie) }}"
                        {{ !$peutModifier ? 'disabled' : '' }}
                        class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
-                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900">
+                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900"
+                              onwheel="event.preventDefault()">
                 @error('quantite_sortie')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -98,7 +101,8 @@
                        value="{{ old('avarie', $mouvement->avarie) }}"
                        {{ !$peutModifier ? 'disabled' : '' }}
                        class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
-                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900">
+                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900"
+                              onwheel="event.preventDefault()">
                 @error('avarie')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror

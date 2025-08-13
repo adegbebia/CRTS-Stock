@@ -49,11 +49,12 @@
             <input type="number" name="annee" id="annee" min="2020" max="{{ date('Y') + 1 }}" required
                 value="{{ $annee ?? old('annee', date('Y')) }}"
                 onchange="window.location.href='?article_id='+document.getElementById('article_id').value+'&annee='+this.value;"
-                class="block w-28 rounded-md border border-gray-400 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-white text-gray-700 p-1.5 text-sm" >
+                class="block w-28 rounded-md border border-gray-400 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-white text-gray-700 p-1.5 text-sm" 
+                onwheel="event.preventDefault()">
         </div>
 
         <h3 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">SORTIE MENSUELLES</h3>
-        <table class="min-w-full border border-gray-300 rounded-lg shadow text-sm">
+        <table class="min-w-full border border-gray-300 rounded-lg shadow text-sm" onwheel="event.preventDefault()">
             <thead class="bg-red-200 text-xs">
                 <tr>
                     <th class="px-2 py-1 border">Mois</th>
@@ -95,7 +96,7 @@
                         <td class="px-1 py-1 border">
                             <input type="number" name="rupture_{{ $m }}" min="0"
                                 value="{{ old('rupture_' . $m, 0) }}" 
-                                class="w-14 border border-gray-300 rounded text-xs px-1 py-0.5" required
+                                class="w-14 border border-gray-300 rounded text-xs px-1 py-0.5" onwheel="event.preventDefault()" required
                                 @if (!$peutModifier) disabled @endif>
                         </td>
                     @endforeach
