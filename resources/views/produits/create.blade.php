@@ -31,7 +31,8 @@
 
             <div>
                 <label for="codeproduit" class="block mb-1 font-medium text-gray-700">Code Produit</label>
-                <input type="text" name="codeproduit" id="codeproduit" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('codeproduit') }}"
+                <input type="text" name="codeproduit" id="codeproduit" required pattern="[^,;:]+"
+                    title="Ne doit pas contenir les caractères , ; :" value="{{ old('codeproduit') }}" 
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
                 @error('codeproduit')
                     <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
@@ -40,7 +41,8 @@
 
             <div>
                 <label for="libelle" class="block mb-1 font-medium text-gray-700">Libellé</label>
-                <input type="text" name="libelle" id="libelle" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('libelle') }}"
+                <input type="text" name="libelle" id="libelle" required pattern="[^,;:]+"
+                    title="Ne doit pas contenir les caractères , ; :" value="{{ old('libelle') }}"
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
                 @error('libelle')
                     <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
@@ -49,7 +51,8 @@
 
             <div>
                 <label for="conditionnement" class="block mb-1 font-medium text-gray-700">Conditionnement</label>
-                <input type="text" name="conditionnement" id="conditionnement" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :" value="{{ old('conditionnement') }}"
+                <input type="text" name="conditionnement" id="conditionnement" required pattern="[^,;:]+"
+                    title="Ne doit pas contenir les caractères , ; :" value="{{ old('conditionnement') }}" 
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
                 @error('conditionnement')
                     <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
@@ -58,40 +61,35 @@
 
             <div>
                 <label for="quantitestock" class="block mb-1 font-medium text-gray-700">Quantité</label>
-                <input type="number" name="quantitestock" id="quantitestock" min="0" required value="{{ old('quantitestock') }}"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
-                @error('quantitestock')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
-                @enderror
+                <input type="number" name="quantitestock" id="quantitestock" min="0" required
+                    value="{{ old('quantitestock') }}" 
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    onwheel="event.preventDefault()" />
             </div>
 
             <div>
                 <label for="stockmax" class="block mb-1 font-medium text-gray-700">Stock maximum</label>
-                <input type="number" name="stockmax" id="stockmax" min="0" required value="{{ old('stockmax') }}"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
-                @error('stockmax')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
-                @enderror
+                <input type="number" name="stockmax" id="stockmax" min="0" required
+                    value="{{ old('stockmax') }}" 
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    onwheel="event.preventDefault()" />
             </div>
 
             <div>
                 <label for="stockmin" class="block mb-1 font-medium text-gray-700">Stock minimum</label>
-                <input type="number" name="stockmin" id="stockmin" min="0" required value="{{ old('stockmin') }}"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
-                @error('stockmin')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
-                @enderror
+                <input type="number" name="stockmin" id="stockmin" min="0" required
+                    value="{{ old('stockmin') }}" 
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    onwheel="event.preventDefault()" />
             </div>
 
             <div>
                 <label for="stocksecurite" class="block mb-1 font-medium text-gray-700">Stock de sécurité</label>
-                <input type="number" name="stocksecurite" id="stocksecurite" min="0" required value="{{ old('stocksecurite') }}"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
-                @error('stocksecurite')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
-                @enderror
+                <input type="number" name="stocksecurite" id="stocksecurite" min="0" required
+                    value="{{ old('stocksecurite') }}" 
+                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    onwheel="event.preventDefault()" />
             </div>
-
             <div>
                 <label for="dateperemption" class="block mb-1 font-medium text-gray-700">Date de péremption</label>
                 <input type="date" name="dateperemption" id="dateperemption" required min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('dateperemption') }}"
