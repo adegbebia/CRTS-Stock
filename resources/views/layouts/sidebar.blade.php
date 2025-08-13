@@ -1,5 +1,6 @@
-<div id="sidebar" class="fixed top-0 left-0 w-64 h-[calc(68.5vh-0rem)] 
-           bg-red-200 p-6  transition-all duration-300 
+<div id="sidebar"
+    class="fixed top-0 bottom-0 left-0 w-64 
+           bg-red-200 p-6 transition-all duration-300 
            overflow-y-auto border-r border-blue-300">
     <ul class="space-y-4 text-blue-900">
 
