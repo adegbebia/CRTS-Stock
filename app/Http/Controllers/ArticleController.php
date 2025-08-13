@@ -146,23 +146,58 @@ class ArticleController extends Controller
     }
 
     public function update(ArticleRequest $request, Article $article)
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
 
-        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
-            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
-        }
-
-        if ($article->user_id !== $user->user_id) {
-            return redirect()->back()->with('error', 'Vous ne pouvez mettre à jour que vos propres articles.');
-        }
-
-        $validated = $request->validated();
-
-        $article->update($validated);
-
-        return redirect()->route('articles.index')->with('success', 'Article mis à jour avec succès.');
+    if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+        return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
     }
+
+    if ($article->user_id !== $user->user_id) {
+        return redirect()->back()->with('error', 'Vous ne pouvez mettre à jour que vos propres articles.');
+    }
+
+    $validated = $request->validated();
+
+    // Formattage des champs
+    $validated['codearticle'] = strtoupper($validated['codearticle']);
+    $validated['libelle'] = ucfirst(strtolower($validated['libelle']));
+
+    // Vérification si le code article existe déjà pour un autre libellé
+    $articleAvecCode = Article::where('codearticle', $validated['codearticle'])
+        ->where('article_id', '!=', $article->article_id) // exclure l'article actuel
+        ->first();
+
+    if ($articleAvecCode && $articleAvecCode->libelle !== $validated['libelle']) {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors(['codearticle' => 'Ce code article est déjà utilisé pour un autre libellé. Veuillez en choisir un autre.']);
+    }
+
+    // Vérification si un article similaire existe déjà (libellé + conditionnement)
+    $articleExistant = Article::where('libelle', $validated['libelle'])
+        ->where('conditionnement', $validated['conditionnement'])
+        ->where('article_id', '!=', $article->article_id) // exclure l'article actuel
+        ->first();
+
+    if ($articleExistant) {
+        // Fusion des quantités
+        $articleExistant->quantitestock += $validated['quantitestock'];
+        $articleExistant->save();
+
+        // Supprimer l'article actuel car on fusionne
+        $article->delete();
+
+        return redirect()->route('articles.index')
+            ->with('success', 'Article déjà existant. Quantité mise à jour avec succès.');
+    }
+
+    // Mise à jour normale si pas de fusion
+    $article->update($validated);
+
+    return redirect()->route('articles.index')->with('success', 'Article mis à jour avec succès.');
+}
+
 
     public function destroy(Article $article)
     {
