@@ -13,7 +13,7 @@
 
         <div>
             <label for="codeproduit" class="block mb-1 font-medium text-gray-700">Code produit</label>
-            <input type="text" name="codeproduit" id="codeproduit" value="{{ $produit->codeproduit }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
+            <input type="text" id="codeproduit" name="codeproduit" value="{{ old('codeproduit', $produit->codeproduit) }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
         </div>
 
@@ -32,25 +32,29 @@
         <div>
             <label for="quantitestock" class="block mb-1 font-medium text-gray-700">Quantité en stock</label>
             <input type="number" name="quantitestock" id="quantitestock" value="{{ $produit->quantitestock }}" required min="0" title="La valeur ne peut pas être négative"
-                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" 
+                onwheel="event.preventDefault()"/>
         </div>
 
         <div>
             <label for="stockmax" class="block mb-1 font-medium text-gray-700">Stock max</label>
             <input type="number" name="stockmax" id="stockmax" value="{{ $produit->stockmax }}" required min="0" title="La valeur ne peut pas être négative"
-                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" 
+                onwheel="event.preventDefault()"/>
         </div>
 
         <div>
             <label for="stockmin" class="block mb-1 font-medium text-gray-700">Stock min</label>
             <input type="number" name="stockmin" id="stockmin" value="{{ $produit->stockmin }}" required min="0" title="La valeur ne peut pas être négative"
-                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" 
+                onwheel="event.preventDefault()"/>
         </div>
 
         <div>
             <label for="stocksecurite" class="block mb-1 font-medium text-gray-700">Stock sécurité</label>
             <input type="number" name="stocksecurite" id="stocksecurite" value="{{ $produit->stocksecurite }}" required min="0" title="La valeur ne peut pas être négative"
-                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" 
+                onwheel="event.preventDefault()"/>
         </div>
 
         <div>

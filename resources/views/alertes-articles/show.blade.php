@@ -58,8 +58,9 @@
                 <h3 class="text-lg font-semibold mb-3 text-gray-700">Informations de l'Article lié</h3>
                 <ul class="list-disc list-inside space-y-1 text-gray-700">
                     <li><strong>Libellé :</strong> {{ $alerte->article->libelle ?? 'N/A' }}</li>
-                    <li><strong>Lot :</strong> {{ $alerte->article->lot ?? 'N/A' }}</li>
                     <li><strong>Quantité en stock :</strong> {{ $alerte->article->quantitestock ?? 'N/A' }}</li>
+
+                    <li><strong>Conditionnement :</strong> {{ $alerte->article->conditionnement ?? 'N/A' }}</li>
                     <li>
                         <strong>Date de péremption :</strong> 
                         {{ $alerte->article->dateperemption 
@@ -70,6 +71,7 @@
                     <li><strong>Stock sécurité :</strong> {{ $alerte->article->stocksecurite ?? 'N/A' }}</li>
                     <li><strong>Stock min :</strong> {{ $alerte->article->stockmin ?? 'N/A' }}</li>
                     <li><strong>Stock max :</strong> {{ $alerte->article->stockmax ?? 'N/A' }}</li>
+                    <li><strong>Lot :</strong> {{ $alerte->article->lot ?? 'N/A' }}</li>
                 </ul>
             </div>
         @else
