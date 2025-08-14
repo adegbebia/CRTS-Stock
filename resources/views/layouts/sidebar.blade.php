@@ -24,6 +24,9 @@
                 echo '<li><hr class="my-4 border-blue-400"></li>';
             }
         @endphp
+        <a href="{{ route('dashboard') }}" class="btn btn-ghost  text-blue-900   hover:bg-red-300" title="Dashboard">
+             Dashboard
+            </a>
 
         {{-- ADMIN --}}
         @if($role === 'admin' && $magasin === 'admin')

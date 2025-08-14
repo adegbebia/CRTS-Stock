@@ -71,10 +71,12 @@ class MouvementArticleController extends Controller
                 ->with('error', 'Quantité en stock insuffisante pour cette sortie. Stock disponible : ' . $article->quantitestock);
         }
 
-        $article->quantitestock += $entree - $sortie;
+        // $article->quantitestock += $entree - $sortie;
+        
+        $article->quantitestock += $entree - $sortie - $avarie; 
         $article->save();
-
-        $stockJour = $article->quantitestock - $avarie;
+        $stockJour = $article->quantitestock ;
+        
 
         MouvementArticle::create([
             'article_id'         => $article->article_id,
@@ -120,14 +122,14 @@ class MouvementArticleController extends Controller
         $data = $request->validated();
         $article = $mouvements_article->article;
 
-        $ancienImpact = ($mouvements_article->quantite_entree ?? 0) - ($mouvements_article->quantite_sortie ?? 0);
+        $ancienImpact = ($mouvements_article->quantite_entree ?? 0) - ($mouvements_article->quantite_sortie ?? 0) - ($mouvements_article->avarie ?? 0);
         $article->quantitestock -= $ancienImpact;
 
-        $newEntree = $data['quantite_entree'] ?? 0;
-        $newSortie = $data['quantite_sortie'] ?? 0;
-        $newImpact = $newEntree - $newSortie;
+        $newImpact = ($newEntree - $newSortie - $avarie);
         $article->quantitestock += $newImpact;
         $article->save();
+
+        $stockJour = $article->quantitestock;
 
         // Vérification du stock disponible
     if ($newSortie > $article->quantitestock + $ancienImpact) {

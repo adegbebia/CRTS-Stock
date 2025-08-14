@@ -72,11 +72,10 @@ class MouvementProduitController extends Controller
                 ->with('error', 'Quantité en stock insuffisante pour cette sortie. Stock disponible : ' . $produit->quantitestock);
         }
 
-        // ✅ Maintenant qu'on est sûr, appliquer les modifications
-        $produit->quantitestock += $entree - $sortie;
+       
+        $produit->quantitestock += $entree - $sortie - $avarie; 
         $produit->save();
-
-        $stockJour = $produit->quantitestock - $avarie;
+        $stockJour = $article->quantitestock ;
 
         MouvementProduit::create([
             'produit_id'         => $produit->produit_id,
@@ -117,53 +116,59 @@ class MouvementProduitController extends Controller
         $user = auth()->user();
 
         if (!($user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique')) {
-            return redirect()->route('produits.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+            return redirect()->route('produits.index')
+                            ->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
         }
 
         $data = $request->validated();
         $produit = $mouvements_produit->produit;
 
         // Annuler l'effet de l'ancien mouvement sur le stock
-        $ancienEntree = $mouvements_produit->quantite_entree ?? 0;
-        $ancienSortie = $mouvements_produit->quantite_sortie ?? 0;
-        $produit->quantitestock -= ($ancienEntree - $ancienSortie);
+        $ancienEntree  = $mouvements_produit->quantite_entree ?? 0;
+        $ancienSortie  = $mouvements_produit->quantite_sortie ?? 0;
+        $ancienAvarie  = $mouvements_produit->avarie ?? 0;
+        $produit->quantitestock -= ($ancienEntree - $ancienSortie - $ancienAvarie);
 
-        // Avant d’appliquer les nouvelles valeurs, on vérifie la validité
-        $newEntree = $data['quantite_entree'] ?? 0;
-        $newSortie = $data['quantite_sortie'] ?? 0;
+        // Nouvelles valeurs
+        $newEntree  = $data['quantite_entree'] ?? 0;
+        $newSortie  = $data['quantite_sortie'] ?? 0;
+        $newAvarie  = $data['avarie'] ?? 0;
 
-        $stockTemporaire = $produit->quantitestock; // stock réel après suppression de l’ancien mouvement
-
-        if ($newSortie > $stockTemporaire) {
+        // Vérification du stock avant application
+        if ($newSortie > $produit->quantitestock) {
             return redirect()->back()
-                ->withInput()
-                ->with('error', 'Quantité en stock insuffisante pour cette sortie. Stock disponible : ' . $stockTemporaire);
+                            ->withInput()
+                            ->with('error', 'Quantité en stock insuffisante pour cette sortie. Stock disponible : ' . $produit->quantitestock);
         }
 
-        // Mise à jour effective du stock
-        $produit->quantitestock += ($newEntree - $newSortie);
+        // Appliquer le nouveau mouvement
+        $produit->quantitestock += ($newEntree - $newSortie - $newAvarie);
         $produit->save();
 
         $avarie = $data['avarie'] ?? 0;
         $nombre_rupture_stock = $data['nombre_rupture_stock'] ?? 0;
         $stockJour = $produit->quantitestock - $avarie;
 
+        // Mise à jour du mouvement
         $mouvements_produit->update([
             'date'               => Carbon::now()->toDateString(),
             'origine'            => $data['origine'] ?? null,
-            'quantite_commandee' => $data['quantite_commandee']?? null,
+            'quantite_commandee' => $data['quantite_commandee'] ?? null,
             'quantite_entree'    => $newEntree ?: null,
             'quantite_sortie'    => $newSortie ?: null,
             // 'stock_debut_mois'   => $data['stock_debut_mois'],
             'avarie'             => $avarie ?: null,
             'nombre_rupture_stock'  => $nombre_rupture_stock ?: null,
             'stock_jour'         => $stockJour,
+            'avarie'             => $newAvarie ?: null,
+            'stock_jour'         => $produit->quantitestock,
             'observation'        => $data['observation'] ?? null,
         ]);
 
         return redirect()->route('mouvements-produits.create', ['produit' => $produit->produit_id])
-            ->with('success', 'Mouvement mis à jour avec succès.');
+                        ->with('success', 'Mouvement mis à jour avec succès.');
     }
+
 
 
     public function destroy(MouvementProduit $mouvements_produit)
