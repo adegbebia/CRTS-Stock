@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('libelle');
             $table->string('conditionnement');
             $table->integer('quantitestock');
-            $table->integer('stockmax')->nullable();
-            $table->integer('stockmin')->nullable();
+            $table->integer('stockmax');
+            $table->integer('stockmin');
             $table->integer('stocksecurite');
             $table->date('dateperemption')->nullable();
             $table->string('lot')->nullable();

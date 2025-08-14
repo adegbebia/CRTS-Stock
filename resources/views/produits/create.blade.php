@@ -69,7 +69,7 @@
 
             <div>
                 <label for="stockmax" class="block mb-1 font-medium text-gray-700">Stock maximum</label>
-                <input type="number" name="stockmax" id="stockmax" min="0" 
+                <input type="number" name="stockmax" id="stockmax" min="0" required
                     value="{{ old('stockmax') }}" 
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
                     onwheel="event.preventDefault()" />
@@ -77,7 +77,7 @@
 
             <div>
                 <label for="stockmin" class="block mb-1 font-medium text-gray-700">Stock minimum</label>
-                <input type="number" name="stockmin" id="stockmin" min="0" 
+                <input type="number" name="stockmin" id="stockmin" min="0" required
                     value="{{ old('stockmin') }}" 
                     class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
                     onwheel="event.preventDefault()" />
