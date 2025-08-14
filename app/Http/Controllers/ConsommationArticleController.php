@@ -14,7 +14,7 @@ class ConsommationArticleController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+        if (!($user->hasRole(['magasinier_collation','admin']))){
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
         }
         
@@ -25,7 +25,9 @@ class ConsommationArticleController extends Controller
 {
     $user = auth()->user();
 
-    if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+    // if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+    if (!($user->hasRole(['magasinier_collation', 'admin']) && ($user->hasRole('magasinier_collation') ? $user->magasin_affecte === 'collation' : true))) {
+
         return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
     }
 
@@ -83,7 +85,8 @@ class ConsommationArticleController extends Controller
         'annee',
         'consommations_mensuelles',
         'ruptures_mensuelles',
-        'search'
+        'search',
+        'user'
     ));
 }
 

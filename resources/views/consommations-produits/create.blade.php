@@ -2,21 +2,29 @@
 @section('content')
 
     @php
-        // Définir la variable de permission selon ton besoin réel
-        $peutModifier =
-            auth()->check() &&
-            auth()->user()->hasRole('magasinier_technique') &&
-            auth()->user()->magasin_affecte === 'technique';
+        $user = auth()->user();
+
+        // Permission de voir la page (admin OU magasinier_technique)
+        $peutVoir = $user && (
+            $user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique'
+            || $user->hasRole('admin')
+        );
+
+        // Permission de modifier (seulement magasinier_technique affecté au magasin technique)
+        $peutModifier = $user && $user->hasRole('magasinier_technique') && $user->magasin_affecte === 'technique';
     @endphp
+
 
 
     <h2 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">
         Nouvelle fiche de consommation
     </h2>
 
-    @if (!$peutModifier)
-        <p style="color:red;">⚠️ Vous n’êtes pas autorisé à créer ou modifier une fiche de consommation.</p>
+    @if (!$peutVoir)
+        <p style="color:red;">⚠️ Vous n’êtes pas autorisé à accéder à cette page.</p>
+        @php return; @endphp
     @endif
+
 
 
     <form action="{{ route('consommations-produits.store') }}" method="POST">
@@ -119,6 +127,7 @@
         @endif
 
 
+
     </form>
 
     <hr class="border-t-2 border-gray-300 my-6" />
@@ -175,7 +184,7 @@
                         <td class="px-4 py-2 border">{{ $c->semestre2 }}</td>
                         <td class="px-4 py-2 border">
                             @if ($peutModifier)
-                                <a href="{{ route('consommations-produits.edit', $c->consommationProd_id) }}"
+                                <!-- <a href="{{ route('consommations-produits.edit', $c->consommationProd_id) }}"
                                     class="text-yellow-600 hover:underline" title="Modifier">
                                     <button type="button">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -190,7 +199,7 @@
                                                                                 5.25 6H10" />
                                         </svg>
                                     </button>
-                                </a>
+                                </a> -->
 
                                 <!-- Suppression avec confirmation SweetAlert -->
                                 <form id="delete-form-{{ $c->consommationProd_id }}"

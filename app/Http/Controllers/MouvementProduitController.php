@@ -75,7 +75,7 @@ class MouvementProduitController extends Controller
        
         $produit->quantitestock += $entree - $sortie - $avarie; 
         $produit->save();
-        $stockJour = $article->quantitestock ;
+        $stockJour = $produit->quantitestock ;
 
         MouvementProduit::create([
             'produit_id'         => $produit->produit_id,

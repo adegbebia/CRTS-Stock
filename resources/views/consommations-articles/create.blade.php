@@ -1,20 +1,24 @@
 @extends('layouts.app')
 @section('content')
 
-
     @php
-        // Définir la variable de permission selon ton besoin réel
-        $peutModifier =
-            auth()->check() &&
-            auth()->user()->hasRole('magasinier_collation') &&
-            auth()->user()->magasin_affecte === 'collation';
+        $user = auth()->user();
+
+        // Permission de voir la page (admin OU magasinier_collation)
+        $peutVoir = $user && (
+            $user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation'
+            || $user->hasRole('admin')
+        );
+
+        // Permission de modifier (seulement magasinier_collation affecté au magasin collation)
+        $peutModifier = $user && $user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation';
     @endphp
     <h2 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">
         Nouvelle fiche de consommation
 
     </h2>
 
-    @if (!$peutModifier)
+    @if (!$peutVoir)
         <p style="color:red;">⚠️ Vous n’êtes pas autorisé à créer ou modifier une fiche de consommation.</p>
     @endif
 
@@ -163,7 +167,7 @@
                         <td class="px-4 py-2 border">{{ $c->semestre2 }}</td>
                         <td class="px-4 py-2 border">
                             @if ($peutModifier)
-                                <a href="{{ route('consommations-articles.edit', $c->consommationArt_id) }}"
+                                <!-- <a href="{{ route('consommations-articles.edit', $c->consommationArt_id) }}"
                                     class="text-yellow-600 hover:underline" title="Modifier" title="Modifier">
                                     <button type="button" aria-label="Modifier">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -178,7 +182,7 @@
                                 5.25 6H10" />
                                         </svg>
                                     </button>
-                                </a>
+                                </a> -->
 
                                 <form id="delete-form-{{ $c->consommationArt_id }}"
                                     action="{{ route('consommations-articles.destroy', ['consommation_article' => $c->consommationArt_id]) }}"

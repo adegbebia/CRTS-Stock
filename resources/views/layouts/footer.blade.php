@@ -47,7 +47,7 @@
     </div>
     <!-- Numéros cachés -->
     <div id="contact-text" class="mx-auto mt-4 text-center p-4 bg-blue-400 text-black rounded shadow hidden">
-        📞 + 228 70 45 66 80 / +228 92 21 49 21
+        📞 + 228 93 49 32 35 / +228 90 90 91 38
     </div>
 
 

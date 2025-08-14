@@ -7,8 +7,21 @@
             auth()->user()->magasin_affecte === 'collation';
     @endphp
 
+    @php
+        $user = auth()->user();
+
+        // Permission de voir la page (admin OU magasinier_collation)
+        $peutVoir = $user && (
+            $user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation'
+            || $user->hasRole('admin')
+        );
+
+        // Permission de modifier (seulement magasinier_collation affecté au magasinier_collation technique)
+        $peutModifier = $user && $user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation';
+    @endphp
+
     <h2 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">Modifier la consommation ({{ $consommation->annee }})</h2>
-    @if (!$peutModifier)
+    @if (!$peutVoir)
         <p class="text-red-600 mb-4">⚠️ Vous n’êtes pas autorisé à modifier cette consommation.</p>
     @endif
     <form
@@ -80,26 +93,25 @@
                         </td>
                     @endforeach
                 </tr>
-                <tr>
-                    <td class="px-2 py-1 border">Jours de rupture</td>
-                    @foreach ($mois as $m)
-                        <td class="px-1 py-1 border">
-                            <input type="number" name="rupture_{{ $m }}" min="0"
-                                class="w-14 border border-gray-300 rounded text-xs px-1 py-0.5" onwheel="event.preventDefault()"
-                                value="{{ $consommation['rupture_' . $m] }}" required
-                                @if (!$peutModifier) disabled @endif>
-                        </td>
-                    @endforeach
+                <tr class="hover:bg-gray-50">
+                        <td class="px-2 py-1 border">Nombres De Jour de rupture</td>
+                        @foreach ($mois as $m)
+                            @php $val = $consommation['rupture_'.$m]; @endphp
+                            <td class="px-1 py-1 border">
+                                {{ $val }}
+                                <input type="hidden" name="rupture_{{ $m }}" value="{{ $val }}">
+                            </td>
+                        @endforeach
                 </tr>
             </tbody>
         </table>
-        @if ($peutModifier)
+        <!-- @if ($peutModifier)
             <button type="submit"
                 class="mt-6 px-3 py-1.5 bg-red-200 text-black text-sm rounded hover:bg-red-400
                 focus:outline-none focus:ring-2 focus:ring-blue-300">
                 Mettre à jour
             </button>
-        @endif
+        @endif -->
     </form>
 
     
