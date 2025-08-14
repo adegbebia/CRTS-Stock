@@ -22,6 +22,7 @@ class MouvementProduit extends Model
         'quantite_sortie',
         // 'stock_debut_mois',
         'avarie',
+        'nombre_rupture_stock',
         'stock_jour',
         'observation',
     ];

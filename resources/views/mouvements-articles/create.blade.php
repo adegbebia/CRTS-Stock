@@ -134,6 +134,20 @@
                 @enderror
             </div>
 
+            {{-- Nombre rupture stock --}}
+
+            <div>
+                <label for="nombre_rupture_stock" class="block text-sm font-medium text-gray-700">Nombre De Rupture Stock</label>
+                <input type="number" name="nombre_rupture_stock" id="nombre_rupture_stock" min="1" value="{{ old('nombre_rupture_stock') }}"
+                    {{ !$peutModifier ? 'disabled' : '' }}
+                    class="mt-1 block w-full rounded-md border border-gray-400 bg-gray-100 p-2
+                          focus:border-red-500 focus:ring-red-500 focus:ring-1" 
+                          onwheel="event.preventDefault()"/>
+                @error('nombre_rupture_stock')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
             <!-- Observation -->
             <div>
                 <label for="observation" class="block text-sm font-medium text-gray-700">Observation</label>
@@ -206,6 +220,7 @@
                     <th class="px-4 py-2 border">Quantité entrée</th>
                     <th class="px-4 py-2 border">Quantité sortie</th>
                     <th class="px-4 py-2 border">Avarie</th>
+                    <th class="px-4 py-2 border">Nombre De Rupture Stock</th>
                     <th class="px-4 py-2 border">Stock du jour</th>
                     <th class="px-4 py-2 border">Observation</th>
                     <th class="px-4 py-2 border">Action</th>
@@ -221,6 +236,7 @@
                         <td class="px-4 py-2 border">{{ $mouvement->quantite_entree }}</td>
                         <td class="px-4 py-2 border">{{ $mouvement->quantite_sortie }}</td>
                         <td class="px-4 py-2 border">{{ $mouvement->avarie }}</td>
+                        <td class="px-4 py-2 border">{{ $mouvement->nombre_rupture_stock }}</td>
                         <td class="px-4 py-2 border">{{ $mouvement->stock_jour }}</td>
                         <td class="px-4 py-2 border">{{ $mouvement->observation }}</td>
                         <td class="px-4 py-2 border">

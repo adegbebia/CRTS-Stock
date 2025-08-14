@@ -24,6 +24,7 @@ class MouvementArticleSeeder extends Seeder
     //         'quantite_sortie'    => null,
     //         // 'stock_debut_mois'   => 200,
     //         'avarie'             => 0,
+    //         'nombre_rupture_stock'    =>2,
     //         'stock_jour'         => 700,
     //         'observation'        => 'Réception complète',
     //     ]);
@@ -37,6 +38,7 @@ class MouvementArticleSeeder extends Seeder
     //         'quantite_sortie'    => 120,
     //         // 'stock_debut_mois'   => 700,
     //         'avarie'             => 0,
+    //         'nombre_rupture_stock'    =>1,
     //         'stock_jour'         => 580,
     //         'observation'        => 'Sortie normale',
     //     ]);
@@ -50,6 +52,7 @@ class MouvementArticleSeeder extends Seeder
     //         'quantite_sortie'    => null,
     //         // 'stock_debut_mois'   => 1000,
     //         'avarie'             => 50,
+    //         'nombre_rupture_stock'    =>4,
     //         'stock_jour'         => 950,
     //         'observation'        => 'Avarie détectée',
     //     ]);

@@ -21,7 +21,7 @@
 
             <!-- Produit -->
             <div>
-                <label for="produit_id" class="block text-sm font-medium text-gray-700 mb-1">Article</label>
+                <label for="produit_id" class="block text-sm font-medium text-gray-700 mb-1">Produit</label>
                 <select name="produit_id" id="produit_id" required
                         {{ !$peutModifier ? 'disabled' : '' }}
                         class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
@@ -104,6 +104,22 @@
                               focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900"
                               onwheel="event.preventDefault()">
                 @error('avarie')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+
+
+            <!-- Nombre de Rupture stock -->
+            <div>
+                <label for="nombre_rupture_stock" class="block text-sm font-medium text-gray-700 mb-1">Nombre De Rupture Stock</label>
+                <input type="number" name="nombre_rupture_stock" id="nombre_rupture_stock" min="1"
+                       value="{{ old('nombre_rupture_stock', $mouvement->nombre_rupture_stock) }}"
+                       {{ !$peutModifier ? 'disabled' : '' }}
+                       class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
+                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900"
+                              onwheel="event.preventDefault()">
+                @error('nombre_rupture_stock')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>

@@ -48,6 +48,9 @@ class ConsommationProduit extends Model
             $this->consommation_avril,   $this->consommation_mai,     $this->consommation_juin,
             $this->consommation_juillet, $this->consommation_aout,    $this->consommation_septembre,
             $this->consommation_octobre, $this->consommation_novembre, $this->consommation_decembre,
+
+
+
         ])->sum();
     }
 
@@ -83,58 +86,110 @@ class ConsommationProduit extends Model
         return $this->trimestre3 + $this->trimestre4;
     }
 
+//     public static function recalcForProductYear(int $produit_id, int $annee): void
+// {
+//     $mensuelles = MouvementProduit::selectRaw("CAST(strftime('%m', date) AS INTEGER) as mois, SUM(quantite_sortie) as total")
+//         ->where('produit_id', $produit_id)
+//         ->whereYear('date', $annee)
+//         ->whereNotNull('quantite_sortie')
+//         ->where('quantite_sortie', '>', 0)
+//         ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
+//         ->pluck('total', 'mois'); // [1 => 120, 4 => 55]
+
+//     $moisNoms = [
+//         1 => 'janvier', 2 => 'fevrier', 3 => 'mars',
+//         4 => 'avril', 5 => 'mai', 6 => 'juin',
+//         7 => 'juillet', 8 => 'aout', 9 => 'septembre',
+//         10 => 'octobre', 11 => 'novembre', 12 => 'decembre',
+//     ];
+
+//     $data = [];
+//     // $total = 0;
+
+//     foreach ($moisNoms as $mois => $nom) {
+//         // $val = $mensuelles[$mois] ?? 0;
+//         // $data["consommation_$nom"] = $val;
+//         // $total += $val;
+//         $data["consommation_$nom"] = $mensuelles[$mois] ?? 0;
+
+
+
+//     }
+
+//     // Cherche la ligne existante
+//     $cons = static::where('produit_id', $produit_id)
+//                   ->where('annee', $annee)
+//                   ->first();
+
+//     // if ($total === 0) {
+//     //     // S'il n'y a plus aucune consommation, supprimer la ligne si elle existe
+//     //     if ($cons) {
+//     //         $cons->delete();
+//     //     }
+//     //     return;
+//     // }
+
+//     // // Sinon, créer ou mettre à jour
+//     // if (!$cons) {
+//     //     $cons = new static([
+//     //         'produit_id' => $produit_id,
+//     //         'annee' => $annee,
+//     //     ]);
+//     // }
+
+//     // $cons->fill($data)->save();
+// }
+
+
     public static function recalcForProductYear(int $produit_id, int $annee): void
-{
-    $mensuelles = MouvementProduit::selectRaw("CAST(strftime('%m', date) AS INTEGER) as mois, SUM(quantite_sortie) as total")
+    {
+        // 1. Consommations mensuelles (uniquement sorties)
+        $mensuelles = MouvementProduit::selectRaw("
+                CAST(strftime('%m', date) AS INTEGER) as mois, 
+                SUM(quantite_sortie) as total
+            ")
+            ->where('produit_id', $produit_id)
+            ->whereYear('date', $annee)
+            ->whereNotNull('quantite_sortie')
+            ->where('quantite_sortie', '>', 0)
+            ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
+            ->pluck('total', 'mois');
+
+        // 2. Ruptures mensuelles (toutes lignes, sans filtrer entrée/sortie)
+        $ruptures = MouvementProduit::selectRaw("
+            CAST(strftime('%m', date) AS INTEGER) as mois, 
+            SUM(nombre_rupture_stock) as total
+        ")
         ->where('produit_id', $produit_id)
         ->whereYear('date', $annee)
-        ->whereNotNull('quantite_sortie')
-        ->where('quantite_sortie', '>', 0)
         ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
-        ->pluck('total', 'mois'); // [1 => 120, 4 => 55]
-
-    $moisNoms = [
-        1 => 'janvier', 2 => 'fevrier', 3 => 'mars',
-        4 => 'avril', 5 => 'mai', 6 => 'juin',
-        7 => 'juillet', 8 => 'aout', 9 => 'septembre',
-        10 => 'octobre', 11 => 'novembre', 12 => 'decembre',
-    ];
-
-    $data = [];
-    // $total = 0;
-
-    foreach ($moisNoms as $mois => $nom) {
-        // $val = $mensuelles[$mois] ?? 0;
-        // $data["consommation_$nom"] = $val;
-        // $total += $val;
-        $data["consommation_$nom"] = $mensuelles[$mois] ?? 0;
+        ->pluck('total', 'mois');
 
 
+        // 3. Liste des mois
+        $moisNoms = [
+            1 => 'janvier', 2 => 'fevrier', 3 => 'mars',
+            4 => 'avril', 5 => 'mai', 6 => 'juin',
+            7 => 'juillet', 8 => 'aout', 9 => 'septembre',
+            10 => 'octobre', 11 => 'novembre', 12 => 'decembre',
+        ];
 
+        // 4. Remplissage du tableau $data
+        $data = [];
+        foreach ($moisNoms as $mois => $nom) {
+            $data["consommation_$nom"] = $mensuelles[$mois] ?? 0;
+            $data["rupture_$nom"] = $ruptures[$mois] ?? 0;
+        }
+
+        // 5. Cherche ou crée la ligne existante
+        $cons = static::firstOrNew([
+            'produit_id' => $produit_id,
+            'annee'      => $annee,
+        ]);
+
+        // 6. Enregistre les données
+        $cons->fill($data)->save();
     }
 
-    // Cherche la ligne existante
-    $cons = static::where('produit_id', $produit_id)
-                  ->where('annee', $annee)
-                  ->first();
-
-    // if ($total === 0) {
-    //     // S'il n'y a plus aucune consommation, supprimer la ligne si elle existe
-    //     if ($cons) {
-    //         $cons->delete();
-    //     }
-    //     return;
-    // }
-
-    // // Sinon, créer ou mettre à jour
-    // if (!$cons) {
-    //     $cons = new static([
-    //         'produit_id' => $produit_id,
-    //         'annee' => $annee,
-    //     ]);
-    // }
-
-    // $cons->fill($data)->save();
-}
 
 }

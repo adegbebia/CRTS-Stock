@@ -34,6 +34,7 @@ class ConsommationArticleController extends Controller
     $annee = $request->query('annee', date('Y'));
     $search = $request->query('search');
     $consommations_mensuelles = array_fill(1, 12, 0);
+    $ruptures_mensuelles = array_fill(1, 12, 0);
 
     // Requête principale pour les consommations, ordonnée par année décroissante
     $consommationsQuery = ConsommationArticle::with('article')->orderBy('annee', 'desc');
@@ -60,6 +61,19 @@ class ConsommationArticleController extends Controller
             $total = $resultat->total;
             $consommations_mensuelles[$mois] = $total;
         }
+
+        // Ruptures mensuelles
+            $resultats_rupture = MouvementArticle::selectRaw("CAST(strftime('%m', date) AS INTEGER) AS mois, SUM(nombre_rupture_stock) AS total")
+                ->where('article_id', $article_id)
+                ->whereYear('date', $annee)
+                ->whereNotNull('nombre_rupture_stock')
+                ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
+                ->get();
+
+            foreach ($resultats_rupture as $resultat) {
+                $mois = $resultat->mois;
+                $ruptures_mensuelles[$mois] = $resultat->total;
+            }
     }
 
     return view('consommations-articles.create', compact(
@@ -68,6 +82,7 @@ class ConsommationArticleController extends Controller
         'article_id',
         'annee',
         'consommations_mensuelles',
+        'ruptures_mensuelles',
         'search'
     ));
 }

@@ -89,6 +89,17 @@ class ConsommationArticle extends Model
             ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
             ->pluck('total', 'mois'); // [1 => 120, 4 => 55, etc.]
 
+
+        // 2. Ruptures mensuelles (toutes lignes, sans filtrer entrée/sortie)
+        $ruptures = MouvementProduit::selectRaw("
+            CAST(strftime('%m', date) AS INTEGER) as mois, 
+            SUM(nombre_rupture_stock) as total
+        ")
+        ->where('article_id', $article_id)
+        ->whereYear('date', $annee)
+        ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
+        ->pluck('total', 'mois');
+
         $moisNoms = [
             1 => 'janvier',   2 => 'fevrier',  3 => 'mars',
             4 => 'avril',     5 => 'mai',      6 => 'juin',
@@ -102,11 +113,11 @@ class ConsommationArticle extends Model
            
         }
 
-        // $cons = static::firstOrNew([
-        //     'article_id' => $article_id,
-        //     'annee'      => $annee,
-        // ]);
+        $cons = static::firstOrNew([
+            'article_id' => $article_id,
+            'annee'      => $annee,
+        ]);
 
-        // $cons->fill($data)->save();
+        $cons->fill($data)->save();
     }
 }

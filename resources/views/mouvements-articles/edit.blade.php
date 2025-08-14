@@ -102,6 +102,20 @@
             </div>
 
             <div>
+                <label for="nombre_rupture_stock" class="block text-sm font-medium text-gray-700 mb-1">Nombre De Rupture Stock</label>
+                <input type="number" name="nombre_rupture_stock" id="nombre_rupture_stock" min="1"
+                       value="{{ old('nombre_rupture_stock', $mouvement->nombre_rupture_stock) }}"
+                       {{ !$peutModifier ? 'disabled' : '' }}
+                       class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
+                              focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900"
+                              onwheel="event.preventDefault()">
+                @error('nombre_rupture_stock')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+
+            <div>
                 <label for="observation" class="block text-sm font-medium text-gray-700 mb-1">Observation</label>
                 <textarea name="observation" id="observation" 
                     {{ !$peutModifier ? 'disabled' : '' }}

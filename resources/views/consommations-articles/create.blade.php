@@ -90,16 +90,16 @@
                         </td>
                     @endforeach
                 </tr>
-                <tr>
-                    <td class="px-2 py-1 border">Jours de rupture</td>
-                    @foreach ($mois as $m)
-                        <td class="px-1 py-1 border">
-                            <input type="number" name="rupture_{{ $m }}" min="0"
-                                value="{{ old('rupture_' . $m, 0) }}" 
-                                class="w-14 border border-gray-300 rounded text-xs px-1 py-0.5" onwheel="event.preventDefault()" required
-                                @if (!$peutModifier) disabled @endif>
-                        </td>
-                    @endforeach
+                <tr class="hover:bg-gray-50"> 
+                    <td class="px-2 py-1 border">Nombres De Jour de rupture</td>
+                        @foreach ($mois as $index => $m)
+                            <td class="px-1 py-1 border">
+                                {{ $ruptures_mensuelles[$index + 1] ?? 0 }}
+                                <input type="hidden" name="rupture_{{ $m }}"
+                                    value="{{ $ruptures_mensuelles[$index + 1] ?? 0 }}">
+                            </td>
+                        @endforeach
+                    </td>
                 </tr>
             </tbody>
         </table>

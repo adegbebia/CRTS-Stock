@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('quantite_commandee')->nullable();
             $table->integer('quantite_entree')->nullable();
             $table->integer('quantite_sortie')->nullable();
-            // $table->integer('stock_debut_mois');
             $table->integer('avarie')->nullable(); 
+            $table->integer('nombre_rupture_stock')->nullable();
             $table->integer('stock_jour');
             $table->text('observation')->nullable(); 
             $table->foreign('produit_id')->references('produit_id')->on('produits')->onDelete('cascade');

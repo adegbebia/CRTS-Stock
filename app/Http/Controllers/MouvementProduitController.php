@@ -64,7 +64,7 @@ class MouvementProduitController extends Controller
         $entree = $data['quantite_entree'] ?? 0;
         $sortie = $data['quantite_sortie'] ?? 0;
         $avarie = $data['avarie'] ?? 0;
-
+        $nombre_rupture_stock = $data['nombre_rupture_stock'] ?? 0;
         // ✅ Vérifier le stock AVANT de modifier
         if ($sortie > $produit->quantitestock) {
             return redirect()->back()
@@ -87,6 +87,7 @@ class MouvementProduitController extends Controller
             'quantite_sortie'    => $sortie ?: null,
             // 'stock_debut_mois'   => $data['stock_debut_mois'],
             'avarie'             => $avarie ?: null,
+            'nombre_rupture_stock' => $nombre_rupture_stock ?: null,
             'stock_jour'         => $stockJour,
             'observation'        => $data['observation'] ?? null,
         ]);
@@ -144,6 +145,7 @@ class MouvementProduitController extends Controller
         $produit->save();
 
         $avarie = $data['avarie'] ?? 0;
+        $nombre_rupture_stock = $data['nombre_rupture_stock'] ?? 0;
         $stockJour = $produit->quantitestock - $avarie;
 
         $mouvements_produit->update([
@@ -154,6 +156,7 @@ class MouvementProduitController extends Controller
             'quantite_sortie'    => $newSortie ?: null,
             // 'stock_debut_mois'   => $data['stock_debut_mois'],
             'avarie'             => $avarie ?: null,
+            'nombre_rupture_stock'  => $nombre_rupture_stock ?: null,
             'stock_jour'         => $stockJour,
             'observation'        => $data['observation'] ?? null,
         ]);
