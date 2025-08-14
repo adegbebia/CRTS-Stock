@@ -35,14 +35,14 @@
 
         <div>
             <label for="stockmax" class="block mb-1 font-medium text-gray-700">Stock max</label>
-            <input type="number" id="stockmax" name="stockmax" value="{{ old('stockmax', $article->stockmax) }}" required min="0" title="La valeur ne peut pas être négative"
+            <input type="number" id="stockmax" name="stockmax" value="{{ old('stockmax', $article->stockmax) }}"  min="0" title="La valeur ne peut pas être négative"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
                 onwheel="event.preventDefault()" />
         </div>
 
         <div>
             <label for="stockmin" class="block mb-1 font-medium text-gray-700">Stock min</label>
-            <input type="number" id="stockmin" name="stockmin" value="{{ old('stockmin', $article->stockmin) }}" required min="0" title="La valeur ne peut pas être négative"
+            <input type="number" id="stockmin" name="stockmin" value="{{ old('stockmin', $article->stockmin) }}"  min="0" title="La valeur ne peut pas être négative"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
                 onwheel="event.preventDefault()" />
         </div>
@@ -56,13 +56,13 @@
 
         <div>
             <label for="dateperemption" class="block mb-1 font-medium text-gray-700">Date de péremption</label>
-            <input type="date" id="dateperemption" name="dateperemption" value="{{ old('dateperemption', $article->dateperemption) }}" required min="{{ date('Y-m-d', strtotime('+1 day')) }}" title="La date doit être ultérieure à aujourd'hui"
+            <input type="date" id="dateperemption" name="dateperemption" value="{{ old('dateperemption', $article->dateperemption) }}"  min="{{ date('Y-m-d', strtotime('+1 day')) }}" title="La date doit être ultérieure à aujourd'hui"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
         </div>
 
         <div>
             <label for="lot" class="block mb-1 font-medium text-gray-700">Lot</label>
-            <input type="text" id="lot" name="lot" value="{{ old('lot', $article->lot) }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
+            <input type="text" id="lot" name="lot" value="{{ old('lot', $article->lot) }}"  pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
         </div>
 

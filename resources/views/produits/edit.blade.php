@@ -38,14 +38,14 @@
 
         <div>
             <label for="stockmax" class="block mb-1 font-medium text-gray-700">Stock max</label>
-            <input type="number" name="stockmax" id="stockmax" value="{{ $produit->stockmax }}" required min="0" title="La valeur ne peut pas être négative"
+            <input type="number" name="stockmax" id="stockmax" value="{{ $produit->stockmax }}"  min="0" title="La valeur ne peut pas être négative"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" 
                 onwheel="event.preventDefault()"/>
         </div>
 
         <div>
             <label for="stockmin" class="block mb-1 font-medium text-gray-700">Stock min</label>
-            <input type="number" name="stockmin" id="stockmin" value="{{ $produit->stockmin }}" required min="0" title="La valeur ne peut pas être négative"
+            <input type="number" name="stockmin" id="stockmin" value="{{ $produit->stockmin }}"  min="0" title="La valeur ne peut pas être négative"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" 
                 onwheel="event.preventDefault()"/>
         </div>
@@ -59,13 +59,13 @@
 
         <div>
             <label for="dateperemption" class="block mb-1 font-medium text-gray-700">Date de péremption</label>
-            <input type="date" name="dateperemption" id="dateperemption" value="{{ $produit->dateperemption }}" required min="{{ date('Y-m-d', strtotime('+1 day')) }}" title="La date doit être ultérieure à aujourd'hui"
+            <input type="date" name="dateperemption" id="dateperemption" value="{{ $produit->dateperemption }}"  min="{{ date('Y-m-d', strtotime('+1 day')) }}" title="La date doit être ultérieure à aujourd'hui"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
         </div>
 
         <div>
             <label for="lot" class="block mb-1 font-medium text-gray-700">Lot</label>
-            <input type="text" name="lot" id="lot" value="{{ $produit->lot }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
+            <input type="text" name="lot" id="lot" value="{{ $produit->lot }}"  pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
         </div>
 

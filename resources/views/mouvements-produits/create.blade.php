@@ -82,7 +82,8 @@
                     value="{{ old('quantite_commandee') }}" {{ !$peutModifier ? 'disabled' : '' }}
                     class="mt-1 block w-full rounded-md border border-gray-100 md:border-gray-400
                           md:bg-gray-100 p-2 shadow-sm
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1">
+                          focus:border-red-500 focus:ring-red-500 focus:ring-1"
+                          onwheel="event.preventDefault()">
                 @error('quantite_commandee')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -95,7 +96,8 @@
                     value="{{ old('quantite_entree') }}" {{ !$peutModifier ? 'disabled' : '' }}
                     class="mt-1 block w-full rounded-md border border-gray-300 md:border-gray-400
                           md:bg-gray-100 p-2 shadow-sm
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1" />
+                          focus:border-red-500 focus:ring-red-500 focus:ring-1" 
+                          onwheel="event.preventDefault()"/>
                 @error('quantite_entree')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -106,7 +108,8 @@
                     value="{{ old('quantite_sortie') }}" {{ !$peutModifier ? 'disabled' : '' }} 
                     class="mt-1 block w-full rounded-md border border-gray-300 md:border-gray-400
                           md:bg-gray-100 p-2 shadow-sm
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1"/>
+                          focus:border-red-500 focus:ring-red-500 focus:ring-1"
+                          onwheel="event.preventDefault()"/>
                 @error('quantite_sortie')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -117,7 +120,8 @@
                 <input type="number" name="avarie" id="avarie" min="1" value="{{ old('avarie') }}"
                     {{ !$peutModifier ? 'disabled' : '' }}
                     class="mt-1 block w-full rounded-md border border-gray-400 bg-gray-100 p-2
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1" />
+                          focus:border-red-500 focus:ring-red-500 focus:ring-1" 
+                          onwheel="event.preventDefault()"/>
                 @error('avarie')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror

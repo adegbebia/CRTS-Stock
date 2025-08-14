@@ -69,7 +69,7 @@
             <!-- Origine -->
             <div>
                 <label for="origine" class="block text-sm font-medium text-gray-700">Origine</label>
-                <input type="text" name="origine" id="origine" value="{{ old('origine') }}" pattern="[^,;:]+"
+                <input type="text" name="origine" id="origine" value="{{ old('origine') }}" required pattern="[^,;:]+"
                     title="Ne doit pas contenir les caractères , ; :" required {{ !$peutModifier ? 'disabled' : '' }}
                     class="mt-1 block w-full rounded-md border border-gray-100 md:border-gray-400
                         md:bg-gray-100 p-2 shadow-sm

@@ -160,7 +160,7 @@
 
                                 <br>
                                 <a href="{{ route('mouvements-produits.create', ['produit' => $produit->produit_id]) }}">
-                                    <button type="button" class="text-green-600 title="Enregistrer un mouvement">
+                                    <button type="button" class="text-green-600" title="Enregistrer un mouvement">
 
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="size-6">

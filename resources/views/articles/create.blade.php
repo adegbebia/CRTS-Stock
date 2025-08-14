@@ -66,7 +66,7 @@
 
                 <div>
                     <label for="stockmax" class="block mb-1 font-medium text-gray-700">Stock maximum</label>
-                    <input type="number" name="stockmax" id="stockmax" min="0" required
+                    <input type="number" name="stockmax" id="stockmax" min="0" 
                         value="{{ old('stockmax') }}" 
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
                         onwheel="event.preventDefault()" />
@@ -74,7 +74,7 @@
 
                 <div>
                     <label for="stockmin" class="block mb-1 font-medium text-gray-700">Stock minimum</label>
-                    <input type="number" name="stockmin" id="stockmin" min="0" required
+                    <input type="number" name="stockmin" id="stockmin" min="0" 
                         value="{{ old('stockmin') }}" 
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
                         onwheel="event.preventDefault()" />
@@ -90,7 +90,7 @@
 
                 <div>
                     <label for="dateperemption" class="block mb-1 font-medium text-gray-700">Date de péremption</label>
-                    <input type="date" name="dateperemption" id="dateperemption" required
+                    <input type="date" name="dateperemption" id="dateperemption" 
                         min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('dateperemption') }}" 
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
                     @error('dateperemption')
@@ -100,7 +100,7 @@
 
                 <div>
                     <label for="lot" class="block mb-1 font-medium text-gray-700">Lot</label>
-                    <input type="text" name="lot" id="lot" required pattern="[^,;:]+"
+                    <input type="text" name="lot" id="lot"  pattern="[^,;:]+"
                         title="Ne doit pas contenir les caractères , ; :" value="{{ old('lot') }}" 
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
                     @error('lot')

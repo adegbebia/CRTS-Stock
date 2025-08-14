@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('libelle');
             $table->string('conditionnement');
             $table->integer('quantitestock');
-            $table->integer('stockmax');
-            $table->integer('stockmin');
+            $table->integer('stockmax')->nullable();
+            $table->integer('stockmin')->nullable();
             $table->integer('stocksecurite');
-            $table->date('dateperemption');
-            $table->string('lot');
+            $table->date('dateperemption')->nullable();
+            $table->string('lot')->nullable();
             $table->date('date');
             $table->integer('user_id');
             $table->foreign('user_id')->references('user_id')->on('users')->OnDelete('cascade');

@@ -23,11 +23,11 @@ class ArticleRequest extends FormRequest
             'libelle'         => 'required|string|max:255',
             'conditionnement' => 'required|string|max:255',
             'quantitestock'   => 'required|integer',
-            'stockmax'        => 'required|integer',
-            'stockmin'        => 'required|integer',
+            'stockmax'        => 'nullable|integer',
+            'stockmin'        => 'nullable|integer',
             'stocksecurite'   => 'required|integer',
-            'dateperemption'  => 'required|date',
-            'lot'             => 'required|string|max:255',
+            'dateperemption'  => 'nullable|date',
+            'lot'             => 'nullable|string|max:255',
         ];
 
         if ($this->isMethod('post')) {
