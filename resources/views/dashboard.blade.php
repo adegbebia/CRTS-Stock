@@ -73,14 +73,13 @@
                     <ul class="list-disc list-inside space-y-2 text-gray-700 text-base leading-relaxed">
                         @foreach ($alertesArticles as $alerte)
                             <li class="bg-white rounded-md shadow-sm p-3 hover:bg-blue-50 transition duration-150">
-                                <span class="font-mono text-xs text-gray-400 mr-2">[{{ $alerte->datedeclenchement }}]</span>
-                                <span class="font-semibold text-blue-600">Article :</span>
+                                <span class="font-mono text-xs text-gray-600 mr-2">[{{ $alerte->datedeclenchement }}]</span>
+                                <span class="font-semibold">Article :</span>
                                 <span
                                     class="font-medium text-gray-900">{{ $alerte->article->libelle ?? 'Article supprimé' }}
                                 </span>
-                                <span class="font-semibold text-blue-600">Type d'alerte :</span>
-                                <span class="italic text-blue-500">{{ $alerte->typealerte }}</span>
-                                
+                                <span class="font-semibold">Type d'alerte :</span>
+
                                 @switch($alerte->typealerte)
                                     @case('Alerte rouge')
                                         <span class="text-red-600 font-semibold">Stock critique</span>
