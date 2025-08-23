@@ -57,7 +57,7 @@
             <table class="min-w-full border border-gray-300 rounded-lg shadow text-sm" onwheel="event.preventDefault()">
                 <thead class="bg-red-200 text-xs">
                     <tr>
-                        <th class="px-2 py-1 border">Mois</th>
+                        <th class="px-2 py-1 border"></th>
                         @php
                             $mois = [
                                 'janvier',

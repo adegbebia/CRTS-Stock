@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
-    <title>Connexion</title>
+    <title>Connexion - CRTS Stock</title>
 
     <!-- TailwindCSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,71 +13,79 @@
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gradient-to-br from-red-400 via-white to-blue-400 min-h-screen flex items-center justify-center">
 
-    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        <div class="sm:mx-auto sm:w-full sm:max-w-sm text-center">
+    <div class="w-full max-w-md bg-white shadow-2xl rounded-2xl p-8 space-y-6">
+        <!-- Logo + Titre -->
+        <div class="text-center">
             <img src="{{ asset('images/logo-crts.png') }}" 
-                alt="Logo CRTS" 
-                class="mx-auto h-16 w-auto rounded-full shadow-lg border border-gray-200 bg-white p-2" />
+                 alt="Logo CRTS" 
+                 class="mx-auto h-20 w-20 rounded-full shadow-md border border-gray-200 bg-white p-2" />
 
-            <h2 class="mt-10 text-2xl font-bold tracking-tight text-gray-900">
-                Se Connecter à Son Compte
-            </h2>
+            <h1 class="mt-4 text-3xl font-extrabold text-indigo-700">
+                Bienvenue sur <span class="text-indigo-900">CRTS Stock</span>
+            </h1>
+            <p class="mt-2 text-gray-600">Veuillez vous connecter pour accéder à votre espace</p>
         </div>
 
-        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form method="POST" action="{{ route('login') }}" class="space-y-6">
-                @csrf
+        <!-- Formulaire -->
+        <form method="POST" action="{{ route('login') }}" class="space-y-5">
+            @csrf
 
-                @if(session('error'))
-                    <div style="color: red">{{ session('error') }}</div>
-                @endif
-
-                <!-- Nom Pseudo -->
-                <div>
-                    <label for="nom_pseudo" class="block text-sm font-medium text-gray-900">Nom Pseudo</label>
-                    <input id="nom_pseudo" 
-                           name="nom_pseudo"
-                           required
-                           class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 
-                                  outline outline-1 outline-gray-300 placeholder:text-gray-400 
-                                  focus:outline-2 focus:outline-indigo-600 sm:text-sm" />
+            <!-- Affichage erreur simple -->
+            @if(session('error'))
+                <div class="bg-red-100 text-red-700 px-4 py-2 rounded-md text-sm">
+                    {{ session('error') }}
                 </div>
+            @endif
 
-                <!-- Mot de passe -->
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-900">Mot de passe</label>
-                    <div class="relative">
-                        <input id="password" 
-                               type="password" 
-                               name="password" 
-                               required 
-                               autocomplete="current-password"
-                               oninput="handleInput()"
-                               class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 
-                                      outline outline-1 outline-gray-300 placeholder:text-gray-400 
-                                      focus:outline-2 focus:outline-indigo-600 sm:text-sm" />
-                        <i id="eyeIcon"
-                           class="fa-solid fa-eye-slash absolute right-3 top-3 cursor-pointer text-gray-500"
-                           style="display: none;"
-                           onclick="togglePassword()">
-                        </i>
-                    </div>
-                </div>
+            <!-- Nom Pseudo -->
+            <div>
+                <label for="nom_pseudo" class="block text-sm font-medium text-gray-700">Nom Pseudo</label>
+                <input id="nom_pseudo" 
+                       name="nom_pseudo"
+                       required
+                       placeholder="Entrez votre identifiant"
+                       class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 
+                              focus:ring-indigo-500 sm:text-sm px-3 py-2 border" />
+            </div>
 
-                <!-- Bouton -->
-                <div>
-                    <button type="submit" 
-                            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 
-                                   text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 
-                                   focus-visible:outline focus-visible:outline-2 
-                                   focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Se connecter
-                    </button>
+            <!-- Mot de passe -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+                <div class="relative mt-1">
+                    <input id="password" 
+                           type="password" 
+                           name="password" 
+                           required 
+                           autocomplete="current-password"
+                           oninput="handleInput()"
+                           placeholder="••••••••"
+                           class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 
+                                  focus:ring-indigo-500 sm:text-sm px-3 py-2 border" />
+                    <i id="eyeIcon"
+                       class="fa-solid fa-eye-slash absolute right-3 top-3 cursor-pointer text-gray-500"
+                       style="display: none;"
+                       onclick="togglePassword()">
+                    </i>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <!-- Bouton -->
+            <div>
+                <button type="submit" 
+                        class="flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-2 
+                               text-sm font-semibold text-white shadow-md hover:bg-indigo-500 
+                               focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-600 transition">
+                    <i class="fa-solid fa-right-to-bracket mr-2"></i> Se connecter
+                </button>
+            </div>
+        </form>
+
+        <!-- Footer -->
+        <p class="text-center text-sm text-gray-500 mt-6">
+            &copy; 2025 CRTS Stock. Tous droits réservés.
+        </p>
     </div>
 
     <!-- Affichage du message d'erreur avec SweetAlert -->
@@ -85,13 +93,14 @@
         <script>
             Swal.fire({
                 icon: 'error',
-                title: 'Erreur',
+                title: 'Erreur de connexion',
                 text: '{{ session('error') }}',
                 confirmButtonText: 'OK'
             });
         </script>
     @endif
 
+    <!-- Script affichage/masquage mot de passe -->
     <script>
         const passwordInput = document.getElementById("password");
         const eyeIcon = document.getElementById("eyeIcon");
@@ -99,8 +108,9 @@
         function togglePassword() {
             const isHidden = passwordInput.type === "password";
             passwordInput.type = isHidden ? "text" : "password";
-            eyeIcon.className = isHidden ? "fa-solid fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" 
-                                         : "fa-solid fa-eye-slash absolute right-3 top-3 cursor-pointer text-gray-500";
+            eyeIcon.className = isHidden 
+                ? "fa-solid fa-eye absolute right-3 top-3 cursor-pointer text-gray-500" 
+                : "fa-solid fa-eye-slash absolute right-3 top-3 cursor-pointer text-gray-500";
         }
 
         function handleInput() {

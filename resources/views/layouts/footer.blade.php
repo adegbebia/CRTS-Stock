@@ -53,8 +53,10 @@
         
     
       <!-- <h3>Contact</h3> -->
-        <p>📧 Email : traorehanna01@gmail.com / </p>
-        <p>📞 Téléphone : +228 90 90 91 38 / </p>
+        <p>📧 Email : traoredegbebia@gmail.com  </p>
+        <p>📧 Email : traorehanna01@gmail.com  </p>
+         <p>📞 Téléphone : +228 93 49 32 35  </p>
+        <p>📞 Téléphone : +228 90 90 91 38  </p>
         <p>🏢 Adresse : Sokodé Togo </p>
     
     </div>
