@@ -5,8 +5,7 @@
 
     <nav class="grid grid-flow-col gap-4 ">
         <a href="#" class="link link-hover" id="about-link">À propos</a>
-        <a href="#" class="link link-hover" id="contact-link">Contact</a>
-        <a href="#" class="link link-hover">Équipe</a>
+        <a href="#" class="link link-hover" id="contact-link">Contact</a>      
     </nav>
 
     {{-- <nav class="mt-4">

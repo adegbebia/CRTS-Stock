@@ -169,7 +169,7 @@
                     <form action="{{ route('logout') }}" method="POST" class=" bg-red-200">
                         @csrf
                         <button type="submit">
-                            Se deconnecté
+                            Se deconnecter
                         </button>
                     </form>
                 </li>
