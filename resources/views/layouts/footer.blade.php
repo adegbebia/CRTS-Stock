@@ -5,7 +5,8 @@
 
     <nav class="grid grid-flow-col gap-4 ">
         <a href="#" class="link link-hover" id="about-link">À propos</a>
-        <a href="#" class="link link-hover" id="contact-link">Contact</a>      
+        <a href="#" class="link link-hover" id="contact-link">Contact</a>
+      
     </nav>
 
     {{-- <nav class="mt-4">
@@ -34,19 +35,28 @@
 
     <!-- Paragraphe À propos caché initialement -->
     <div id="about-text" class="mx-auto mt-6 max-w-xl text-justify p-6 p-4 bg-blue-400 rounded shadow hidden">
-        <p>
-            Le Centre Régional de Transfusion Sanguine (CRTS) de Sokodé assure la collecte, le traitement,
-            la conservation et la distribution du sang et des produits sanguins.
-        </p>
+      
         <p class="mt-3">
-            Cette application facilite la gestion des stocks de matériels médicaux et consommables,
-            le suivi des mouvements, la détection des ruptures et la génération de rapports
-            pour un meilleur approvisionnement.
+            La CRTS (Centre Régional de Transfusion Sanguine) a pour mission de collecter et distribuer le sang pour sauver des vies.
+            En plus de ses activités médicales, elle gère aussi ses ressources en collation, matériel et équipements.
+            Notre application de gestion de stock assure un suivi en temps réel, réduit les pertes et garantit la disponibilité des ressources.
         </p>
+    </div>
+
+   <!-- Paragraphe Equipe  -->
+        
+
+    
     </div>
     <!-- Numéros cachés -->
     <div id="contact-text" class="mx-auto mt-4 text-center p-4 bg-blue-400 text-black rounded shadow hidden">
-        📞 + 228 93 49 32 35 / +228 90 90 91 38
+        
+    
+      <!-- <h3>Contact</h3> -->
+        <p>📧 Email : traorehanna01@gmail.com / </p>
+        <p>📞 Téléphone : +228 90 90 91 38 / </p>
+        <p>🏢 Adresse : Sokodé Togo </p>
+    
     </div>
 
 
