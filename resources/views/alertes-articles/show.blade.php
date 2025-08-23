@@ -23,6 +23,7 @@
                 <!-- <li><strong>ID de l'alerte :</strong> {{ $alerte->alerteArt_id }}</li> -->
                 <li>
                     <strong>Type d'alerte :</strong>
+                    
                     @switch($alerte->typealerte)
                         @case('Alerte rouge')
                             <span class="text-red-600 font-semibold">Stock critique</span>

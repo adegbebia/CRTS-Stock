@@ -32,7 +32,7 @@
                                 <span class="font-medium text-gray-900">
                                     {{ $alerte->produit->libelle ?? 'Produit supprimé' }}
                                 </span>
-                                - <span class="font-semibold">Type d'alerte :</span>
+                                <span class="font-semibold">Type d'alerte :</span>
 
                                 @switch($alerte->typealerte)
                                     @case('Alerte rouge')
@@ -64,7 +64,6 @@
             </section>
         @endif
 
-
         {{-- Alertes Articles --}}
         @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('magasinier_collation'))
             <section>
@@ -77,9 +76,31 @@
                                 <span class="font-mono text-xs text-gray-400 mr-2">[{{ $alerte->datedeclenchement }}]</span>
                                 <span class="font-semibold text-blue-600">Article :</span>
                                 <span
-                                    class="font-medium text-gray-900">{{ $alerte->article->libelle ?? 'Article supprimé' }}</span>
-                                - <span class="font-semibold text-blue-600">Type d'alerte :</span>
+                                    class="font-medium text-gray-900">{{ $alerte->article->libelle ?? 'Article supprimé' }}
+                                </span>
+                                <span class="font-semibold text-blue-600">Type d'alerte :</span>
                                 <span class="italic text-blue-500">{{ $alerte->typealerte }}</span>
+                                
+                                @switch($alerte->typealerte)
+                                    @case('Alerte rouge')
+                                        <span class="text-red-600 font-semibold">Stock critique</span>
+                                    @break
+
+                                    @case('Alerte orange')
+                                        <span class="text-orange-500 font-semibold">Stock faible</span>
+                                    @break
+
+                                    @case('Rupture de stock')
+                                        <span class="text-yellow-500 font-semibold">Attention stock</span>
+                                    @break
+
+                                    @case('Alerte verte')
+                                        <span class="text-green-600 font-semibold">Stock acceptable</span>
+                                    @break
+
+                                    @default
+                                        <span class="text-gray-600 font-semibold">Produit Périmé</span>
+                                @endswitch
                             </li>
                         @endforeach
                     </ul>
