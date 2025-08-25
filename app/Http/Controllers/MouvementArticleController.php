@@ -113,52 +113,63 @@ class MouvementArticleController extends Controller
     }
 
     public function update(MouvementArticleRequest $request, MouvementArticle $mouvements_article)
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
 
-        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
-            return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
-        }
-        $data = $request->validated();
-        $article = $mouvements_article->article;
+    if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+        return redirect()->route('articles.index')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette page.');
+    }
 
-        $ancienImpact = ($mouvements_article->quantite_entree ?? 0) - ($mouvements_article->quantite_sortie ?? 0) - ($mouvements_article->avarie ?? 0);
-        $article->quantitestock -= $ancienImpact;
+    $data = $request->validated();
+    $article = $mouvements_article->article;
 
-        $newImpact = ($newEntree - $newSortie - $avarie);
-        $article->quantitestock += $newImpact;
-        $article->save();
+    // Ancien impact du mouvement qu'on veut modifier
+    $ancienImpact = ($mouvements_article->quantite_entree ?? 0) 
+                  - ($mouvements_article->quantite_sortie ?? 0) 
+                  - ($mouvements_article->avarie ?? 0);
 
-        $stockJour = $article->quantitestock;
+    // On annule l'ancien impact
+    $article->quantitestock -= $ancienImpact;
 
-        // Vérification du stock disponible
+    // Récupération des nouvelles valeurs validées
+    $newEntree = $data['quantite_entree'] ?? 0;
+    $newSortie = $data['quantite_sortie'] ?? 0;
+    $avarie    = $data['avarie'] ?? 0;
+
+    // Nouveau calcul d'impact
+    $newImpact = $newEntree - $newSortie - $avarie;
+    $article->quantitestock += $newImpact;
+    $article->save();
+
+    $stockJour = $article->quantitestock;
+
+    // Vérification du stock disponible
     if ($newSortie > $article->quantitestock + $ancienImpact) {
         return redirect()->back()
                          ->withInput()
                          ->with('error', 'Quantité en stock insuffisante pour cette sortie. Stock disponible : ' . ($article->quantitestock + $ancienImpact));
     }
 
-        $avarie = $data['avarie'] ?? 0;
-        $nombre_rupture_stock = $data['nombre_rupture_stock'] ?? 0;
-        $stockJour = $article->quantitestock - $avarie;
+    $nombre_rupture_stock = $data['nombre_rupture_stock'] ?? 0;
+    $stockJour = $article->quantitestock - $avarie;
 
-        $mouvements_article->update([
-            'date'               => Carbon::now()->toDateString(),
-            'origine'            => $data['origine'] ?? null,
-            'quantite_commandee' => $data['quantite_commandee']?? null,
-            'quantite_entree'    => $newEntree ?: null,
-            'quantite_sortie'    => $newSortie ?: null,
-            // 'stock_debut_mois'   => $data['stock_debut_mois'],
-            'avarie'             => $avarie ?: null,
-            'nombre_rupture_stock'  => $nombre_rupture_stock ?: null,
-            'stock_jour'         => $stockJour,
-            'observation'        => $data['observation'] ?? null,
-        ]);
+    // Mise à jour du mouvement
+    $mouvements_article->update([
+        'date'                 => Carbon::now()->toDateString(),
+        'origine'              => $data['origine'] ?? null,
+        'quantite_commandee'   => $data['quantite_commandee'] ?? null,
+        'quantite_entree'      => $newEntree ?: null,
+        'quantite_sortie'      => $newSortie ?: null,
+        'avarie'               => $avarie ?: null,
+        'nombre_rupture_stock' => $nombre_rupture_stock ?: null,
+        'stock_jour'           => $stockJour,
+        'observation'          => $data['observation'] ?? null,
+    ]);
 
-        return redirect()->route('mouvements-articles.create', ['article' => $article->article_id])
-                 ->with('success', 'Mouvement mis à jour avec succès.');
+    return redirect()->route('mouvements-articles.create', ['article' => $article->article_id])
+                     ->with('success', 'Mouvement mis à jour avec succès.');
+}
 
-    }
 
     public function destroy(MouvementArticle $mouvements_article)
     {
