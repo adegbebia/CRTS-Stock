@@ -21,27 +21,27 @@ class ArticleObserver
      */
     public function updated(Article $article): void
     {
-        // Vérifier si la quantité ou la date de péremption a changé
         if ($article->wasChanged('quantitestock') || $article->wasChanged('dateperemption')) {
             $stock = $article->quantitestock;
             $stockSecu = $article->stocksecurite;
             $stockMin = $article->stockmin;
             $stockMax = $article->stockmax;
-            $datePeremption = Carbon::parse($article->dateperemption);
-            $now = Carbon::now();
 
-            // Supprimer les alertes existantes de cet article
+            // Supprimer les anciennes alertes
             AlerteArticle::where('article_id', $article->article_id)->delete();
 
-            // Alerte produit périmé (date de péremption avant aujourd'hui)
-            if ($datePeremption->lt($now)) {
-                AlerteArticle::create([
-                    'article_id' => $article->article_id,
-                    'typealerte' => 'Article périmé',
-                ]);
+            // Alerte produit périmé (si la date existe ET est passée)
+            if (!empty($article->dateperemption)) {
+                $datePeremption = Carbon::parse($article->dateperemption);
+                if ($datePeremption->lt(now())) {
+                    AlerteArticle::create([
+                        'article_id' => $article->article_id,
+                        'typealerte' => 'Article périmé',
+                    ]);
+                }
             }
 
-            // Alertes selon le stock (en respectant l'ordre et logique)
+            // Alertes de stock
             if ($stock <= 0) {
                 AlerteArticle::create([
                     'article_id' => $article->article_id,
@@ -53,7 +53,7 @@ class ArticleObserver
                     'typealerte' => 'Alerte rouge',
                 ]);
             } elseif ($stock <= $stockMin) {
-               AlerteArticle::create([
+                AlerteArticle::create([
                     'article_id' => $article->article_id,
                     'typealerte' => 'Alerte orange',
                 ]);
@@ -62,11 +62,10 @@ class ArticleObserver
                     'article_id' => $article->article_id,
                     'typealerte' => 'Alerte verte',
                 ]);
-            } else {
-                // Stock supérieur au stockmax => pas d'alerte
             }
         }
     }
+
 
     /**
      * Handle the Article "deleted" event.

@@ -23,22 +23,23 @@ class ProduitObserver
     {
         // Vérifier si la quantité ou la date de péremption a changé
         if ($produit->wasChanged('quantitestock') || $produit->wasChanged('dateperemption')) {
-            $stock = $produit->quantitestock;
-            $stockSecu = $produit->stocksecurite;
-            $stockMin = $produit->stockmin;
-            $stockMax = $produit->stockmax;
-            $datePeremption = Carbon::parse($produit->dateperemption);
-            $now = Carbon::now();
+            $stock      = $produit->quantitestock;
+            $stockSecu  = $produit->stocksecurite;
+            $stockMin   = $produit->stockmin;
+            $stockMax   = $produit->stockmax;
 
             // Supprimer les alertes existantes de ce produit
             AlerteProduit::where('produit_id', $produit->produit_id)->delete();
 
-            // Alerte produit périmé (date de péremption avant aujourd'hui)
-            if ($datePeremption->lt($now)) {
-                AlerteProduit::create([
-                    'produit_id' => $produit->produit_id,
-                    'typealerte' => 'Produit périmé',
-                ]);
+            // Alerte produit périmé (si une date existe ET est passée)
+            if (!empty($produit->dateperemption)) {
+                $datePeremption = Carbon::parse($produit->dateperemption);
+                if ($datePeremption->lt(now())) {
+                    AlerteProduit::create([
+                        'produit_id' => $produit->produit_id,
+                        'typealerte' => 'Produit périmé',
+                    ]);
+                }
             }
 
             // Alertes selon le stock (en respectant l'ordre et logique)
@@ -53,7 +54,7 @@ class ProduitObserver
                     'typealerte' => 'Alerte rouge',
                 ]);
             } elseif ($stock <= $stockMin) {
-               AlerteProduit::create([
+                AlerteProduit::create([
                     'produit_id' => $produit->produit_id,
                     'typealerte' => 'Alerte orange',
                 ]);
@@ -62,9 +63,8 @@ class ProduitObserver
                     'produit_id' => $produit->produit_id,
                     'typealerte' => 'Alerte verte',
                 ]);
-            } else {
-                // Stock supérieur au stockmax => pas d'alerte
             }
+            // sinon stock > stockMax => pas d'alerte
         }
     }
 
@@ -74,7 +74,7 @@ class ProduitObserver
     public function deleted(Produit $produit): void
     {
         // Supprimer les alertes liées au produit supprimé
-       AlerteProduit::where('produit_id', $produit->produit_id)->delete();
+        AlerteProduit::where('produit_id', $produit->produit_id)->delete();
     }
 
     /**
