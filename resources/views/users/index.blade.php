@@ -30,7 +30,7 @@
         </div>
     @endif
     {{-- Formulaire de recherche --}}
-    <form method="GET" action="{{ route('produits.index') }}" style="margin-bottom: 20px;">
+    <form method="GET" action="{{ route('users.index') }}" style="margin-bottom: 20px;">
         <label class="input inline-flex items-center border rounded px-2 py-1 mr-2">
             <svg class="h-5 w-5 opacity-50 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
