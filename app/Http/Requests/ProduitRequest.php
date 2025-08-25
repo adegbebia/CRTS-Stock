@@ -19,6 +19,7 @@ class ProduitRequest extends FormRequest
             'conditionnement' => ['bail','required','not_regex:/[,;:\.?!=%@&()$*#^{}<>+\/]/'],
             'quantitestock'    => ['required','integer','min:0'],
             'stockmax'         => ['required','integer','min:0'],
+            'stockmin'         => ['required','integer','min:0'],
             'stocksecurite'    => ['required','integer','min:0'],
             'dateperemption'   => ['nullable','date','after:today'],
             'lot'              => ['nullable','not_regex:/[ ,;:\.?!=%@&()$*#^{}<>+\/\s]/'],

@@ -84,18 +84,18 @@ class ProduitController extends Controller
         ->first();
 
     if ($produitExistant) {
-        // Mise à jour du stock
-        $produitExistant->quantitestock += $validated['quantitestock'];
+            $produitExistant->quantitestock += $validated['quantitestock'];
 
-        // Mise à jour des autres champs
-        if (isset($validated['stockmax'])) $produitExistant->stockmax = $validated['stockmax'];
-        if (isset($validated['stockmin'])) $produitExistant->stockmin = $validated['stockmin'];
-        if (isset($validated['stocksecurite'])) $produitExistant->stocksecurite = $validated['stocksecurite'];
-        
-        $produitExistant->dateperemption = $validated['dateperemption'];
-        $produitExistant->lot = $validated['lot'];
+            $produitExistant->stockmax = $validated['stockmax'] ?? $produitExistant->stockmax;
+            $produitExistant->stockmin = $validated['stockmin'] ?? $produitExistant->stockmin;
+            $produitExistant->stocksecurite = $validated['stocksecurite'] ?? $produitExistant->stocksecurite;
 
-        $produitExistant->save();
+            $produitExistant->dateperemption = $validated['dateperemption'];
+            $produitExistant->lot = $validated['lot'];
+            $produitExistant->save();
+
+
+            
 
         return redirect()->route('produits.index')
             ->with('success', 'Produit déjà existant. Stock et informations mis à jour.');
@@ -164,15 +164,16 @@ class ProduitController extends Controller
     if ($produitExistant) {
         $produitExistant->quantitestock += $validated['quantitestock'];
 
-        if (isset($validated['stockmax'])) $produitExistant->stockmax = $validated['stockmax'];
-        if (isset($validated['stockmin'])) $produitExistant->stockmin = $validated['stockmin'];
-        if (isset($validated['stocksecurite'])) $produitExistant->stocksecurite = $validated['stocksecurite'];
+        $produitExistant->stockmax = $validated['stockmax'] ?? $produitExistant->stockmax;
+        $produitExistant->stockmin = $validated['stockmin'] ?? $produitExistant->stockmin;
+        $produitExistant->stocksecurite = $validated['stocksecurite'] ?? $produitExistant->stocksecurite;
 
         $produitExistant->dateperemption = $validated['dateperemption'];
         $produitExistant->lot = $validated['lot'];
-        
         $produitExistant->save();
+
         $produit->delete();
+
 
         return redirect()->route('produits.index')
             ->with('success', 'Produit fusionné et mis à jour.');
