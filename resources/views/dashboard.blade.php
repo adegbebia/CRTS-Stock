@@ -4,7 +4,9 @@
 
 @section('content')
     <div id="dashboardContent" class="transition-all duration-300 ml-64 p-6 bg-gray-50 min-h-screen">
-        <h1 class="text-3xl font-semibold mb-6 text-gray-800 tracking-wide">Bienvenue sur le Dashboard</h1>
+        <h1 class="text-3xl font-semibold mb-6 text-gray-800 tracking-wide">
+            👋 Bienvenue {{ auth()->user()->prenom }} {{ auth()->user()->nom }}
+        </h1>
 
         {{-- SweetAlert message de succès --}}
         @if (session('success'))
@@ -79,6 +81,7 @@
                                     class="font-medium text-gray-900">{{ $alerte->article->libelle ?? 'Article supprimé' }}
                                 </span>
                                 <span class="font-semibold">Type d'alerte :</span>
+                                <!-- <span class="font-semibold">{{ $alerte->typealerte }}</span> -->
 
                                 @switch($alerte->typealerte)
                                     @case('Alerte rouge')

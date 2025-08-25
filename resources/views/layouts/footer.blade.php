@@ -39,7 +39,7 @@
         <p class="mt-3">
             La CRTS (Centre Régional de Transfusion Sanguine) a pour mission de collecter et distribuer le sang pour sauver des vies.
             En plus de ses activités médicales, elle gère aussi ses ressources en collation, matériel et équipements.
-            Notre application de gestion de stock assure un suivi en temps réel, réduit les pertes et garantit la disponibilité des ressources.
+            Notre application de gestion de stock (CRTS-STOCK) assure un suivi en temps réel, réduit les pertes et garantit la disponibilité des ressources.
         </p>
     </div>
 
