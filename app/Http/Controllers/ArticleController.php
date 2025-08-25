@@ -102,6 +102,16 @@ class ArticleController extends Controller
             ->with('success', 'Article ajouté avec succès.');
     }
 
+    public function show(Article $article)
+    {
+        $user = auth()->user();
+
+        if (!($user->hasRole(['magasinier_collation', 'admin']) && $user->magasin_affecte !== 'admin' || $user->magasin_affecte !== 'collation')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
+        return view('articles.show', compact('article'));
+    }
+
     public function edit(Article $article)
     {
         $user = auth()->user();
@@ -164,5 +174,23 @@ class ArticleController extends Controller
         $article->update($validated);
 
         return redirect()->route('articles.index')->with('success', 'Article mis à jour avec succès.');
+    }
+
+    public function destroy(Article $article)
+    {
+        $user = auth()->user();
+
+        if (!($user->hasRole('magasinier_collation') && $user->magasin_affecte === 'collation')) {
+            return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à effectuer cette action.');
+        }
+
+        if ($article->user_id !== $user->user_id) {
+            return redirect()->back()->with('error', 'Vous ne pouvez mettre à jour que vos propres articles.');
+        }
+
+        $article->alertes()->delete();
+        $article->delete();
+
+        return redirect()->route('articles.index')->with('success', 'Article supprimé avec succès.');
     }
 }

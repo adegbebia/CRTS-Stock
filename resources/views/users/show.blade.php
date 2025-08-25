@@ -22,6 +22,10 @@
                 <span class="text-gray-900">{{ $user->nom }}</span>
             </li>
             <li class="py-3 flex justify-between">
+                <span class="font-medium text-gray-700">Nom Pseudo :</span> 
+                <span class="text-gray-900">{{ $user->nom_pseudo }}</span>
+            </li>
+            <li class="py-3 flex justify-between">
                 <span class="font-medium text-gray-700">Prénom :</span> 
                 <span class="text-gray-900">{{ $user->prenom }}</span>
             </li>
