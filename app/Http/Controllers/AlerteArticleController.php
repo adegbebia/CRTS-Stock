@@ -27,7 +27,7 @@ class AlerteArticleController extends Controller
 
         $alerteArticles=AlerteArticle::with('article')
             ->orderByDesc('datedeclenchement')
-            ->get();
+            ->paginate(2);
         
         $nbAlertes=$alerteArticles->count();
 

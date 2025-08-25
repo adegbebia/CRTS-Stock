@@ -14,15 +14,15 @@ class ArticleRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'codearticle'     => 'required|string|max:255',
-            'libelle'         => 'required|string|max:255',
-            'conditionnement' => 'required|string|max:255',
-            'quantitestock'   => 'required|integer|min:0',
-            'stockmax'        => 'required|integer|min:1',
-            'stockmin'        => 'required|integer|min:0',
-            'stocksecurite'   => 'required|integer|min:0',
-            'dateperemption'  => 'nullable|date',
-            'lot'             => 'nullable|string|max:255',
+            'codearticle'     => ['bail','required','string','max:255','not_regex:/[ ,;:\.?!=%@&()$*#^{}<>+\/\s]/'],
+            'libelle'         => ['bail','required','string','max:255','not_regex:/[,;:\.?!=%@&()$*#^{}<>+\/]/'], 
+            'conditionnement' => ['bail','required','string','max:255','not_regex:/[,;:\.?!=%@&()$*#^{}<>+\/]/'], 
+            'quantitestock'   => ['required','integer','min:0'],
+            'stockmax'        => ['required','integer','min:1'],
+            'stockmin'        => ['required','integer','min:0'],
+            'stocksecurite'   => ['required','integer','min:0'],
+            'dateperemption'  => ['nullable','date','after:today'],
+            'lot'             => ['nullable','string','max:255','not_regex:/[ ,;:\.?!=%@&()$*#^{}<>+\/\s]/'],
         ];
 
         if ($this->isMethod('post')) {

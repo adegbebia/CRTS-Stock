@@ -14,15 +14,14 @@ class ProduitRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'codeproduit'     => 'required|string|max:255',
-            'libelle'         => 'required|string|max:255',
-            'conditionnement' => 'required|string|max:255',
-            'quantitestock'   => 'required|integer',
-            'stockmax'        => 'required|integer',
-            'stockmin'        => 'required|integer',
-            'stocksecurite'   => 'required|integer',
-            'dateperemption'  => 'nullable|date',
-            'lot'             => 'nullable|string|max:255',
+            'codeproduit'      => ['bail','required','not_regex:/[ ,;:\.?!=%@&()$*#^{}<>+\/\s]/'],
+            'libelle' => ['bail','required','not_regex:/[,;:\.?!=%@&()$*#^{}<>+\/]/'],
+            'conditionnement' => ['bail','required','not_regex:/[,;:\.?!=%@&()$*#^{}<>+\/]/'],
+            'quantitestock'    => ['required','integer','min:0'],
+            'stockmax'         => ['required','integer','min:0'],
+            'stocksecurite'    => ['required','integer','min:0'],
+            'dateperemption'   => ['nullable','date','after:today'],
+            'lot'              => ['nullable','not_regex:/[ ,;:\.?!=%@&()$*#^{}<>+\/\s]/'],
         ];
 
         

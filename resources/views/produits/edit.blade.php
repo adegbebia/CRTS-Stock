@@ -13,19 +13,22 @@
 
         <div>
             <label for="codeproduit" class="block mb-1 font-medium text-gray-700">Code produit</label>
-            <input type="text" id="codeproduit" name="codeproduit" value="{{ old('codeproduit', $produit->codeproduit) }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
+            <input type="text" id="codeproduit" name="codeproduit" value="{{ old('codeproduit', $produit->codeproduit) }}" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+/\s]+$" 
+                title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + ou espaces" 
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
         </div>
 
         <div>
             <label for="libelle" class="block mb-1 font-medium text-gray-700">Libellé</label>
-            <input type="text" name="libelle" id="libelle" value="{{ $produit->libelle }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
+            <input type="text" name="libelle" id="libelle" value="{{ $produit->libelle }}" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+/]+$"  
+                title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > +"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
         </div>
 
         <div>
             <label for="conditionnement" class="block mb-1 font-medium text-gray-700">Conditionnement</label>
-            <input type="text" name="conditionnement" id="conditionnement" value="{{ $produit->conditionnement }}" required pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
+            <input type="text" name="conditionnement" id="conditionnement" value="{{ $produit->conditionnement }}" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+/]+$"  
+                title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > +"
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
         </div>
 
@@ -65,7 +68,8 @@
 
         <div>
             <label for="lot" class="block mb-1 font-medium text-gray-700">Lot</label>
-            <input type="text" name="lot" id="lot" value="{{ $produit->lot }}"  pattern="[^,;:]+" title="Ne doit pas contenir les caractères , ; :"
+            <input type="text" name="lot" id="lot" value="{{ $produit->lot }}"  pattern="^[^,;:\.?!=%@&()$*#^{}<>+/\s]+$" 
+                title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + ou espaces" 
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
         </div>
 

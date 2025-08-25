@@ -28,7 +28,8 @@
                 <div>
                     <label for="nom" class="block font-medium text-gray-700">Nom :</label>
                     <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required
-                        pattern="[^,;:]+"
+                        pattern="[^,;:?!=%@&()\$\*#\^{}<>+\/]+"
+                        title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /"
                         class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
 
@@ -46,14 +47,16 @@
                 <div>
                     <label for="prenom" class="block font-medium text-gray-700">Prénom :</label>
                     <input type="text" name="prenom" id="prenom" value="{{ old('prenom') }}" required
-                        pattern="[^,;:]+"
+                        pattern="[^,;:?!@&()=%\$\*#\^{}<>+\/]+"
+                        title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /"
                         class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
 
                 <div>
                     <label for="adresse" class="block font-medium text-gray-700">Adresse :</label>
                     <input type="text" name="adresse" id="adresse" value="{{ old('adresse') }}" required
-                        pattern="[^,;:]+"
+                        pattern="[^,;:?!@&()=%\$\*#\^{}<>+\/]+"
+                        title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /"
                         class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                 </div>
             </div>
@@ -63,7 +66,8 @@
                 <div>
                     <label for="nom_pseudo" class="block font-medium text-gray-700">Nom Pseudo :</label>
                     <input type="text" name="nom_pseudo" id="nom_pseudo" value="{{ old('nom_pseudo') }}" required
-                        pattern="[^,;:]+"
+                        pattern="[^,;:?!@&=%()\$\*#\^{}<>+\/]+"
+                        title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /"
                         class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
 
                 </div>
@@ -87,7 +91,8 @@
                 <div>
                     <label for="email" class="block font-medium text-gray-700">Email :</label>
                     <input type="email" name="email" id="email" value="{{ old('email') }}" required
-                        pattern="[^,;:]+"
+                        pattern="[^,;:?!&()=%\$\*#\^{}<>+\/]+"
+                        title="Ne doit pas contenir les caractères , ; :  & ( ) $ * # ^ { } < > + /"
                         class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-blue-500">
 
                 </div>

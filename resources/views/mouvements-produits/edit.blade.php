@@ -41,9 +41,9 @@
             <!-- Origine -->
             <div>
                 <label for="origine" class="block text-sm font-medium text-gray-700 mb-1">Origine</label>
-                <input type="text" name="origine" id="origine" required pattern="[^,;:]+"
+                <input type="text" name="origine" id="origine" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+\/]+$"
                        value="{{ old('origine', $mouvement->origine) }}"
-                       title="Ne doit pas contenir les caractères , ; :"
+                       title="Ne doit pas contenir les caractères , ; : @ & '' ( ) $ * # ^ { } < > + /"
                        {{ !$peutModifier ? 'disabled' : '' }}
                        class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
                               focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900">
@@ -97,7 +97,7 @@
             <!-- Avarie -->
             <div>
                 <label for="avarie" class="block text-sm font-medium text-gray-700 mb-1">Avarie</label>
-                <input type="number" name="avarie" id="avarie" min="1"
+                <input type="number" name="avarie" id="avarie" min="0"
                        value="{{ old('avarie', $mouvement->avarie) }}"
                        {{ !$peutModifier ? 'disabled' : '' }}
                        class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
@@ -113,7 +113,7 @@
             <!-- Nombre de Rupture stock -->
             <div>
                 <label for="nombre_rupture_stock" class="block text-sm font-medium text-gray-700 mb-1">Nombre De Rupture Stock</label>
-                <input type="number" name="nombre_rupture_stock" id="nombre_rupture_stock" min="1"
+                <input type="number" name="nombre_rupture_stock" id="nombre_rupture_stock" min="0"
                        value="{{ old('nombre_rupture_stock', $mouvement->nombre_rupture_stock) }}"
                        {{ !$peutModifier ? 'disabled' : '' }}
                        class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
@@ -128,9 +128,11 @@
             <div>
                 <label for="observation" class="block text-sm font-medium text-gray-700 mb-1">Observation</label>
                 <textarea name="observation" id="observation"
-                          {{ !$peutModifier ? 'disabled' : '' }}
-                          class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
-                                 focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900 resize-y min-h-[80px]">{{ old('observation', $mouvement->observation) }}</textarea>
+                        pattern="^[^,;:\.?!=%@&()$*#^{}<>+\/]+$"
+                        title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /"
+                        {{ !$peutModifier ? 'disabled' : '' }}
+                        class="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm
+                                focus:border-red-500 focus:ring-1 focus:ring-red-500 text-gray-900 resize-y min-h-[80px]">{{ old('observation', $mouvement->observation) }}</textarea>
                 @error('observation')
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror

@@ -24,7 +24,7 @@ class AlerteProduitController extends Controller
         }
         $alertesProduits = AlerteProduit::with('produit')
             ->orderByDesc('datedeclenchement')
-            ->get();
+            ->paginate(2);
 
         // Compter le nombre total d'alertes
         $nbAlertes = $alertesProduits->count();

@@ -75,6 +75,16 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="join mt-4 flex justify-end">
+                @for ($page = 1; $page <= $alertesProduits->lastPage(); $page++)
+                    <input type="radio" 
+                        name="pagination" 
+                        aria-label="{{ $page }}"
+                        class="join-item btn btn-square bg-red-200 checked:bg-blue-500 checked:text-white"
+                        @if ($alertesProduits->currentPage() == $page) checked @endif
+                        onchange="window.location='{{ $alertesProduits->url($page) }}'" />
+                @endfor
+            </div>
         @endif
     @else
         <script>

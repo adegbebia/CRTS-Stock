@@ -17,17 +17,18 @@ class MouvementArticleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'article_id'          => 'required|exists:articles,article_id',
-            'origine'             => 'nullable|string',
-            'quantite_commandee'  => 'nullable|integer|min:1',
-            'quantite_entree'     => 'nullable|integer|min:1',
-            'quantite_sortie'     => 'nullable|integer|min:1',
-            // 'stock_debut_mois'    => 'required|integer|min:1',
-            'avarie'              => 'nullable|integer|min:0',
-            'nombre_rupture_stock'    =>'nullable|integer|min:0',
-            'observation'         => 'nullable|string',
+            'article_id'             => ['required', 'exists:articles,article_id'],
+            'origine'                => ['nullable', 'string', 'max:255', 'not_regex:/[,;:\.?!=%@&()$*#^{}<>+\/]/'],
+            'quantite_commandee'     => ['nullable','integer','min:1'],
+            'quantite_entree'        => ['nullable','integer','min:1'],
+            'quantite_sortie'        => ['nullable','integer','min:1'],
+            //'stock_debut_mois'      => ['required','integer','min:1'],
+            'avarie'                 => ['nullable','integer','min:0'],
+            'nombre_rupture_stock'   => ['nullable','integer','min:0'],
+            'observation'            => ['nullable','string','max:255','not_regex:/[,;:\.?!=%@&()$*#^{}<>+\/]/'],
         ];
     }
+
 
     public function withValidator($validator)
     {

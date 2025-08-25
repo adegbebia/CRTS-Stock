@@ -93,16 +93,16 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à créer un utilisateur.');
         }
         $request->validate([
-            'nom' => 'required|string|max:255',
-            'nom_pseudo' => 'required|string|max:255|unique:users,nom_pseudo',
-            'prenom' => 'required|string|max:255',
-            'adresse' => 'required|string|max:255',
-            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/','unique:users,telephone,' . $user->user_id . ',user_id'],
+            'nom' => ['required', 'string', 'max:255', 'regex:/^[^,;:?!\.@&()$*#^{}<>+\/]+$/'],
+            'nom_pseudo' => ['required', 'string', 'max:255', 'unique:users,nom_pseudo', 'regex:/^[^,;:\.?!@&()$*#^{}<>+\/]+$/'],
+            'prenom' => ['required', 'string', 'max:255', 'regex:/^[^,;:\.?!@&()$*#^{}<>+\/]+$/'],
+            'adresse' => ['required', 'string', 'max:255', 'regex:/^[^,;:\.?!@&()$*#^{}<>+\/]+$/'],
+            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/','unique:users,telephone'],
             'magasin_affecte' => 'required|in:collation,technique,admin',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
-            'datecreation' => now(),
         ]);
+
 
         try {
             $user = new User();
@@ -195,11 +195,11 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Vous n\'êtes pas autorisé à modifier un utilisateur.');
         }
         $request->validate([
-            'nom' => 'required|string|max:255',
-            'nom_pseudo' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'adresse' => 'required|string|max:255',
-            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/'],
+            'nom' => ['required', 'string', 'max:255', 'regex:/^[^,;:\.?!@&()$*#^{}<>+\/]+$/'],
+            'nom_pseudo' => ['required', 'string', 'max:255', 'regex:/^[^,;:\.?!@&()$*#^{}<>+\/]+$/'],
+            'prenom' => ['required', 'string', 'max:255', 'regex:/^[^,;:\.?!@&()$*#^{}<>+\/]+$/'],
+            'adresse' => ['required', 'string', 'max:255', 'regex:/^[^,;:\.?!@&()$*#^{}<>+\/]+$/'],
+            'telephone' => ['required', 'regex:/^(70|71|72|73|74|75|76|77|78|79|90|91|92|93|94|95|96|97|98|99)[0-9]{6}$/','unique:users,telephone,' . $user->user_id . ',user_id'],
             'magasin_affecte' => 'required|in:collation,technique,admin',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->user_id . ',user_id',
             'password' => 'nullable|string|min:6|confirmed',

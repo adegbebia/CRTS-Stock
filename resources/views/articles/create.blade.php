@@ -28,8 +28,8 @@
 
                 <div>
                     <label for="codearticle" class="block mb-1 font-medium text-gray-700">Code Article</label>
-                    <input type="text" name="codearticle" id="codearticle" required pattern="[^,;:]+"
-                        title="Ne doit pas contenir les caractères , ; :" value="{{ old('codearticle') }}" 
+                    <input type="text" name="codearticle" id="codearticle" required  pattern="^[^,;:\?!=%.@&()$*#^{}<>+/\s]+$"
+                       title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + ou espaces" 
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
                     @error('codearticle')
                         <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
@@ -38,8 +38,8 @@
 
                 <div>
                     <label for="libelle" class="block mb-1 font-medium text-gray-700">Libellé</label>
-                    <input type="text" name="libelle" id="libelle" required pattern="[^,;:]+"
-                        title="Ne doit pas contenir les caractères , ; :" value="{{ old('libelle') }}"
+                    <input type="text" name="libelle" id="libelle" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+/]+$"
+                        title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > +" value="{{ old('libelle') }}"
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
                     @error('libelle')
                         <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
@@ -48,8 +48,8 @@
 
                 <div>
                     <label for="conditionnement" class="block mb-1 font-medium text-gray-700">Conditionnement</label>
-                    <input type="text" name="conditionnement" id="conditionnement" required pattern="[^,;:]+"
-                        title="Ne doit pas contenir les caractères , ; :" value="{{ old('conditionnement') }}" 
+                    <input type="text" name="conditionnement" id="conditionnement" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+/]+$"
+                        title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + " value="{{ old('conditionnement') }}" 
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
                     @error('conditionnement')
                         <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
@@ -100,8 +100,8 @@
 
                 <div>
                     <label for="lot" class="block mb-1 font-medium text-gray-700">Lot</label>
-                    <input type="text" name="lot" id="lot"  pattern="[^,;:]+"
-                        title="Ne doit pas contenir les caractères , ; :" value="{{ old('lot') }}" 
+                    <input type="text" name="lot" id="lot"  pattern="^[^,;:\.?!=%@&()$*#^{}<>+/\s]+$"
+                       title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + ou espaces" value="{{ old('lot') }}" 
                         class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
                     @error('lot')
                         <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>

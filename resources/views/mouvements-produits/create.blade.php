@@ -65,8 +65,8 @@
             {{-- Origine --}}
             <div>
                 <label for="origine" class="block text-sm font-medium text-gray-700">Origine</label>
-                <input type="text" name="origine" id="origine" value="{{ old('origine') }}" pattern="[^,;:]+"
-                    title="Ne doit pas contenir les caractères , ; :" required {{ !$peutModifier ? 'disabled' : '' }}
+                <input type="text" name="origine" id="origine" value="{{ old('origine') }}" pattern="^[^,;:\.?!=%@&()$*#^{}<>+\/]+$"
+                    title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /" required {{ !$peutModifier ? 'disabled' : '' }}
                     class="mt-1 block w-full rounded-md border border-gray-100 md:border-gray-400
                           md:bg-gray-100 p-2 shadow-sm
                           focus:border-red-500 focus:ring-red-500 focus:ring-1">
@@ -117,7 +117,7 @@
             {{-- Avarie --}}
             <div>
                 <label for="avarie" class="block text-sm font-medium text-gray-700">Avarie</label>
-                <input type="number" name="avarie" id="avarie" min="1" value="{{ old('avarie') }}"
+                <input type="number" name="avarie" id="avarie" min="0" value="{{ old('avarie') }}"
                     {{ !$peutModifier ? 'disabled' : '' }}
                     class="mt-1 block w-full rounded-md border border-gray-400 bg-gray-100 p-2
                           focus:border-red-500 focus:ring-red-500 focus:ring-1" 
@@ -131,7 +131,7 @@
 
             <div>
                 <label for="nombre_rupture_stock" class="block text-sm font-medium text-gray-700">Nombre De Rupture Stock</label>
-                <input type="number" name="nombre_rupture_stock" id="nombre_rupture_stock" min="1" value="{{ old('nombre_rupture_stock') }}"
+                <input type="number" name="nombre_rupture_stock" id="nombre_rupture_stock" min="0" value="{{ old('nombre_rupture_stock') }}"
                     {{ !$peutModifier ? 'disabled' : '' }}
                     class="mt-1 block w-full rounded-md border border-gray-400 bg-gray-100 p-2
                           focus:border-red-500 focus:ring-red-500 focus:ring-1" 
@@ -146,13 +146,15 @@
             <div>
                 <label for="observation" class="block text-sm font-medium text-gray-700">Observation</label>
                 <textarea name="observation" id="observation"
-                    class="mt-1 block w-full rounded-md border border-gray-400 bg-gray-100 p-2 resize-y
-                             focus:border-red-500 focus:ring-red-500 focus:ring-1"
+                    pattern="^[^,;:\.?!=%@&()$*#^{}<>+\/]+$"
+                    title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /"
+                    class="mt-1 block w-full rounded-md border border-gray-400 p-2 shadow-sm focus:border-red-500 focus:ring-red-500 resize-y"
                     {{ !$peutModifier ? 'disabled' : '' }}>{{ old('observation') }}</textarea>
                 @error('observation')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
+
 
             <!-- Bouton -->
             @if ($peutModifier)
