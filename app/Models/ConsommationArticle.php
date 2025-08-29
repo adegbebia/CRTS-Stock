@@ -35,7 +35,7 @@ class ConsommationArticle extends Model
         return $this->belongsTo(Article::class, 'article_id', 'article_id');
     }
 
-    // Calcul automatique du total annuel
+    
     public function getTotalAnnuelAttribute()
     {
         return collect([
@@ -46,7 +46,7 @@ class ConsommationArticle extends Model
         ])->sum();
     }
 
-    // Trimestres
+  
     public function getTrimestre1Attribute()
     {
         return $this->consommation_janvier + $this->consommation_fevrier + $this->consommation_mars;
@@ -67,7 +67,7 @@ class ConsommationArticle extends Model
         return $this->consommation_octobre + $this->consommation_novembre + $this->consommation_decembre;
     }
 
-    // Semestres
+  
     public function getSemestre1Attribute()
     {
         return $this->trimestre1 + $this->trimestre2;
@@ -80,17 +80,16 @@ class ConsommationArticle extends Model
 
     public static function recalcForArticleYear(int $article_id, int $annee): void
     {
-        // SQLite-compatible date extraction
+        
         $mensuelles = MouvementArticle::selectRaw("CAST(strftime('%m', date) AS INTEGER) as mois, SUM(quantite_sortie) as total")
             ->where('article_id', $article_id)
             ->whereYear('date', $annee)
             ->whereNotNull('quantite_sortie')
             ->where('quantite_sortie', '>', 0)
             ->groupByRaw("CAST(strftime('%m', date) AS INTEGER)")
-            ->pluck('total', 'mois'); // [1 => 120, 4 => 55, etc.]
+            ->pluck('total', 'mois'); 
 
 
-        // 2. Ruptures mensuelles (toutes lignes, sans filtrer entrée/sortie)
         $ruptures = MouvementProduit::selectRaw("
             CAST(strftime('%m', date) AS INTEGER) as mois, 
             SUM(nombre_rupture_stock) as total

@@ -4,10 +4,11 @@
     <meta charset="UTF-8" />
     <title>Connexion - CRTS Stock</title>
 
-    <!-- TailwindCSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- Tailwind & JS compilés avec Vite --}}
+    @vite('resources/css/app.css')
+    @vite('resources/js/app.js')
 
-    <!-- Font Awesome -->
+    {{-- Font Awesome (optionnel, si tu veux en local via npm je peux te configurer) --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <!-- SweetAlert -->

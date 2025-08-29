@@ -25,7 +25,7 @@ if ($user->hasRole('admin')) {
 }
 @endphp
 
-<div class="navbar bg-red-200 text-gray-800 shadow-sm border-1 border-blue-400 px-4">
+<div class="navbar bg-red-200 text-gray-800 shadow-sm border-1 border-blue-400">
 
     {{-- Sidebar toggle --}}
     <div class="navbar-start">
