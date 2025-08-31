@@ -27,21 +27,21 @@ if ($user->hasRole('admin')) {
 
 <div class="navbar bg-red-200 text-gray-800 shadow-sm border-1 border-blue-400">
 
-    {{-- Sidebar toggle --}}
+    
     <div class="navbar-start">
         <a href="#" id="toggleSidebar" class="btn btn-ghost text-xl">☰</a>
 
     </div>
 
-    {{-- Logo --}}
+    
     <div class="navbar-center">
         <a class="btn btn-ghost text-3xl">CRTS-STOCK</a>
     </div>
 
-    {{-- Notifications + Profil --}}
+    
     <div class="navbar-end flex items-center space-x-4">
 
-        {{-- Notifications --}}
+       
         <div x-data="{ openNotif: false }" class="relative">
             <button @click.stop="openNotif = !openNotif" class="btn btn-ghost btn-circle relative">
                 <div class="indicator">

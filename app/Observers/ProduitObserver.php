@@ -13,7 +13,7 @@ class ProduitObserver
      */
     public function created(Produit $produit): void
     {
-        // Optionnel : déclencher alertes lors de la création si nécessaire
+        
     }
 
     /**
@@ -64,7 +64,7 @@ class ProduitObserver
                     'typealerte' => 'Alerte verte',
                 ]);
             }
-            // sinon stock > stockMax => pas d'alerte
+           
         }
     }
 
@@ -73,7 +73,7 @@ class ProduitObserver
      */
     public function deleted(Produit $produit): void
     {
-        // Supprimer les alertes liées au produit supprimé
+        
         AlerteProduit::where('produit_id', $produit->produit_id)->delete();
     }
 
