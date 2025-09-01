@@ -59,7 +59,7 @@
                 <input name="search" type="search" required placeholder="Search" value="{{ request('search') }}"
                     class="outline-none" />
             </label>
-            <button class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-red-600 transition"
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
                 type="submit">Rechercher</button>
         </form>
 

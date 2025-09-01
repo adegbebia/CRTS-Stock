@@ -120,7 +120,7 @@
         @if ($peutModifier)
             <div class="mt-4 flex justify-end">
                 <button type="submit"
-                    class="px-3 py-1.5 bg-red-200 text-black text-sm rounded hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    class="px-3 py-1.5 bg-red-200 text-white text-sm rounded hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-blue-300">
                     Enregistrer
                 </button>
             </div>
@@ -148,7 +148,7 @@
             <input name="search" type="search" required placeholder="Search" value="{{ request('search') }}"
                 class="outline-none" />
         </label>
-        <button class="bg-blue-500 text-black px-4 py-2 rounded hover:bg-red-600 transition"
+        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
             type="submit">Rechercher</button>
     </form>
 
