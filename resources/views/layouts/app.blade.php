@@ -20,12 +20,12 @@
 
     <div class="flex flex-1">
         <!-- Sidebar avec gestion complète de l'affichage -->
-        <div id="sidebar" class="w-64 bg-base-200 p-4  transition-all duration-300 transform">
+        <div id="sidebar" class="w-64 bg-red-800 text-white p-4 transition-all duration-300 transform">
             @include('layouts.sidebar')
         </div>
 
         <!-- Contenu principal - sans marge gauche initiale -->
-        <main class="flex-1 p-6 overflow-auto">
+        <main class="flex-1 p-6 overflow-auto bg-white">
             @yield('content')
         </main>
     </div>
@@ -40,7 +40,6 @@
     </button> --}}
 
     <!-- Script de bascule -->
-        <!-- Script de bascule -->
     <script>
         document.getElementById('toggleSidebar').addEventListener('click', function() {
             const sidebar = document.getElementById('sidebar');

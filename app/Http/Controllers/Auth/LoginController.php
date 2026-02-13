@@ -34,7 +34,6 @@ class LoginController extends Controller
         $user = User::whereRaw('LOWER(nom_pseudo) = ?', [$pseudo])->first();
 
         if ($user) {
-            // Vérifie que nom et prénom existent
             if (!empty($user->nom) && !empty($user->prenom)) {
                 // Vérifie le mot de passe hashé
                 if (Hash::check($password, $user->password)) {

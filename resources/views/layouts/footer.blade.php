@@ -1,95 +1,121 @@
-<footer
-    class="footer footer-horizontal footer-center bg-red-200 border-r border-blue-400
-           text-base-content rounded p-10 items-center overflow-y-auto shadow-lg">
-
-
-    <nav class="grid grid-flow-col gap-4 ">
-        <a href="#" class="link link-hover" id="about-link">À propos</a>
-        <a href="#" class="link link-hover" id="contact-link">Contact</a>
-      
-    </nav>
-
-    {{-- <nav class="mt-4">
-    <div class="grid grid-flow-col gap-4">
-      <a href="#" aria-label="Twitter" class="fill-current">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
-          <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-        </svg>
-      </a>
-      <a href="#" aria-label="YouTube" class="fill-current">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
-          <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z" />
-        </svg>
-      </a>
-      <a href="#" aria-label="Facebook" class="fill-current">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
-          <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-        </svg>
-      </a>
+<footer class="footer footer-horizontal footer-center bg-red-900 border-t border-red-800 text-white p-8 shadow-lg">
+    
+    <!-- Section principale -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto">
+        
+        <!-- Colonne 1 : Logo + Mission -->
+        <div class="text-center md:text-left">
+            <div class="flex justify-center md:justify-start mb-4">
+                <img src="{{ asset('images/logo-crts.png') }}" 
+                     alt="Logo CRTS" 
+                     class="h-16 w-16 rounded-full border-2 border-red-700 bg-white p-1" />
+            </div>
+            <p class="text-sm text-red-200">
+                Centre Régional de Transfusion Sanguine<br>
+                <span class="font-semibold text-white">Sauver des vies, gérer avec excellence</span>
+            </p>
+        </div>
+        
+        <!-- Colonne 2 : Liens rapides -->
+        <div class="text-center">
+            <h3 class="text-lg font-bold text-red-300 mb-4">Liens utiles</h3>
+            <nav class="space-y-2">
+                <a href="#" class="link link-hover hover:text-red-300 transition">Tableau de bord</a>
+                <a href="#" class="link link-hover hover:text-red-300 transition">Gestion des stocks</a>
+                <a href="#" class="link link-hover hover:text-red-300 transition">Alertes produits</a>
+                <a href="#" class="link link-hover hover:text-red-300 transition">Rapports</a>
+            </nav>
+        </div>
+        
+        <!-- Colonne 3 : Contact institutionnel -->
+        <div class="text-center md:text-right">
+            <h3 class="text-lg font-bold text-red-300 mb-4">Contact institutionnel</h3>
+            <div class="space-y-2 text-sm text-red-200">
+                <div class="flex items-start justify-center md:justify-end">
+                    <i class="fa-solid fa-envelope mt-1 mr-2 text-red-400"></i>
+                    <span>crtssokode2020@gmail.com</span>
+                </div>
+                <div class="flex items-start justify-center md:justify-end">
+                    <i class="fa-solid fa-phone mt-1 mr-2 text-red-400"></i>
+                    <span>+228 92 21 49 21 (Standard)</span>
+                </div>
+                <div class="flex items-start justify-center md:justify-end">
+                    <i class="fa-solid fa-location-dot mt-1 mr-2 text-red-400"></i>
+                    <span>Route Nationale N°2, Sokodé<br>Région Centrale, Togo</span>
+                </div>
+            </div>
+        </div>
     </div>
-  </nav> --}}
-
-    <aside class="mt-4 text-center w-full">
-        <p>© 2025 CRTS STOCK - Tous droits réservés  par CRTS . Gestion des Magasins (Technique & Collation ) .</p>
-    </aside>
-
-    <!-- Paragraphe À propos caché initialement -->
-    <div id="about-text" class="mx-auto mt-6 max-w-xl text-justify p-6 p-4 bg-blue-400 rounded shadow hidden">
-      
-        <p class="mt-3">
-            La CRTS (Centre Régional de Transfusion Sanguine) a pour mission de collecter et distribuer le sang pour sauver des vies.
-            En plus de ses activités médicales, elle gère aussi ses ressources en collation, matériel et équipements.
-            Notre application de gestion de stock (CRTS-STOCK) assure un suivi en temps réel, réduit les pertes et garantit la disponibilité des ressources.
+    
+    <!-- Barre de séparation -->
+    <div class="w-full max-w-6xl mx-auto my-6 border-t border-red-800"></div>
+    
+    <!-- Bas de page légal -->
+    <aside class="text-center w-full max-w-6xl mx-auto text-sm text-red-200">
+        <p>
+            © <span id="current-year"></span> CRTS Sokodé - 
+            <span class="hidden md:inline">Application de gestion des stocks (Technique & Collation) - </span>
+            Version {{ config('app.version', '1.0.0') }} |
+            <a href="#" id="about-link" class="hover:text-red-300 transition ml-2">Mentions légales</a>
         </p>
-    </div>
-
-   <!-- Paragraphe Equipe  -->
+        <p class="mt-2 text-xs italic">
+            Application développée dans le cadre du projet académique 4IFNTI Sokodé - L2/S4 2025
+        </p>
+    </aside>
+    
+    <!-- Mentions légales (caché par défaut) -->
+    <div id="about-text" class="mx-auto mt-6 max-w-4xl p-6 bg-red-800/90 text-white rounded-lg shadow-lg hidden">
+        <h3 class="text-2xl font-bold text-red-300 mb-4 text-center">Mentions légales</h3>
         
-
-    
-    </div>
-    <!-- Numéros cachés -->
-    <div id="contact-text" class="mx-auto mt-4 text-center p-4 bg-blue-400 text-black rounded shadow hidden">
+        <div class="space-y-4 text-justify">
+            <div>
+                <h4 class="font-bold text-lg text-red-200 mb-2">Éditeur</h4>
+                <p>Centre Régional de Transfusion Sanguine (CRTS) de Sokodé<br>
+                Route Nationale N°2, Sokodé, Région Centrale, Togo<br>
+                Téléphone : +228 92 21 49 21 / 70 45 66 80</p>
+            </div>
+            
+            <div>
+                <h4 class="font-bold text-lg text-red-200 mb-2">Développement</h4>
+                <p>Ce logiciel a été développé dans le cadre d'un projet académique par des étudiants de la filière Informatique (4IFNTI) de l'Université de Sokodé - Promotion L2/S4 2025.</p>
+            </div>
+            
+            <div>
+                <h4 class="font-bold text-lg text-red-200 mb-2">Propriété intellectuelle</h4>
+                <p>L'ensemble des contenus de cette application (textes, images, logos, structure) sont la propriété exclusive du CRTS Sokodé. Toute reproduction ou utilisation non autorisée est strictement interdite.</p>
+            </div>
+            
+            <div>
+                <h4 class="font-bold text-lg text-red-200 mb-2">Protection des données</h4>
+                <p>Cette application respecte le Règlement Général sur la Protection des Données (RGPD). Les données personnelles collectées sont strictement nécessaires à la gestion des stocks et ne sont pas transmises à des tiers.</p>
+            </div>
+        </div>
         
-    
-      <!-- <h3>Contact</h3> -->
-        <p>📧 Email : traoredegbebia@gmail.com  </p>
-        <p>📧 Email : traorehanna01@gmail.com  </p>
-         <p>📞 Téléphone : +228 93 49 32 35  </p>
-        <p>📞 Téléphone : +228 90 90 91 38  </p>
-        <p>🏢 Adresse : Sokodé Togo </p>
-    
+        <div class="mt-6 text-center">
+            <button id="close-about" class="btn bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
+                Fermer
+            </button>
+        </div>
     </div>
-
 
 </footer>
 
 <script>
-    const aboutLink = document.getElementById('about-link');
-    const aboutText = document.getElementById('about-text');
-
-    const contactLink = document.getElementById('contact-link');
-    const contactText = document.getElementById('contact-text');
-
-    // Bouton À propos
-    aboutLink.addEventListener('click', function(event) {
-        event.preventDefault();
+    // Année dynamique
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    // Toggle Mentions légales
+    document.getElementById('about-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        const aboutText = document.getElementById('about-text');
         aboutText.classList.toggle('hidden');
         if (!aboutText.classList.contains('hidden')) {
-            aboutText.scrollIntoView({
-                behavior: 'smooth'
-            });
+            aboutText.scrollIntoView({ behavior: 'smooth' });
         }
     });
-
-    // Bouton Contact
-    contactLink.addEventListener('click', function(event) {
-        event.preventDefault();
-        contactText.classList.toggle('hidden');
-        if (!contactText.classList.contains('hidden')) {
-            contactText.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
+    
+    // Bouton Fermer
+    document.getElementById('close-about')?.addEventListener('click', function() {
+        document.getElementById('about-text').classList.add('hidden');
     });
 </script>
