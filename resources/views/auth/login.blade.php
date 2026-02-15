@@ -1,22 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - CRTS Stock</title>
+@extends('layouts.app')
 
-    {{-- Tailwind & JS compilés avec Vite --}}
-    @vite('resources/css/app.css')
-    @vite('resources/js/app.js')
+@section('title', 'Connexion - CRTS Stock')
 
-    {{-- Font Awesome --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- SweetAlert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<body class="bg-gradient-to-br from-blue-950 via-blue-900 to-blue-950 min-h-screen flex items-center justify-center p-4 overflow-hidden">
-
+@section('content')
+<div class="min-h-screen bg-white flex items-center justify-center p-4">
     <!-- Carré de connexion responsive avec animation slide from left -->
     <div class="w-11/12 max-w-[600px] aspect-square bg-white/95 backdrop-blur-sm shadow-2xl rounded-2xl p-10 space-y-6 border border-blue-100/30 transform transition-all duration-500 animate-slide-from-left">
         
@@ -52,14 +39,14 @@
                 <label for="nom_pseudo" class="block text-sm font-medium text-blue-900">Nom Pseudo</label>
                 <div class="relative mt-2">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <i class="fa-solid fa-user text-gray-400 group-focus-within:text-red-600 transition-colors"></i>
+                        <i class="fa-solid fa-user text-gray-400 group-focus-within:text-red-600 transition-colors text-xl"></i>
                     </div>
                     <input id="nom_pseudo" 
                            name="nom_pseudo"
                            required
                            placeholder="Entrez votre identifiant"
                            class="mt-1 block w-full rounded-lg border border-blue-200 shadow-sm focus:border-red-500 
-                                  focus:ring-2 focus:ring-red-500/20 sm:text-sm pl-11 pr-4 py-2.5 transition-all duration-300
+                                  focus:ring-2 focus:ring-red-500/20 sm:text-sm pl-12 pr-4 py-3 transition-all duration-300
                                   hover:border-blue-300" />
                 </div>
             </div>
@@ -69,7 +56,7 @@
                 <label for="password" class="block text-sm font-medium text-blue-900">Mot de passe</label>
                 <div class="relative mt-2">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <i class="fa-solid fa-lock text-gray-400 group-focus-within:text-red-600 transition-colors"></i>
+                        <i class="fa-solid fa-lock text-gray-400 group-focus-within:text-red-600 transition-colors text-xl"></i>
                     </div>
                     <input id="password" 
                            type="password" 
@@ -79,10 +66,10 @@
                            oninput="handleInput()"
                            placeholder="••••••••"
                            class="block w-full rounded-lg border border-blue-200 shadow-sm focus:border-red-500 
-                                  focus:ring-2 focus:ring-red-500/20 sm:text-sm pl-11 pr-11 py-2.5 transition-all duration-300
+                                  focus:ring-2 focus:ring-red-500/20 sm:text-sm pl-12 pr-12 py-3 transition-all duration-300
                                   hover:border-blue-300" />
                     <i id="eyeIcon"
-                       class="fa-solid fa-eye-slash absolute right-4 top-3.5 cursor-pointer text-gray-500 hover:text-red-600 transition-colors"
+                       class="fa-solid fa-eye-slash absolute right-4 top-3.5 cursor-pointer text-gray-500 hover:text-red-600 transition-colors text-xl"
                        style="display: none;"
                        onclick="togglePassword()">
                     </i>
@@ -103,123 +90,113 @@
                 </button>
             </div>
         </form>
-
-        <!-- Footer -->
-        <div class="absolute bottom-6 left-0 right-0 text-center animate-fade-in-delay-3">
-            <p class="text-sm text-blue-800/60">
-                <i class="fa-solid fa-heart text-red-500 mr-1"></i>
-                &copy; 2025 CRTS Stock. Tous droits réservés.
-            </p>
-        </div>
     </div>
+</div>
 
-    <!-- Affichage du message d'erreur avec SweetAlert -->
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Erreur de connexion',
-                text: '{{ session('error') }}',
-                confirmButtonText: 'OK'
-            });
-        </script>
-    @endif
+<script>
+    const passwordInput = document.getElementById("password");
+    const eyeIcon = document.getElementById("eyeIcon");
 
-    <!-- Script affichage/masquage mot de passe -->
-    <script>
-        const passwordInput = document.getElementById("password");
-        const eyeIcon = document.getElementById("eyeIcon");
+    function togglePassword() {
+        const isHidden = passwordInput.type === "password";
+        passwordInput.type = isHidden ? "text" : "password";
+        eyeIcon.className = isHidden 
+            ? "fa-solid fa-eye absolute right-4 top-3.5 cursor-pointer text-red-600 hover:text-red-700 transition-colors text-xl" 
+            : "fa-solid fa-eye-slash absolute right-4 top-3.5 cursor-pointer text-gray-500 hover:text-red-600 transition-colors text-xl";
+    }
 
-        function togglePassword() {
-            const isHidden = passwordInput.type === "password";
-            passwordInput.type = isHidden ? "text" : "password";
-            eyeIcon.className = isHidden 
-                ? "fa-solid fa-eye absolute right-4 top-3.5 cursor-pointer text-red-600 hover:text-red-700 transition-colors" 
-                : "fa-solid fa-eye-slash absolute right-4 top-3.5 cursor-pointer text-gray-500 hover:text-red-600 transition-colors";
+    function handleInput() {
+        if (passwordInput.value.length > 0) {
+            eyeIcon.style.display = "inline";
+        } else {
+            eyeIcon.style.display = "none";
+            passwordInput.type = "password";
+            eyeIcon.className = "fa-solid fa-eye-slash absolute right-4 top-3.5 cursor-pointer text-gray-500 hover:text-red-600 transition-colors text-xl";
         }
+    }
+</script>
 
-        function handleInput() {
-            if (passwordInput.value.length > 0) {
-                eyeIcon.style.display = "inline";
-            } else {
-                eyeIcon.style.display = "none";
-                passwordInput.type = "password";
-                eyeIcon.className = "fa-solid fa-eye-slash absolute right-4 top-3.5 cursor-pointer text-gray-500 hover:text-red-600 transition-colors";
-            }
+<style>
+    @keyframes slideFromLeft {
+        from { 
+            opacity: 0; 
+            transform: translateX(-100%) scale(0.8);
         }
-    </script>
+        to { 
+            opacity: 1; 
+            transform: translateX(0) scale(1);
+        }
+    }
+    @keyframes fadeInDelay1 {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDelay2 {
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDelay3 {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @keyframes pulseSlow {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    @keyframes bounceSlow {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        75% { transform: translateX(8px); }
+    }
+    @keyframes ping {
+        0% { transform: scale(1); opacity: 1; }
+        70% { transform: scale(1.3); opacity: 0; }
+        100% { transform: scale(1.3); opacity: 0; }
+    }
 
-    <!-- Styles personnalisés pour les animations -->
-    <style>
-        @keyframes slideFromLeft {
-            from { 
-                opacity: 0; 
-                transform: translateX(-100%) scale(0.8);
-            }
-            to { 
-                opacity: 1; 
-                transform: translateX(0) scale(1);
-            }
-        }
-        @keyframes fadeInDelay1 {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInDelay2 {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInDelay3 {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-        @keyframes pulseSlow {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        @keyframes bounceSlow {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
-        }
-        @keyframes ping {
-            0% { transform: scale(1); opacity: 1; }
-            70% { transform: scale(1.3); opacity: 0; }
-            100% { transform: scale(1.3); opacity: 0; }
-        }
+    .animate-slide-from-left {
+        animation: slideFromLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    .animate-fade-in-delay-1 {
+        animation: fadeInDelay1 0.6s ease-out 0.2s forwards;
+        opacity: 0;
+    }
+    .animate-fade-in-delay-2 {
+        animation: fadeInDelay2 0.6s ease-out 0.4s forwards;
+        opacity: 0;
+    }
+    .animate-fade-in-delay-3 {
+        animation: fadeInDelay3 0.6s ease-out 0.6s forwards;
+        opacity: 0;
+    }
+    .animate-pulse-slow {
+        animation: pulseSlow 3s ease-in-out infinite;
+    }
+    .animate-bounce-slow {
+        animation: bounceSlow 2s ease-in-out infinite;
+    }
+    .animate-shake {
+        animation: shake 0.5s ease-in-out;
+    }
+    .animate-ping {
+        animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+</style>
 
-        .animate-slide-from-left {
-            animation: slideFromLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        }
-        .animate-fade-in-delay-1 {
-            animation: fadeInDelay1 0.6s ease-out 0.2s forwards;
-            opacity: 0;
-        }
-        .animate-fade-in-delay-2 {
-            animation: fadeInDelay2 0.6s ease-out 0.4s forwards;
-            opacity: 0;
-        }
-        .animate-fade-in-delay-3 {
-            animation: fadeInDelay3 0.6s ease-out 0.6s forwards;
-            opacity: 0;
-        }
-        .animate-pulse-slow {
-            animation: pulseSlow 3s ease-in-out infinite;
-        }
-        .animate-bounce-slow {
-            animation: bounceSlow 2s ease-in-out infinite;
-        }
-        .animate-shake {
-            animation: shake 0.5s ease-in-out;
-        }
-        .animate-ping {
-            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-        }
-    </style>
-
-</body>
-</html>
+@if (session('error'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Erreur de connexion',
+            text: '{{ session('error') }}',
+            confirmButtonText: 'OK'
+        });
+    });
+</script>
+@endif
+@endsection

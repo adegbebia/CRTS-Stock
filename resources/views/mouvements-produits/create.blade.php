@@ -1,244 +1,281 @@
 @extends('layouts.app')
 @section('content')
 
+@php
+    $peutModifier =
+        auth()->user()->hasRole('magasinier_technique') && auth()->user()->magasin_affecte === 'technique';
+@endphp
 
-    @php
-        $peutModifier =
-            auth()->user()->hasRole('magasinier_technique') && auth()->user()->magasin_affecte === 'technique';
-    @endphp
+<h2 class="text-3xl font-bold text-gray-900 mb-8 border-b-4 border-red-600 pb-3 flex items-center">
+    <i class="fa-solid fa-arrow-right-arrow-left text-red-600 mr-3 text-2xl"></i>
+    Ajouter un mouvement
+</h2>
 
+@if (!$peutModifier)
+    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg mb-6 max-w-3xl mx-auto">
+        <div class="flex items-start">
+            <i class="fa-solid fa-circle-exclamation text-red-600 text-xl mr-3 mt-0.5"></i>
+            <p class="text-red-800 font-medium">⚠️ Vous n'êtes pas autorisé à créer un mouvement.</p>
+        </div>
+    </div>
+@endif
 
-    <h2 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">
-        Ajouter un mouvement
-    </h2>
+<form action="{{ $peutModifier ? route('mouvements-produits.store') : '#' }}" method="POST"
+    class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 p-6 space-y-6"
+    {{ !$peutModifier ? 'onsubmit=return false' : '' }}>
+    @csrf
 
+    <!-- Organisation desktop -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
-    {{-- <div>
-        <p><a href="{{ route('produits.index') }}">← Revenir au niveau des produits</a></p>
-    </div> --}}
-
-
-
-
-    @if (!$peutModifier)
-        <p style="color:red;">⚠️ Vous n’êtes pas autorisé à créer un mouvement.</p>
-    @endif
-
-    <form action="{{ $peutModifier ? route('mouvements-produits.store') : '#' }}" method="POST"
-        class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md space-y-6"
-        {{ !$peutModifier ? 'onsubmit=return false' : '' }}>
-        @csrf
-
-        <!-- Organisation desktop -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-            <!-- Produit -->
-            <div class="md:col-span-3">
-                @if ($produitSelectionne)
-                    @php
-                        $produit = $produits->find($produitSelectionne);
-                    @endphp
-                    <p class="text-gray-700 font-semibold">
+        <!-- Produit -->
+        <div class="md:col-span-3">
+            @if ($produitSelectionne)
+                @php
+                    $produit = $produits->find($produitSelectionne);
+                @endphp
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                    <p class="text-gray-800 font-semibold flex items-center">
+                        <i class="fa-solid fa-box-open text-blue-600 mr-2"></i>
                         Produit sélectionné :
-                        <span class="text-red-400">{{ $produit->libelle ?? 'N/A' }}</span>
+                        <span class="text-red-600 font-bold ml-1">{{ $produit->libelle ?? 'N/A' }}</span>
                     </p>
                     <input type="hidden" name="produit_id" value="{{ $produitSelectionne }}">
-                @else
-                    <label for="produit_id" class="block text-sm font-medium text-gray-700">Produit</label>
-                    <select name="produit_id" id="produit_id"
-                        class="mt-1 block w-full rounded-md border-gray-100 shadow-sm focus:border-red-500 focus:ring-red-500"
-                        required {{ !$peutModifier ? 'disabled' : '' }}>
-                        <option value="">-- Sélectionner un produit --</option>
-                        @foreach ($produits as $produit)
-                            <option value="{{ $produit->produit_id }}" @if (old('produit_id') == $produit->produit_id) selected @endif>
-                                {{ $produit->libelle }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                    @error('produit_id')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                @endif
-            </div>
-
-            {{-- Origine --}}
-            <div>
-                <label for="origine" class="block text-sm font-medium text-gray-700">Origine</label>
-                <input type="text" name="origine" id="origine" value="{{ old('origine') }}" pattern="^[^,;:\.?!=%@&()$*#^{}<>+\/]+$"
-                    title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /" required {{ !$peutModifier ? 'disabled' : '' }}
-                    class="mt-1 block w-full rounded-md border border-gray-100 md:border-gray-400
-                          md:bg-gray-100 p-2 shadow-sm
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1">
-                @error('origine')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Quantité commandée -->
-            <div>
-                <label for="quantite_commandee" class="block text-sm font-medium text-gray-700">Quantité commandée</label>
-                <input type="number" name="quantite_commandee" id="quantite_commandee" min="1"
-                    value="{{ old('quantite_commandee') }}" {{ !$peutModifier ? 'disabled' : '' }}
-                    class="mt-1 block w-full rounded-md border border-gray-100 md:border-gray-400
-                          md:bg-gray-100 p-2 shadow-sm
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1"
-                          onwheel="event.preventDefault()">
-                @error('quantite_commandee')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- Quantité entrée -->
-            <div>
-                <label for="quantite_entree" class="block text-sm font-medium text-gray-700">Quantité entrée</label>
-                <input type="number" name="quantite_entree" id="quantite_entree" min="1"
-                    value="{{ old('quantite_entree') }}" {{ !$peutModifier ? 'disabled' : '' }}
-                    class="mt-1 block w-full rounded-md border border-gray-300 md:border-gray-400
-                          md:bg-gray-100 p-2 shadow-sm
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1" 
-                          onwheel="event.preventDefault()"/>
-                @error('quantite_entree')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-            <div>
-                <label for="quantite_sortie" class="block text-sm font-medium text-gray-700">Quantité sortie</label>
-                <input type="number" name="quantite_sortie" id="quantite_sortie" min="1"
-                    value="{{ old('quantite_sortie') }}" {{ !$peutModifier ? 'disabled' : '' }} 
-                    class="mt-1 block w-full rounded-md border border-gray-300 md:border-gray-400
-                          md:bg-gray-100 p-2 shadow-sm
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1"
-                          onwheel="event.preventDefault()"/>
-                @error('quantite_sortie')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-            {{-- Avarie --}}
-            <div>
-                <label for="avarie" class="block text-sm font-medium text-gray-700">Avarie</label>
-                <input type="number" name="avarie" id="avarie" min="0" value="{{ old('avarie') }}"
-                    {{ !$peutModifier ? 'disabled' : '' }}
-                    class="mt-1 block w-full rounded-md border border-gray-400 bg-gray-100 p-2
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1" 
-                          onwheel="event.preventDefault()"/>
-                @error('avarie')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            {{-- Nombre rupture stock --}}
-
-            <div>
-                <label for="nombre_rupture_stock" class="block text-sm font-medium text-gray-700">Nombre De Rupture Stock</label>
-                <input type="number" name="nombre_rupture_stock" id="nombre_rupture_stock" min="0" value="{{ old('nombre_rupture_stock') }}"
-                    {{ !$peutModifier ? 'disabled' : '' }}
-                    class="mt-1 block w-full rounded-md border border-gray-400 bg-gray-100 p-2
-                          focus:border-red-500 focus:ring-red-500 focus:ring-1" 
-                          onwheel="event.preventDefault()"/>
-                @error('nombre_rupture_stock')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-
-            {{-- Observation --}}
-            <div>
-                <label for="observation" class="block text-sm font-medium text-gray-700">Observation</label>
-                <textarea name="observation" id="observation"
-                    pattern="^[^,;:\.?!=%@&()$*#^{}<>+\/]+$"
-                    title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /"
-                    class="mt-1 block w-full rounded-md border border-gray-400 p-2 shadow-sm focus:border-red-500 focus:ring-red-500 resize-y"
-                    {{ !$peutModifier ? 'disabled' : '' }}>{{ old('observation') }}</textarea>
-                @error('observation')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-
-            <!-- Bouton -->
-            @if ($peutModifier)
-                <div class="md:col-span-3 flex justify-end">
-                    <button type="submit" class="bg-red-300 text-black px-4 py-2 rounded hover:bg-red-500 transition">
-                        Créer
-                    </button>
                 </div>
+            @else
+                <label for="produit_id" class="block text-sm font-medium text-gray-800 mb-2 flex items-center">
+                    <i class="fa-solid fa-box text-red-500 mr-2"></i>
+                    Produit <span class="text-red-500 ml-1">*</span>
+                </label>
+                <select name="produit_id" id="produit_id"
+                    class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                    required {{ !$peutModifier ? 'disabled' : '' }}>
+                    <option value="">-- Sélectionner un produit --</option>
+                    @foreach ($produits as $produit)
+                        <option value="{{ $produit->produit_id }}" @if (old('produit_id') == $produit->produit_id) selected @endif>
+                            {{ $produit->libelle }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @error('produit_id')
+                    <p class="text-red-600 text-sm mt-1 flex items-center">
+                        <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                        {{ $message }}
+                    </p>
+                @enderror
             @endif
         </div>
-    </form>
 
+        {{-- Origine --}}
+        <div>
+            <label for="origine" class="block text-sm font-medium text-gray-800 mb-2 flex items-center">
+                <i class="fa-solid fa-truck text-green-600 mr-2"></i>
+                Origine <span class="text-red-500 ml-1">*</span>
+            </label>
+            <input type="text" name="origine" id="origine" value="{{ old('origine') }}" pattern="^[^,;:\.?!=%@&()$*#^{}<>+\/]+$"
+                title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /" required {{ !$peutModifier ? 'disabled' : '' }}
+                class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all">
+            @error('origine')
+                <p class="text-red-600 text-sm mt-1 flex items-center">
+                    <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
 
+        <!-- Quantité commandée -->
+        <div>
+            <label for="quantite_commandee" class="block text-sm font-medium text-gray-800 mb-2 flex items-center">
+                <i class="fa-solid fa-list-check text-blue-600 mr-2"></i>
+                Quantité commandée <span class="text-red-500 ml-1">*</span>
+            </label>
+            <input type="number" name="quantite_commandee" id="quantite_commandee" min="1"
+                value="{{ old('quantite_commandee') }}" {{ !$peutModifier ? 'disabled' : '' }}
+                class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                onwheel="event.preventDefault()">
+            @error('quantite_commandee')
+                <p class="text-red-600 text-sm mt-1 flex items-center">
+                    <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
 
+        <!-- Quantité entrée -->
+        <div>
+            <label for="quantite_entree" class="block text-sm font-medium text-gray-800 mb-2 flex items-center">
+                <i class="fa-solid fa-arrow-down text-green-600 mr-2"></i>
+                Quantité entrée <span class="text-red-500 ml-1">*</span>
+            </label>
+            <input type="number" name="quantite_entree" id="quantite_entree" min="1"
+                value="{{ old('quantite_entree') }}" {{ !$peutModifier ? 'disabled' : '' }}
+                class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                onwheel="event.preventDefault()"/>
+            @error('quantite_entree')
+                <p class="text-red-600 text-sm mt-1 flex items-center">
+                    <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
+        
+        <div>
+            <label for="quantite_sortie" class="block text-sm font-medium text-gray-800 mb-2 flex items-center">
+                <i class="fa-solid fa-arrow-up text-red-600 mr-2"></i>
+                Quantité sortie <span class="text-red-500 ml-1">*</span>
+            </label>
+            <input type="number" name="quantite_sortie" id="quantite_sortie" min="1"
+                value="{{ old('quantite_sortie') }}" {{ !$peutModifier ? 'disabled' : '' }} 
+                class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                onwheel="event.preventDefault()"/>
+            @error('quantite_sortie')
+                <p class="text-red-600 text-sm mt-1 flex items-center">
+                    <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
+        
+        {{-- Avarie --}}
+        <div>
+            <label for="avarie" class="block text-sm font-medium text-gray-800 mb-2 flex items-center">
+                <i class="fa-solid fa-ban text-yellow-600 mr-2"></i>
+                Avarie
+            </label>
+            <input type="number" name="avarie" id="avarie" min="0" value="{{ old('avarie') }}"
+                {{ !$peutModifier ? 'disabled' : '' }}
+                class="mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                onwheel="event.preventDefault()"/>
+            @error('avarie')
+                <p class="text-red-600 text-sm mt-1 flex items-center">
+                    <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
 
-    <hr class="border-t-2 border-gray-300 my-6" />
+        {{-- Nombre rupture stock --}}
+        <div>
+            <label for="nombre_rupture_stock" class="block text-sm font-medium text-gray-800 mb-2 flex items-center">
+                <i class="fa-solid fa-triangle-exclamation text-orange-600 mr-2"></i>
+                Nombre De Rupture Stock
+            </label>
+            <input type="number" name="nombre_rupture_stock" id="nombre_rupture_stock" min="0" value="{{ old('nombre_rupture_stock') }}"
+                {{ !$peutModifier ? 'disabled' : '' }}
+                class="mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                onwheel="event.preventDefault()"/>
+            @error('nombre_rupture_stock')
+                <p class="text-red-600 text-sm mt-1 flex items-center">
+                    <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
 
+        {{-- Observation --}}
+        <div class="md:col-span-3">
+            <label for="observation" class="block text-sm font-medium text-gray-800 mb-2 flex items-center">
+                <i class="fa-solid fa-comment text-purple-600 mr-2"></i>
+                Observation
+            </label>
+            <textarea name="observation" id="observation"
+                pattern="^[^,;:\.?!=%@&()$*#^{}<>+\/]+$"
+                title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /"
+                class="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-red-500 focus:border-red-500 resize-y min-h-[100px]"
+                {{ !$peutModifier ? 'disabled' : '' }}>{{ old('observation') }}</textarea>
+            @error('observation')
+                <p class="text-red-600 text-sm mt-1 flex items-center">
+                    <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                    {{ $message }}
+                </p>
+            @enderror
+        </div>
 
-
-    <h3 class="text-3xl font-bl text-gray-800 mb-6 border-b-4 border-blue-500 pb-2">
-        Liste des mouvements déjà créés
-    </h3>
-
-
-    <form method="GET" action="{{ route('mouvements-produits.create') }}"
-      class="mb-6 flex flex-wrap items-center gap-4 bg-white p-4 rounded shadow max-w-4xl mx-auto">
-
-    <label for="produit" class="text-gray-700 font-medium">Filtrer par produit :</label>
-    <select name="produit" id="produit"
-            class="block rounded border border-gray-300 bg-white px-3 py-2 text-gray-700 focus:border-blue-500 focus:ring focus:ring-blue-300">
-        <option disabled selected>-- Tous les produits --</option>
-        @foreach ($produits as $produit)
-            <option value="{{ $produit->produit_id }}"
-                {{ $produitSelectionne == $produit->produit_id ? 'selected' : '' }}>
-                {{ $produit->libelle }}
-            </option>
-        @endforeach
-    </select>
-
-    <label for="date" class="text-gray-700 font-medium">Filtrer par date :</label>
-    <input type="date" name="date" id="date" value="{{ $date }}"
-           class="rounded border border-gray-300 px-3 py-2 focus:border-blue-500 focus:ring focus:ring-blue-300" />
-
-    <button type="submit"
-            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-        Rechercher
-    </button>
+        <!-- Bouton -->
+        @if ($peutModifier)
+            <div class="md:col-span-3 flex justify-end pt-4 border-t border-gray-200">
+                <button type="submit" class="px-8 py-3 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] flex items-center">
+                    <i class="fa-solid fa-plus mr-2"></i>
+                    Enregistrer le mouvement
+                </button>
+            </div>
+        @endif
+    </div>
 </form>
 
-    @if ($mouvements->count())
-        <table class="min-w-full border border-gray-300 rounded-lg shadow">
-            <thead class="bg-red-200">
+<hr class="border-t-2 border-gray-200 my-10" />
+
+<h3 class="text-3xl font-bold text-gray-900 mb-8 border-b-4 border-red-600 pb-3 flex items-center">
+    <i class="fa-solid fa-clipboard-list text-red-600 mr-3 text-2xl"></i>
+    Liste des mouvements déjà créés
+</h3>
+
+<form method="GET" action="{{ route('mouvements-produits.create') }}"
+    class="mb-8 flex flex-col sm:flex-row sm:items-center gap-4 bg-white p-5 rounded-xl shadow-sm border border-gray-200 max-w-4xl mx-auto">
+    <div class="flex-1 min-w-[200px]">
+        <label for="produit" class="block text-sm font-medium text-gray-700 mb-1">Filtrer par produit :</label>
+        <select name="produit" id="produit"
+                class="block w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <option disabled selected>-- Tous les produits --</option>
+            @foreach ($produits as $produit)
+                <option value="{{ $produit->produit_id }}"
+                    {{ $produitSelectionne == $produit->produit_id ? 'selected' : '' }}>
+                    {{ $produit->libelle }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+    <div class="flex-1 min-w-[200px]">
+        <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Filtrer par date :</label>
+        <input type="date" name="date" id="date" value="{{ $date }}"
+               class="block w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-red-500 focus:border-red-500" />
+    </div>
+    <div class="flex-shrink-0">
+        <button type="submit"
+                class="px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium rounded-lg shadow transition-all flex items-center">
+            <i class="fa-solid fa-magnifying-glass mr-2"></i>
+            Rechercher
+        </button>
+    </div>
+</form>
+
+@if ($mouvements->count())
+    <div class="overflow-x-auto max-w-7xl mx-auto">
+        <table class="min-w-full border border-gray-200 rounded-xl shadow-sm">
+            <thead class="bg-gradient-to-r from-red-600 to-red-700">
                 <tr>
-                    <th class="px-4 py-2 border">Produit</th>
-                    <th class="px-4 py-2 border">Date</th>
-                    <th class="px-4 py-2 border">Origine</th>
-                    <th class="px-4 py-2 border">Quantité commandée</th>
-                    <th class="px-4 py-2 border">Quantité entrée</th>
-                    <th class="px-4 py-2 border">Quantité sortie</th>
-                    <th class="px-4 py-2 border">Avarie</th>
-                    <th class="px-4 py-2 border">Nombre De Rupture Stock</th>
-                    <th class="px-4 py-2 border">Stock du jour</th>
-                    <th class="px-4 py-2 border">Observation</th>
-                    <th class="px-4 py-2 border">Action</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Produit</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Date</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Origine</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Qté commandée</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Qté entrée</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Qté sortie</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Avarie</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Rupture Stock</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Stock du jour</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Observation</th>
+                    <th class="px-4 py-3 border-b border-red-800 text-left text-xs font-bold text-white uppercase tracking-wider">Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white divide-y divide-gray-100">
                 @foreach ($mouvements as $mouvement)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2 border">{{ $mouvement->produit->libelle ?? 'N/A' }}</td>
-                        <td class="px-4 py-2 border">{{ $mouvement->date }}</td>
-                        <td class="px-4 py-2 border">{{ $mouvement->origine }}</td>
-                        <td class="px-4 py-2 border">{{ $mouvement->quantite_commandee }}</td>
-                        <td class="px-4 py-2 border">{{ $mouvement->quantite_entree }}</td>
-                        <td class="px-4 py-2 border">{{ $mouvement->quantite_sortie }}</td>
-                        <td class="px-4 py-2 border">{{ $mouvement->avarie }}</td>
-                        <td class="px-4 py-2 border">{{ $mouvement->nombre_rupture_stock }}</td>
-                        <td class="px-4 py-2 border">{{ $mouvement->stock_jour }}</td>
-                        <td class="px-4 py-2 border">{{ $mouvement->observation }}</td>
-                        <td class="px-4 py-2 border">
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-4 py-3 border text-sm font-medium text-gray-900">{{ $mouvement->produit->libelle ?? 'N/A' }}</td>
+                        <td class="px-4 py-3 border text-sm text-gray-700">{{ $mouvement->date }}</td>
+                        <td class="px-4 py-3 border text-sm text-gray-700">{{ $mouvement->origine }}</td>
+                        <td class="px-4 py-3 border text-sm text-gray-700">{{ $mouvement->quantite_commandee }}</td>
+                        <td class="px-4 py-3 border text-sm text-gray-700">{{ $mouvement->quantite_entree }}</td>
+                        <td class="px-4 py-3 border text-sm text-gray-700">{{ $mouvement->quantite_sortie }}</td>
+                        <td class="px-4 py-3 border text-sm text-gray-700">{{ $mouvement->avarie }}</td>
+                        <td class="px-4 py-3 border text-sm text-gray-700">{{ $mouvement->nombre_rupture_stock }}</td>
+                        <td class="px-4 py-3 border text-sm font-semibold text-gray-900">{{ $mouvement->stock_jour }}</td>
+                        <td class="px-4 py-3 border text-sm text-gray-700 max-w-xs truncate">{{ $mouvement->observation }}</td>
+                        <td class="px-4 py-3 border text-sm">
                             <a href="{{ route('mouvements-produits.edit', $mouvement->mouvementProd_id) }}"
-                                class="text-yellow-600 hover:underline"title="Modifier">
+                                class="text-amber-600 hover:text-amber-800 transition-colors" title="Modifier">
                                 <button type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none"
                                         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1
                                         2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897
@@ -256,43 +293,66 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
 
-        <div class="join mt-4 flex justify-end">
+    {{-- Pagination professionnelle alignée à droite --}}
+    <div class="mt-8 flex justify-end max-w-7xl mx-auto">
+        <div class="inline-flex rounded-lg shadow-sm border border-gray-200 overflow-hidden">
             @for ($page = 1; $page <= $mouvements->lastPage(); $page++)
-                <input type="radio" name="pagination" aria-label="{{ $page }}"
-                    class="join-item btn btn-square bg-red-200 checked:bg-blue-500 checked:text-white"
-                    @if ($mouvements->currentPage() == $page) checked @endif
-                    onchange="window.location='{{ $mouvements->url($page) }}'" />
+                <label class="relative">
+                    <input type="radio" 
+                           name="pagination" 
+                           class="absolute inset-0 opacity-0 cursor-pointer"
+                           @if ($mouvements->currentPage() == $page) checked @endif 
+                           onchange="window.location='{{ $mouvements->url($page) }}'">
+                    <span class="px-4 py-2.5 text-sm font-medium transition-all duration-200 cursor-pointer
+                                @if($mouvements->currentPage() == $page)
+                                    bg-red-600 text-white
+                                @else
+                                    bg-white text-gray-700 hover:bg-gray-50 hover:text-red-600
+                                @endif
+                                @if($page < $mouvements->lastPage()) border-r border-gray-200 @endif">
+                        {{ $page }}
+                    </span>
+                </label>
             @endfor
         </div>
-    @else
-        <p>Aucun mouvement enregistré pour le moment.</p>
-    @endif
+    </div>
+@else
+    <div class="bg-white rounded-xl border-2 border-dashed border-gray-300 p-12 text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 text-gray-600 mb-4">
+            <i class="fa-solid fa-inbox text-3xl"></i>
+        </div>
+        <p class="text-gray-500 text-lg font-medium">Aucun mouvement enregistré pour le moment.</p>
+    </div>
+@endif
 
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Succès',
-                    text: {!! Js::from(session('success')) !!},
-                    confirmButtonText: 'OK'
-                });
+@if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: {!! Js::from(session('success')) !!},
+                confirmButtonColor: '#dc2626',
+                confirmButtonText: 'OK'
             });
-        </script>
-    @endif
+        });
+    </script>
+@endif
 
-    @if (session('error'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Erreur',
-                    text: {!! Js::from(session('error')) !!},
-                    confirmButtonText: 'OK'
-                });
+@if (session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: {!! Js::from(session('error')) !!},
+                confirmButtonColor: '#dc2626',
+                confirmButtonText: 'OK'
             });
-        </script>
-    @endif
+        });
+    </script>
+@endif
 
 @endsection

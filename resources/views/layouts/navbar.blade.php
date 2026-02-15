@@ -1,5 +1,4 @@
 @php
-// Définir les variables pour les utilisateurs authentifiés uniquement
 $user = auth()->check() ? auth()->user() : null;
 
 if ($user) {
@@ -31,7 +30,10 @@ if ($user) {
 @auth
 <div class="navbar bg-red-600 text-white shadow-lg border-b border-red-700">
     <div class="navbar-start">
-        <a href="#" id="toggleSidebar" class="btn btn-ghost text-white text-xl hover:bg-red-700 transition">☰</a>
+        <a href="{{ route('dashboard') }}" class="btn btn-ghost text-white text-xl hover:bg-red-700 transition">
+            <i class="fa-solid fa-house mr-2"></i>
+            Accueil
+        </a>
     </div>
 
     <div class="navbar-center">
@@ -141,32 +143,15 @@ if ($user) {
         </div>
     </div>
 </div>
-
-{{-- Script toggle sidebar --}}
-<script>
-const toggle = document.getElementById('toggleSidebar');
-const sidebar = document.getElementById('sidebar');
-
-if (toggle && sidebar) {
-    toggle.addEventListener('click', function(e) {
-        e.stopPropagation(); // empêche propagation
-        sidebar.classList.toggle('-translate-x-full'); // bascule affichage
-    });
-
-    // Fermer si clic en dehors de la sidebar
-    document.addEventListener('click', function(e) {
-        if (!sidebar.contains(e.target) && !toggle.contains(e.target)) {
-            sidebar.classList.add('-translate-x-full'); // cache la sidebar
-        }
-    });
-}
-</script>
 @endauth
 
 @guest
 <div class="navbar bg-red-600 text-white shadow-lg border-b border-red-700">
     <div class="navbar-start">
-        <!-- Vide pour les guests -->
+        <a href="{{ route('welcome') }}" class="btn btn-ghost text-white text-xl hover:bg-red-700 transition">
+            <i class="fa-solid fa-house mr-2"></i>
+            Accueil
+        </a>
     </div>
 
     <div class="navbar-center">

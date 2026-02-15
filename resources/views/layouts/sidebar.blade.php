@@ -1,3 +1,4 @@
+@auth
 <div id="sidebar"
     class="fixed top-0 bottom-0 left-0 w-64 
            bg-red-800 text-white p-6 transition-all duration-300 
@@ -5,41 +6,42 @@
     <ul class="space-y-4">
 
         @php
-            $role = auth()->user()->roles->first()->name ?? '';
-            $magasin = auth()->user()->magasin_affecte ?? '';
+            $user = auth()->user();
+            $role = $user->roles->first()->name ?? '';
+            $magasin = $user->magasin_affecte ?? '';
 
             function menuSection($title, $items)
-        {
-            echo '<li>';
-            echo '<h3 class="mt-6 mb-3 text-xs font-bold text-red-200 uppercase tracking-wider px-3 py-2 bg-red-900/30 rounded-lg">';
-            echo $title;
-            echo '</h3>';
-            echo '<ul class="space-y-1">';
-            foreach ($items as $item) {
+            {
                 echo '<li>';
-                echo '<a href="' .
-                    route($item['route']) .
-                    '" class="flex items-center px-4 py-3 rounded-xl text-sm font-medium text-white hover:bg-red-700 hover:shadow-md hover:translate-x-1 transition-all duration-200 border border-transparent hover:border-red-600">';
-                
-                echo '<span class="mr-3 flex-shrink-0">';
-                if (str_starts_with(trim($item['icon']), '<svg')) {
-                    // Cas SVG direct
-                    echo $item['icon'];
-                } else {
-                    // Cas class (flaticon par exemple)
-                    echo '<i class="' . $item['icon'] . '"></i>';
+                echo '<h3 class="mt-6 mb-3 text-xs font-bold text-red-200 uppercase tracking-wider px-3 py-2 bg-red-900/30 rounded-lg">';
+                echo $title;
+                echo '</h3>';
+                echo '<ul class="space-y-1">';
+                foreach ($items as $item) {
+                    echo '<li>';
+                    echo '<a href="' .
+                        route($item['route']) .
+                        '" class="flex items-center px-4 py-3 rounded-xl text-sm font-medium text-white hover:bg-red-700 hover:shadow-md hover:translate-x-1 transition-all duration-200 border border-transparent hover:border-red-600">';
+                    
+                    echo '<span class="mr-3 flex-shrink-0">';
+                    if (str_starts_with(trim($item['icon']), '<svg')) {
+                        // Cas SVG direct
+                        echo $item['icon'];
+                    } else {
+                        // Cas class (flaticon par exemple)
+                        echo '<i class="' . $item['icon'] . '"></i>';
+                    }
+                    echo '</span>';
+                    
+                    echo '<span class="whitespace-nowrap">' . $item['label'] . '</span>';
+                    echo '</a></li>';
                 }
-                echo '</span>';
-                
-                echo '<span class="whitespace-nowrap">' . $item['label'] . '</span>';
-                echo '</a></li>';
+                echo '</ul>';
+                echo '</li>';
+                echo '<li><hr class="my-4 border-red-700/50"></li>';
             }
-            echo '</ul>';
-            echo '</li>';
-            echo '<li><hr class="my-4 border-red-700/50"></li>';
-        }
-
         @endphp
+
         <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-white font-medium bg-red-700 hover:bg-red-600 hover:shadow-lg hover:translate-x-1 transition-all duration-200 mb-6 border border-red-600" title="Dashboard">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
@@ -79,7 +81,6 @@
     </svg>',
                         'label' => 'Consommation produits',
                     ],
-
                     [
                         'route' => 'mouvements-produits.index',
                         'icon' => '
@@ -97,7 +98,6 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
   <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
 </svg>
-
                 ',
                         'label' => 'Alertes produits',
                     ],
@@ -119,7 +119,6 @@
         </svg>',
                         'label' => 'Articles',
                     ],
-
                     [
                         'route' => 'consommations-articles.index',
                         'icon' => '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,11 +148,8 @@
                         'label' => 'Rapports articles',
                     ],
                 ]);
-
             @endphp
         @endif
-
-
 
         {{-- MAGASINIER TECHNIQUE --}}
         @if ($role === 'magasinier_technique' && $magasin === 'technique')
@@ -206,6 +202,7 @@
                 ]);
             @endphp
         @endif
+
         {{-- MAGASINIER COLLATION --}}
         @if ($role === 'magasinier_collation' && $magasin === 'collation')
             @php
@@ -225,12 +222,12 @@
                         'label' => 'Consommation articles',
                     ],
                     [
-            'route' => 'mouvements-articles.index',
-            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        'route' => 'mouvements-articles.index',
+                        'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"/>
             </svg>',
-            'label' => 'Mouvements articles',
-        ],
+                        'label' => 'Mouvements articles',
+                    ],
                     [
                         'route' => 'alertes-articles.index',
                         'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -257,3 +254,4 @@
         @endif
     </ul>
 </div>
+@endauth

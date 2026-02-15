@@ -77,7 +77,7 @@
             
             <div>
                 <h4 class="font-bold text-lg text-red-200 mb-2">Développement</h4>
-                <p>Ce logiciel a été développé dans le cadre d'un projet académique par des étudiants de la filière Informatique (4IFNTI) de l'Université de Sokodé - Promotion L2/S4 2025.</p>
+                <p>Ce logiciel a été développé dans le cadre d'un projet académique par des étudiants de la filière Informatique  de l'Université (IFNTI) de Sokodé - Promotion L2/S4 2025.</p>
             </div>
             
             <div>

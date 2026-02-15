@@ -15,6 +15,7 @@
             icon: 'error',
             title: 'Accès refusé',
             text: 'Vous n\'avez pas la permission de créer un produit.',
+            confirmButtonColor: '#dc2626',
             allowOutsideClick: false,
             allowEscapeKey: false,
         }).then(() => {
@@ -23,111 +24,179 @@
     </script>
 @else
 
-    <div class="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
-        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Ajouter / Créer un nouveau produit</h2>
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl border border-gray-200 p-8">
+        <div class="flex items-center mb-8 pb-4 border-b border-gray-200">
+            <i class="fa-solid fa-vial text-red-600 text-3xl mr-4"></i>
+            <h2 class="text-3xl font-bold text-gray-900">Ajouter un nouveau produit</h2>
+        </div>
 
         <form action="{{ route('produits.store') }}" method="POST" class="space-y-6">
             @csrf
 
             <div>
-                <label for="codeproduit" class="block mb-1 font-medium text-gray-700">Code Produit</label>
-                <input type="text" name="codeproduit" id="codeproduit" required pattern="^[^,;:\.?%=!@&()$*#^{}<>+/\s]+$"
-                    title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + ou espaces"  value="{{ old('codeproduit') }}" 
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
+                <label for="codeproduit" class="block mb-2 font-medium text-gray-800 flex items-center">
+                    <i class="fa-solid fa-barcode text-red-500 mr-2 text-lg"></i>
+                    Code Produit <span class="text-red-500 ml-1">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-hashtag text-gray-400"></i>
+                    </div>
+                    <input type="text" name="codeproduit" id="codeproduit" required pattern="^[^,;:\.?%=!@&()$*#^{}<>+/\s]+$"
+                        title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + ou espaces"  value="{{ old('codeproduit') }}" 
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all" />
+                </div>
                 @error('codeproduit')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
+                    <p class="text-red-600 mt-1 text-sm flex items-center">
+                        <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                        {{ $message }}
+                    </p>
                 @enderror
             </div>
+
             <div>
-                <label for="libelle" class="block mb-1 font-medium text-gray-700">Libellé</label>
-                <input type="text" name="libelle" id="libelle" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+/]+$"
-                    title="Ne doit pas contenir les caractères , ; : @ & () $ * # ^ { } <> + /" value="{{ old('libelle') }}"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
+                <label for="libelle" class="block mb-2 font-medium text-gray-800 flex items-center">
+                    <i class="fa-solid fa-tag text-blue-600 mr-2 text-lg"></i>
+                    Libellé <span class="text-red-500 ml-1">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-box text-gray-400"></i>
+                    </div>
+                    <input type="text" name="libelle" id="libelle" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+/]+$"
+                        title="Ne doit pas contenir les caractères , ; : @ & () $ * # ^ { } <> + /" value="{{ old('libelle') }}"
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all" />
+                </div>
                 @error('libelle')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
+                    <p class="text-red-600 mt-1 text-sm flex items-center">
+                        <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                        {{ $message }}
+                    </p>
                 @enderror
             </div>
 
             <div>
-                <label for="conditionnement" class="block mb-1 font-medium text-gray-700">Conditionnement</label>
-                <input type="text" name="conditionnement" id="conditionnement" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+/]+$"
-                    title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /" value="{{ old('conditionnement') }}" 
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
+                <label for="conditionnement" class="block mb-2 font-medium text-gray-800 flex items-center">
+                    <i class="fa-solid fa-boxes-stacked text-green-600 mr-2 text-lg"></i>
+                    Conditionnement <span class="text-red-500 ml-1">*</span>
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-cube text-gray-400"></i>
+                    </div>
+                    <input type="text" name="conditionnement" id="conditionnement" required pattern="^[^,;:\.?!=%@&()$*#^{}<>+/]+$"
+                        title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + /" value="{{ old('conditionnement') }}" 
+                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all" />
+                </div>
                 @error('conditionnement')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
+                    <p class="text-red-600 mt-1 text-sm flex items-center">
+                        <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                        {{ $message }}
+                    </p>
                 @enderror
             </div>
 
-            <div>
-                <label for="quantitestock" class="block mb-1 font-medium text-gray-700">Quantité</label>
-                <input type="number" name="quantitestock" id="quantitestock" min="0" required
-                    value="{{ old('quantitestock') }}" 
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
-                    onwheel="event.preventDefault()" />
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label for="quantitestock" class="block mb-2 font-medium text-gray-800 flex items-center">
+                        <i class="fa-solid fa-cubes text-amber-600 mr-2 text-lg"></i>
+                        Quantité <span class="text-red-500 ml-1">*</span>
+                    </label>
+                    <input type="number" name="quantitestock" id="quantitestock" min="0" required
+                        value="{{ old('quantitestock') }}" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                        onwheel="event.preventDefault()" />
+                </div>
+
+                <div>
+                    <label for="stockmax" class="block mb-2 font-medium text-gray-800 flex items-center">
+                        <i class="fa-solid fa-arrow-up-wide-short text-blue-600 mr-2 text-lg"></i>
+                        Stock maximum <span class="text-red-500 ml-1">*</span>
+                    </label>
+                    <input type="number" name="stockmax" id="stockmax" min="0" required
+                        value="{{ old('stockmax') }}" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                        onwheel="event.preventDefault()" />
+                </div>
+
+                <div>
+                    <label for="stockmin" class="block mb-2 font-medium text-gray-800 flex items-center">
+                        <i class="fa-solid fa-arrow-down-wide-short text-red-600 mr-2 text-lg"></i>
+                        Stock minimum <span class="text-red-500 ml-1">*</span>
+                    </label>
+                    <input type="number" name="stockmin" id="stockmin" min="0" required
+                        value="{{ old('stockmin') }}" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                        onwheel="event.preventDefault()" />
+                </div>
             </div>
 
             <div>
-                <label for="stockmax" class="block mb-1 font-medium text-gray-700">Stock maximum</label>
-                <input type="number" name="stockmax" id="stockmax" min="0" required
-                    value="{{ old('stockmax') }}" 
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
-                    onwheel="event.preventDefault()" />
-            </div>
-
-            <div>
-                <label for="stockmin" class="block mb-1 font-medium text-gray-700">Stock minimum</label>
-                <input type="number" name="stockmin" id="stockmin" min="0" required
-                    value="{{ old('stockmin') }}" 
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
-                    onwheel="event.preventDefault()" />
-            </div>
-
-            <div>
-                <label for="stocksecurite" class="block mb-1 font-medium text-gray-700">Stock de sécurité</label>
+                <label for="stocksecurite" class="block mb-2 font-medium text-gray-800 flex items-center">
+                    <i class="fa-solid fa-shield text-indigo-600 mr-2 text-lg"></i>
+                    Stock de sécurité <span class="text-red-500 ml-1">*</span>
+                </label>
                 <input type="number" name="stocksecurite" id="stocksecurite" min="0" required
                     value="{{ old('stocksecurite') }}" 
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
                     onwheel="event.preventDefault()" />
             </div>
-            <div>
-                <label for="dateperemption" class="block mb-1 font-medium text-gray-700">Date de péremption</label>
-                <input type="date" name="dateperemption" id="dateperemption"  min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('dateperemption') }}"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
-                @error('dateperemption')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
-                @enderror
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="dateperemption" class="block mb-2 font-medium text-gray-800 flex items-center">
+                        <i class="fa-solid fa-calendar-xmark text-red-600 mr-2 text-lg"></i>
+                        Date de péremption <span class="text-red-500 ml-1">*</span>
+                    </label>
+                    <input type="date" name="dateperemption" id="dateperemption" min="{{ date('Y-m-d', strtotime('+1 day')) }}" value="{{ old('dateperemption') }}"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all" />
+                    @error('dateperemption')
+                        <p class="text-red-600 mt-1 text-sm flex items-center">
+                            <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="lot" class="block mb-2 font-medium text-gray-800 flex items-center">
+                        <i class="fa-solid fa-hashtag text-purple-600 mr-2 text-lg"></i>
+                        Lot <span class="text-red-500 ml-1">*</span>
+                    </label>
+                    <input type="text" name="lot" id="lot" pattern="^[^,;:\.?!=%@&()$*#^{}<>+/\s]+$" title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + ou espaces" value="{{ old('lot') }}"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all" />
+                    @error('lot')
+                        <p class="text-red-600 mt-1 text-sm flex items-center">
+                            <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
             </div>
 
             <div>
-                <label for="lot" class="block mb-1 font-medium text-gray-700">Lot</label>
-                <input type="text" name="lot" id="lot"  pattern="^[^,;:\.?!=%@&()$*#^{}<>+/\s]+$" title="Ne doit pas contenir les caractères , ; : @ & ( ) $ * # ^ { } < > + ou espaces" value="{{ old('lot') }}"
-                    class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-400" />
-                @error('lot')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="user_id" class="block mb-1 font-medium text-gray-700">Auteur</label>
+                <label for="user_id" class="block mb-2 font-medium text-gray-800 flex items-center">
+                    <i class="fa-solid fa-user text-gray-500 mr-2 text-lg"></i>
+                    Auteur
+                </label>
                 <input type="text" id="user_name" value="{{ auth()->user()->nom }}" disabled
-                    class="w-full bg-gray-100 border border-gray-300 rounded px-3 py-2 cursor-not-allowed" />
+                    class="w-full bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-500 cursor-not-allowed" />
                 <input type="hidden" name="user_id" value="{{ auth()->user()->user_id }}">
                 @error('user_id')
-                    <p class="text-red-600 mt-1 text-sm">{{ $message }}</p>
+                    <p class="text-red-600 mt-1 text-sm flex items-center">
+                        <i class="fa-solid fa-circle-exclamation mr-1 text-xs"></i>
+                        {{ $message }}
+                    </p>
                 @enderror
             </div>
 
-            <div class="pt-6">
-                <button type="submit" class="w-full bg-red-300 hover:bg-red-600 text-white font-semibold py-3 rounded transition duration-200">
-                    Enregistrer
+            <div class="pt-6 border-t border-gray-200">
+                <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.01] flex items-center justify-center">
+                    <i class="fa-solid fa-floppy-disk mr-2 text-lg"></i>
+                    Enregistrer le produit
                 </button>
             </div>
         </form>
-
-        {{-- <div class="mt-6 flex justify-between text-sm text-gray-600">
-            <a href="{{ route('produits.index') }}" class="hover:underline">← Retour à la liste des produits</a>
-            <a href="{{ route('mouvements-produits.create') }}" class="hover:underline">→ Enregistrer un mouvement</a>
-        </div> --}}
     </div>
 
 @endif

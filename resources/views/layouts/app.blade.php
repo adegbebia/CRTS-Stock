@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'CRTS STOCK')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Font Awesome (AJOUTÉ) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Styles Tailwind/DaisyUI -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- SweetAlert -->
@@ -14,18 +18,20 @@
     </style>
 
 </head>
-<body class="min-h-screen flex flex-col bg-gray-50">
+<body class="min-h-screen flex flex-col bg-white">
 
     @include('layouts.navbar')
 
     <div class="flex flex-1">
-        <!-- Sidebar avec gestion complète de l'affichage -->
-        <div id="sidebar" class="w-64 bg-red-800 text-white p-4 transition-all duration-300 transform">
+        <!-- Sidebar - uniquement pour les utilisateurs authentifiés -->
+        @auth
+        <div id="sidebar" class="hidden md:block w-64 bg-white text-gray-800 p-4 transition-all duration-300 transform border-r border-gray-200">
             @include('layouts.sidebar')
         </div>
+        @endauth
 
-        <!-- Contenu principal - sans marge gauche initiale -->
-        <main class="flex-1 p-6 overflow-auto bg-white">
+        <!-- Contenu principal -->
+        <main class="flex-1 p-4 md:p-6 overflow-auto bg-white">
             @yield('content')
         </main>
     </div>
