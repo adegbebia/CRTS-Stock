@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role; // Si vous utilisez des rôles ici
-// use Spatie\Permission\Traits\HasRoles;
-
-
-
+use Spatie\Permission\Models\Role;
 
 class LoginController extends Controller
 {
@@ -34,6 +30,12 @@ class LoginController extends Controller
         $user = User::whereRaw('LOWER(nom_pseudo) = ?', [$pseudo])->first();
 
         if ($user) {
+            // 🔑 VÉRIFICATION CRITIQUE : Bloquer si désactivé
+            if (!$user->is_active) {
+                return redirect()->back()->with('error', 'Votre compte a été désactivé. Veuillez contacter l\'administrateur du CRTS.');
+            }
+
+            // Vérifie que les champs nom et prénom sont remplis
             if (!empty($user->nom) && !empty($user->prenom)) {
                 // Vérifie le mot de passe hashé
                 if (Hash::check($password, $user->password)) {
@@ -58,11 +60,9 @@ class LoginController extends Controller
         return redirect()->back()->with('error', 'Pseudo ou mot de passe incorrect.');
     }
 
-
     public function logout()
     {
         Auth::logout();
         return redirect()->route('login')->with('success', 'Déconnexion réussie.');
-
     }
 }

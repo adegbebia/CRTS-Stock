@@ -63,6 +63,7 @@
                     <th class="px-4 py-3 border-b border-red-700 text-left text-xs font-bold text-white uppercase tracking-wider">Téléphone</th>
                     <th class="px-4 py-3 border-b border-red-700 text-left text-xs font-bold text-white uppercase tracking-wider">Magasin</th>
                     <th class="px-4 py-3 border-b border-red-700 text-left text-xs font-bold text-white uppercase tracking-wider">Email</th>
+                    <th class="px-4 py-3 border-b border-red-700 text-left text-xs font-bold text-white uppercase tracking-wider">Statut</th>
                     <th class="px-4 py-3 border-b border-red-700 text-left text-xs font-bold text-white uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
@@ -84,43 +85,63 @@
                             </span>
                         </td>
                         <td class="px-4 py-3 border text-sm text-gray-700">{{ $user->email }}</td>
+                        <td class="px-4 py-3 border text-sm text-center">
+                            @if($user->is_active)
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    <i class="fa-solid fa-toggle-on mr-1"></i>
+                                    Actif
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    <i class="fa-solid fa-toggle-off mr-1"></i>
+                                    Désactivé
+                                </span>
+                            @endif
+                        </td>
                         <td class="px-4 py-3 border text-sm font-medium space-x-2">
-                            {{-- Tout le monde peut voir --}}
-                            <a href="{{ route('users.show', $user->user_id) }}" class="text-blue-600 hover:text-blue-800 transition-colors" title="Voir">
-                                <button type="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
-                                        <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                        <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
+                            {{-- Voir --}}
+                            <a href="{{ route('users.show', $user->user_id) }}" class="text-blue-600 hover:text-blue-800 transition-colors" title="Voir les détails">
+                                <i class="fa-solid fa-eye text-lg"></i>
                             </a>
 
-                            {{-- Modifier et Supprimer uniquement pour admin --}}
+                            {{-- Modifier et Gérer le statut --}}
                             @if ($currentUser->hasRole('admin'))
                                 <a href="{{ route('users.edit', $user->user_id) }}" class="text-amber-600 hover:text-amber-800 transition-colors" title="Modifier">
-                                    <button type="button">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
-                                            <path d="m5.433 13.917 1.262-3.155A4 4 0 0 1 7.58 9.42l6.92-6.918a2.121 2.121 0 0 1 3 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 0 1-.65-.65Z" />
-                                            <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0 0 10 3H4.75A2.75 2.75 0 0 0 2 5.75v9.5A2.75 2.75 0 0 0 4.75 18h9.5A2.75 2.75 0 0 0 17 15.25V10a.75.75 0 0 0-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5Z" />
-                                        </svg>
-                                    </button>
+                                    <i class="fa-solid fa-pen-to-square text-lg"></i>
                                 </a>
 
-                                <form action="{{ route('users.destroy', $user->user_id) }}" method="POST" style="display:inline;" class="delete-form">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn-delete text-red-600 hover:text-red-800 transition-colors" title="Supprimer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
-                                            <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clip-rule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </form>
+                                {{-- TOGGLE DYNAMIQUE : Désactiver ou Réactiver --}}
+                                @if($user->is_active)
+                                    {{-- BOUTON DÉSACTIVER (vert) --}}
+                                    <form action="{{ route('users.destroy', $user->user_id) }}" method="POST" style="display:inline;" id="deactivate-form-{{ $user->user_id }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="deactivation_reason" id="deactivation_reason_{{ $user->user_id }}">
+                                        <button type="button" 
+                                                class="text-green-600 hover:text-green-800 transition-colors" 
+                                                title="Désactiver (bloque l'accès mais conserve l'historique)" 
+                                                onclick="confirmDeactivation({{ $user->user_id }})">
+                                            <i class="fa-solid fa-toggle-on text-xl"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    {{-- BOUTON RÉACTIVER (rouge) --}}
+                                    <form action="{{ route('users.restore', $user->user_id) }}" method="POST" style="display:inline;" id="restore-form-{{ $user->user_id }}">
+                                        @csrf
+                                        <button type="button" 
+                                                class="text-red-600 hover:text-red-800 transition-colors" 
+                                                title="Réactiver cet utilisateur" 
+                                                onclick="confirmRestore({{ $user->user_id }})">
+                                            <i class="fa-solid fa-toggle-off text-xl"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             @endif
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9" class="px-4 py-8 text-center text-gray-500 italic">
+                        <td colspan="10" class="px-4 py-8 text-center text-gray-500 italic">
                             Aucun employé trouvé.
                         </td>
                     </tr>
@@ -129,51 +150,86 @@
         </table>
     </div>
 
-    <!-- Remplacez votre section pagination existante par ce code -->
     <div class="mt-6 flex justify-end">
-    <div class="inline-flex rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        @for ($page = 1; $page <= $users->lastPage(); $page++)
-            <label class="relative">
-                <input type="radio" 
-                        name="pagination" 
-                        class="absolute inset-0 opacity-0 cursor-pointer"
-                        @if ($users->currentPage() == $page) checked @endif 
-                        onchange="window.location='{{ $users->url($page) }}'">
-                <span class="px-4 py-2.5 text-sm font-medium transition-all duration-200 cursor-pointer
-                            @if($users->currentPage() == $page)
-                                bg-red-600 text-white
-                            @else
-                                bg-white text-gray-700 hover:bg-gray-50 hover:text-red-600
-                            @endif
-                            @if($page < $users->lastPage()) border-r border-gray-200 @endif">
-                    {{ $page }}
-                </span>
-            </label>
-        @endfor
-    </div>
+        <div class="inline-flex rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            @for ($page = 1; $page <= $users->lastPage(); $page++)
+                <label class="relative">
+                    <input type="radio" 
+                           name="pagination" 
+                           class="absolute inset-0 opacity-0 cursor-pointer"
+                           @if ($users->currentPage() == $page) checked @endif 
+                           onchange="window.location='{{ $users->url($page) }}'">
+                    <span class="px-4 py-2.5 text-sm font-medium transition-all duration-200 cursor-pointer
+                                @if($users->currentPage() == $page)
+                                    bg-red-600 text-white
+                                @else
+                                    bg-white text-gray-700 hover:bg-gray-50 hover:text-red-600
+                                @endif
+                                @if($page < $users->lastPage()) border-r border-gray-200 @endif">
+                        {{ $page }}
+                    </span>
+                </label>
+            @endfor
+        </div>
     </div>
 
-    {{-- SweetAlert pour confirmation suppression --}}
+    {{-- SweetAlert pour confirmation --}}
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
-        document.querySelectorAll('.btn-delete').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const form = this.closest('form');
-                swal({
-                    title: "Êtes-vous sûr ?",
-                    text: "Vous ne pourrez pas revenir en arrière !",
-                    icon: "warning",
-                    buttons: ["Annuler", "Oui, supprimer !"],
-                    dangerMode: true,
-                }).then((willDelete) => {
-                    if (willDelete) {
-                        form.submit();
+        function confirmDeactivation(userId) {
+            swal({
+                title: "Désactiver cet utilisateur ?",
+                text: "Cette action bloquera immédiatement son accès au système mais conservera tout son historique (produits, mouvements, alertes) pour l'audit sanitaire.\n\nVeuillez indiquer le motif obligatoire (min. 10 caractères) :",
+                content: "input",
+                buttons: {
+                    cancel: "Annuler",
+                    confirm: {
+                        text: "Désactiver",
+                        value: true,
+                        className: "bg-red-600 hover:bg-red-700 text-white",
                     }
-                });
+                },
+                dangerMode: true,
+                closeOnEsc: false,
+                closeOnClickOutside: false,
+            })
+            .then((reason) => {
+                if (reason === null) {
+                    return false;
+                }
+                const trimmed = reason.trim();
+                if (trimmed.length < 10) {
+                    swal("Motif invalide", "Le motif doit contenir au moins 10 caractères pour la traçabilité sanitaire (ex: départ, licenciement, mutation).", "error");
+                    return false;
+                }
+                document.getElementById('deactivation_reason_' + userId).value = trimmed;
+                document.getElementById('deactivate-form-' + userId).submit();
             });
-        });
+        }
+
+        function confirmRestore(userId) {
+            swal({
+                title: "Réactiver cet utilisateur ?",
+                text: "Cette action restaurera immédiatement l'accès au compte et changera son statut en 'Actif'.",
+                buttons: {
+                    cancel: "Annuler",
+                    confirm: {
+                        text: "Réactiver",
+                        value: true,
+                        className: "bg-green-600 hover:bg-green-700 text-white",
+                    }
+                },
+                icon: "warning",
+                closeOnEsc: false,
+                closeOnClickOutside: false,
+            })
+            .then((willRestore) => {
+                if (willRestore) {
+                    document.getElementById('restore-form-' + userId).submit();
+                }
+            });
+        }
     </script>
 
     @if (session('success'))

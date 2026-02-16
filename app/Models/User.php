@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 
 // /**
@@ -20,7 +21,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable,HasRoles;
+    use HasFactory, Notifiable,HasRoles,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -41,6 +42,9 @@ class User extends Authenticatable
         'magasin_affecte',
         'email',
         'password',
+        'is_active', 
+        'deactivation_reason', 
+        'deactivated_by',
     ];
 
     /**
@@ -63,7 +67,28 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
+            'deactivated_at' => 'datetime',
+            'deleted_at' => 'datetime',
         ];
+    }
+
+    public function deactivatedBy()
+    {
+        return $this->belongsTo(User::class, 'deactivated_by', 'user_id');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true)->whereNull('deleted_at');
+    }
+
+    public function canBeDeactivated(): bool
+    {
+        return !$this->produits()->exists() && 
+               !$this->articles()->exists() &&
+               !$this->consommations()->exists() &&
+               !$this->consommationsarticles()->exists();
     }
 
     public function mouvements():HasMany{

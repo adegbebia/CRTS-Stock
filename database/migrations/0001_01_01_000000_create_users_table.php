@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id('user_id');
-            $table->timestamp('datecreation')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('nom');
+// Après (propre et sans erreur)
+            $table->timestamp('datecreation')->useCurrent();            $table->string('nom');
             $table->string('nom_pseudo');
             $table->string('prenom');
             $table->string('adresse');

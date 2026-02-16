@@ -32,7 +32,10 @@ Route::middleware(['auth'])->group(function () {
     // Utilisateurs
     Route::resource('users', UserController::class);
 
-    // PRODUITS
+
+    Route::get('/users/desactives', [UserController::class, 'desactives'])->name('users.desactives');
+    Route::post('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
+
     Route::resource('produits', ProduitController::class);
     Route::resource('mouvements-produits', MouvementProduitController::class);
     Route::resource('consommations-produits', ConsommationProduitController::class)
