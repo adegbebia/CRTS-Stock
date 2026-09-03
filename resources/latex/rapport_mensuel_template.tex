@@ -1,0 +1,107 @@
+\documentclass[10pt,landscape]{report}
+\usepackage[margin=3.6cm]{geometry}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{array}
+\usepackage{supertabular}
+\usepackage{makecell}
+\usepackage{graphicx}
+\usepackage{calc}
+\usepackage{float}
+
+\begin{document}
+
+% Premier logo centré en haut
+\begin{center}
+    \includegraphics[width=6cm]{ministere.png}
+\end{center}
+
+\vspace{1cm}
+
+% Ligne avec bloc administratif à gauche et logo droit à droite
+\noindent
+\begin{minipage}[t]{0.6\textwidth}
+  \small
+  \textbf{CABINET} \\
+  \rule{6cm}{0.4pt} \\[0.2em]
+  \textbf{SECRETARIAT GENERAL} \\
+  \rule{8cm}{0.4pt} \\[0.2em]
+  \textbf{DIRECTION DE LA PHARMACIE,} \\
+  \textbf{DU MEDICAMENT ET DES LABORATOIRES} \\
+  \rule{8cm}{0.4pt} \\[0.2em]
+  \textbf{DIVISION DES LABORATOIRES} \\
+  \rule{8cm}{0.4pt} \\[0.2em]
+  \textbf{CENTRE REGIONAL DE TRANSFUSION} \\
+  \textbf{SANGUINE DE SOKODE} \\
+  \rule{8cm}{0.4pt} \\[0.2em]
+  \textbf{MAGASIN TECHNIQUE} \\
+  \rule{5cm}{0.4pt} \\[0.2em]
+  B.P. 39 \\
+  Tél. 70 45 66 80 / 92 21 49 21 \\
+  E-mail : crtssokode2020@gmail.com
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.35\textwidth}
+  \vspace{2cm}
+  \centering
+  \includegraphics[width=6cm]{logo_crts.png}
+\end{minipage}
+
+\vspace{1cm}
+
+% Titre encadré et centré
+\begin{center}
+\fbox{
+    \begin{minipage}{0.8\textwidth}
+    \centering
+    \Large \textbf{Rapport des activités du Magasin {{typeMagasin}} {{periode}} {{annee}}}
+    \end{minipage}
+}
+\end{center}
+
+\vspace{0.5cm}
+
+% Tableau des stocks
+\normalsize
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{2}
+
+% Décalage du tableau vers la droite
+\noindent\hspace*{1.5cm}%
+\begin{supertabular}{
+|>{\raggedright\arraybackslash}p{3.5cm}|
+c|c|c|
+>{\raggedright\arraybackslash}p{3.5cm}|
+c|c|
+>{\raggedright\arraybackslash}p{3.5cm}|}
+\hline
+\multicolumn{1}{|c|}{\textbf{\makecell{Désignation}}} & 
+\multicolumn{1}{c|}{\textbf{\makecell{Stock\\ initial}}} & 
+\multicolumn{1}{c|}{\textbf{Entrée}} & 
+\multicolumn{1}{c|}{\textbf{\makecell{Stock\\total}}} & 
+\multicolumn{1}{c|}{\textbf{Unité}} & 
+\multicolumn{1}{c|}{\textbf{Sortie}} & 
+\multicolumn{1}{c|}{\textbf{\makecell{Stock\\ final}}} & 
+\multicolumn{1}{c|}{\textbf{Observation}} \\
+\hline
+
+{{rows}}
+
+\hline
+\end{supertabular}
+
+\vspace{2cm}
+
+\begin{flushright}
+Fait à Sokodé, le \today
+
+\vspace{1cm}
+Le Chargé du Magasin {{typeMagasin}}
+
+\vspace{1cm}
+\makebox[5cm]{\hrulefill}
+\end{flushright}
+
+\end{document}

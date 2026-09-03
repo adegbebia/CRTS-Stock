@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+/* Verrou anti-padding : le layout (navbar/contenu/footer) doit toujours
+   toucher les bords de la fenêtre, sans marge résiduelle du navigateur. */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+
+@plugin "daisyui";
